@@ -117,18 +117,15 @@ main{padding:0 var(--gutter) 230px}
 .case .foot svg.i{width:16px;height:16px}
 
 /* suggerimenti */
-.sugg{display:grid;gap:10px}
-.sg{display:flex;gap:14px;align-items:flex-start;text-align:left;background:var(--paper);border-radius:20px;padding:15px 16px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease;width:100%}
+.sugg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sg{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:var(--paper);border-radius:22px;padding:14px 14px 16px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease;min-height:150px}
 .sg:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
-.sg .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none}
-.sg .tx{flex:1;min-width:0}
-.sg q{display:block;font:500 16.5px/1.3 var(--serif);quotes:none;color:var(--ink)}
-.sg small{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px;color:var(--ink-3)}
-.sg small svg.i{width:14px;height:14px;color:var(--green-2)}
-.sg .go{align-self:center;color:var(--ink-3)}
-.sg.feat{background:linear-gradient(135deg,#FFFFFF 0%,#F6F9EC 100%);border-color:rgba(29,90,66,.18)}
-.why{font-size:12.5px;color:var(--ink-3);margin-top:12px;display:flex;gap:6px;align-items:center}
-.why svg.i{width:14px;height:14px}
+.sg:active{transform:scale(.98)}
+.sg .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;margin-bottom:auto}
+.sg .go{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#F4F1EA;color:var(--ink-3)}
+.sg .go svg.i{width:15px;height:15px}
+.sg q{display:block;font:500 16px/1.25 var(--serif);quotes:none;color:var(--ink);margin-top:18px}
+.sg small{display:block;margin-top:5px;font-size:12px;line-height:1.35;color:var(--ink-3)}
 
 /* ---------- dock (composer + tabbar) ---------- */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 14px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
@@ -365,9 +362,8 @@ main{padding:0 var(--gutter) 230px}
       </div>
 
       <div class="sec">
-        <div class="sec-h"><h2>Pensati per te</h2></div>
+        <div class="sec-h"><h2>Suggerimenti</h2></div>
         <div class="sugg" id="sugg"></div>
-        <p class="why"><svg class="i"><use href="#i-spark"/></svg>Cambiano in base ai tuoi mandati, alle pratiche aperte e alle novità in libreria.</p>
       </div>
       <p class="proto">Prototipo di Vittoria Rossetti · dati di esempio</p>
     </section>
@@ -446,10 +442,10 @@ const cases = [
   {tag:'polizza', icon:'file', label:'Analisi', title:'Multirischio negozio', who:'Ottica Gallo Srl', time:'lun', prog:85, step:'Report quasi pronto', q:'Cosa copre la multirischio di Ottica Gallo?'}
 ];
 const sugg = [
-  {feat:true, tag:'polizza', icon:'file', q:'La polizza casa dei Bianchi copre la grandine?', why:'Dalla pratica Bianchi', wi:'folder'},
-  {tag:'libreria', icon:'book', q:'Cosa cambia nella nuova CGA Generali Casa?', why:'Aggiornata 2 giorni fa · tuo mandato', wi:'pin'},
-  {tag:'sinistro', icon:'shield', q:'Quali documenti servono per il sinistro di Marco Ferri?', why:'Pratica aperta da 2 giorni', wi:'folder'},
-  {tag:'confronto', icon:'mail', q:'Scrivi al cliente perché consiglio questa offerta', why:'Con la carta intestata Nano i-Tech', wi:'spark'}
+  {tag:'confronto', icon:'scale', q:'Confronta i preventivi di un cliente', sub:'Premi e garanzie in tabella', ask:'Confronta i preventivi di un cliente'},
+  {tag:'polizza', icon:'file', q:'Cosa copre questa polizza?', sub:'Garanzie, esclusioni, franchigie', act:'attach'},
+  {tag:'libreria', icon:'book', q:'Trova un prodotto in libreria', sub:'Tutte le principali compagnie', view:'libreria'},
+  {tag:'sinistro', icon:'mail', q:'Scrivi una mail di rinnovo', sub:'Con la tua carta intestata', ask:'Scrivi una mail di rinnovo per un cliente'}
 ];
 const tagStyle = {confronto:['var(--mint)','var(--green)'], sinistro:['var(--rose)','var(--rose-ink)'], polizza:['var(--sky)','var(--sky-ink)'], libreria:['var(--sand)','var(--sand-ink)']};
 
@@ -481,11 +477,11 @@ function renderHome(){
       <div class="bar" role="progressbar" aria-label="Avanzamento" aria-valuenow="${c.prog}" aria-valuemin="0" aria-valuemax="100"><i style="width:${c.prog}%"></i></div>
       <div class="foot"><span>${c.step}</span><b>Riprendi${ic('right')}</b></div>
     </button>`).join('');
-  $('#sugg').innerHTML = sugg.map(s=>{const [bg,fg]=tagStyle[s.tag];return `
-    <button class="sg${s.feat?' feat':''}" data-ask="${s.q}">
-      <span class="ic" style="background:${bg};color:${fg}">${ic(s.icon)}</span>
-      <span class="tx"><q>${s.q}</q><small>${ic(s.wi)}${s.why}</small></span>
+  $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
+    <button class="sg" ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}>
+      <span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>
       <span class="go">${ic('right')}</span>
+      <q>${x.q}</q><small>${x.sub}</small>
     </button>`}).join('');
   $('#plist').innerHTML = pratiche.map(p=>{const [bg,fg]=tagStyle[p[4]];return `
     <button class="row" data-ask="Riassumi la pratica di ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
@@ -606,8 +602,9 @@ function answerFor(q){
     <li><span><b>Foto dei danni</b> e preventivo della carrozzeria <span class="cite">2</span></span></li>
     <li><span>Poi invio alla compagnia: risposta attesa entro <b>60 giorni</b> <span class="cite">3</span></span></li></ol>`};
   if(s.includes('scrivi') || s.includes('mail')) return {src:SRC.conf, html:`
-    <p class="lead">Ecco una bozza, chiara e motivata.</p>
-    <p>Gentile Marco, le propongo l'offerta Reale Mutua: costa 498 € l'anno, ha una franchigia di 150 € e copre la grandine senza limiti. Rispetto alla polizza attuale, a parità di premio ottiene più tutele <span class="cite">1</span>.</p>`};
+    <p class="lead">Ecco una bozza di mail di rinnovo. Dimmi per quale cliente e la personalizzo.</p>
+    <p><b>Oggetto:</b> Rinnovo della sua polizza in scadenza</p>
+    <p>Gentile cliente, la sua polizza è in scadenza il prossimo mese. Ho verificato le condizioni di rinnovo: le garanzie restano invariate e il premio è confermato <span class="cite">1</span>. Se lo desidera, possiamo valutare insieme un'estensione della copertura. Resto a disposizione per un appuntamento.</p>`};
   if(s.includes('rc auto')) return {src:SRC.auto, html:`
     <p class="lead">Copre la responsabilità civile con massimali alti, ma senza tutele extra.</p>
     <p>Massimale <b>10 milioni €</b> per danni a persone e cose <span class="cite">1</span>. Inclusa l'<b>assistenza stradale</b>; non sono inclusi furto, incendio e cristalli <span class="cite">1</span>.</p>
