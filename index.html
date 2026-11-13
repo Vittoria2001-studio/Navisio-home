@@ -18,7 +18,10 @@
   --ink-3:#5B6961;
   --green:#0E3B2C;
   --green-2:#1D5A42;
-  --lime:#D4EE74;
+  --lime:#D4FF3A;
+  --violet:#6C4DFF;
+  --orange:#FF5A1F;
+  --blue:#1F6BFF;
   --mint:#DDEBE0;
   --sand:#F1E4C8;
   --sand-ink:#6A4A10;
@@ -47,7 +50,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;str
 .app{min-height:100dvh}
 main{padding:0 var(--gutter) 190px}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:linear-gradient(var(--cream) 70%,rgba(244,241,234,0))}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(244,241,234,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
 .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font:600 14px var(--sans);letter-spacing:.04em}
 .logo{font:500 19px var(--serif);letter-spacing:.24em;color:var(--green)}
 .logo b{font-weight:500;color:var(--green-2)}
@@ -59,65 +62,48 @@ main{padding:0 var(--gutter) 190px}
 .hello{padding:18px 0 20px}
 .hello h1{font:500 34px/1.08 var(--serif);letter-spacing:-.015em;font-variation-settings:"opsz" 96}
 .hello h1 em{font-style:italic;font-weight:400;color:var(--green-2)}
-.promo{position:relative;display:flex;align-items:center;gap:8px;background:var(--green);color:#fff;border-radius:30px;padding:22px 18px 22px 22px;overflow:hidden;box-shadow:0 20px 40px -24px rgba(14,59,44,.7);transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:260px}
+.promo{position:relative;background:var(--green);color:#fff;border-radius:30px;padding:22px 20px 20px;overflow:hidden;box-shadow:0 24px 44px -26px rgba(14,59,44,.8);transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px}
 .promo.gone{opacity:0;transform:scale(.96);max-height:0;padding-top:0;padding-bottom:0;margin:0}
-.promo::before{content:"";position:absolute;right:-60px;bottom:-80px;width:220px;height:220px;border-radius:50%;background:var(--green-2)}
-.promo-tx{position:relative;flex:1;min-width:0}
-.promo-tag{display:inline-block;font:600 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;background:var(--lime);color:var(--green);padding:5px 10px;border-radius:99px}
-.promo h2{font:500 23px/1.12 var(--serif);letter-spacing:-.01em;margin:12px 0 16px}
-.promo h2 em{font-style:italic;font-weight:400;color:var(--lime)}
-.promo-cta{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:99px;background:#fff;color:var(--green);font-weight:600;font-size:14px}
-.promo-cta svg.i{width:16px;height:16px}
-.promo-x{position:absolute;top:12px;right:12px;z-index:2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.12)}
+.promo-x{position:absolute;top:14px;right:14px;z-index:2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.12)}
 .promo-x svg.i{width:16px;height:16px}
-.promo-art{position:relative;width:96px;height:118px;flex:none;margin-top:18px}
-.sheet-ill{position:absolute;inset:14px 16px;background:#FBFAF6;border-radius:6px;transform:rotate(-6deg);padding:12px 9px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 20px -8px rgba(0,0,0,.4)}
-.sheet-ill i{display:block;height:4px;border-radius:2px;background:#D9D5CA}
-.sheet-ill i:first-child{width:60%;height:6px;background:var(--green)}
-.sheet-ill i:nth-child(3){width:80%}
-.sheet-ill b{margin-top:auto;height:12px;width:55%;border-radius:3px;background:var(--lime)}
-.vf{position:absolute;width:20px;height:20px;border:3px solid var(--lime)}
-.vf.tl{top:0;left:0;border-right:0;border-bottom:0;border-radius:8px 0 0 0}
-.vf.tr{top:0;right:0;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
-.vf.bl{bottom:0;left:0;border-right:0;border-top:0;border-radius:0 0 0 8px}
-.vf.br{bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 8px 0}
+.promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+.promo h2{font:500 24px/1.1 var(--serif);letter-spacing:-.01em;margin:8px 0 20px;padding-right:30px}
+.promo h2 em{font-style:italic;font-weight:400;color:var(--lime)}
+.how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:20px}
+.how::before{content:"";position:absolute;top:26px;left:16%;right:16%;border-top:2px dashed rgba(255,255,255,.28)}
+.how li{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;position:relative}
+.how .st{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 0 5px var(--green)}
+.how .st svg.i{width:24px;height:24px}
+.how .st em{position:absolute;top:-4px;right:-6px;width:21px;height:21px;border-radius:50%;background:#fff;color:var(--green);font:600 11px/21px var(--sans);font-style:normal;text-align:center}
+.how b{font-weight:600;font-size:13.5px;line-height:1.2}
+.promo-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:99px;background:var(--lime);color:var(--green);font-weight:600;font-size:15px}
+.promo-cta svg.i{width:18px;height:18px}
 
 .sec{margin-top:28px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
 .sec-h h2{font:600 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .sec-h a,.sec-h button{font-size:13px;font-weight:500;color:var(--green-2)}
 
-/* riprendi */
-.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gutter)*-1);padding:2px var(--gutter) 10px;scrollbar-width:none}
+/* attività: anelli di avanzamento */
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);margin:0 calc(var(--gutter)*-1);padding:4px var(--gutter) 6px;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
-.case{flex:0 0 66%;scroll-snap-align:start;background:var(--paper);border-radius:22px;padding:16px;box-shadow:var(--shadow);text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:12px;border:1px solid var(--line)}
-.case .top{display:flex;align-items:center;justify-content:space-between}
-.tag{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border-radius:99px}
-.tag svg.i{width:14px;height:14px}
-.t-confronto{background:var(--mint);color:var(--green)}
-.t-sinistro{background:var(--rose);color:var(--rose-ink)}
-.t-polizza{background:var(--sky);color:var(--sky-ink)}
-.t-libreria{background:var(--sand);color:var(--sand-ink)}
-.case time{font-size:12px;color:var(--ink-3)}
-.case h3{font:500 18px/1.2 var(--serif)}
-.case .who{font-size:13px;color:var(--ink-3)}
-.bar{align-self:stretch;height:6px;border-radius:9px;background:#EEEBE3;overflow:hidden}
-.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--green-2),#58A37E)}
-.case .foot{display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.case .foot span{color:var(--ink-2)}
-.case .foot b{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-weight:600}
-.case .foot svg.i{width:16px;height:16px}
+.story{flex:none;width:76px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+.ring{width:72px;height:72px;border-radius:50%;padding:3.5px;position:relative;background:conic-gradient(var(--c) calc(var(--p)*1%),rgba(19,35,28,.12) 0)}
+.face{width:100%;height:100%;border-radius:50%;background:var(--paper);border:3px solid var(--cream);display:grid;place-items:center;font:500 21px var(--serif);color:var(--ink)}
+.badge{position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--cream)}
+.badge svg.i{width:13px;height:13px;stroke-width:2.2}
+.story b{font-weight:600;font-size:12.5px;line-height:1.2;max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.story small{font-size:11.5px;color:var(--ink-3);margin-top:-5px}
+.story.add .ring{background:none;border:2px dashed rgba(19,35,28,.25);padding:0}
+.story.add .face{border:0;background:transparent;color:var(--green)}
+.story.add .face svg.i{width:26px;height:26px}
 
-/* suggerimenti */
-.sugg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.sg{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:var(--paper);border-radius:22px;padding:14px 14px 16px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease;min-height:124px}
-.sg:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
-.sg:active{transform:scale(.98)}
-.sg .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;margin-bottom:auto}
-.sg .go{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#F4F1EA;color:var(--ink-3)}
-.sg .go svg.i{width:15px;height:15px}
-.sg q{display:block;font:500 17px/1.22 var(--serif);quotes:none;color:var(--ink);margin-top:16px}
-.sg small{display:block;margin-top:5px;font-size:12px;line-height:1.35;color:var(--ink-3)}
+/* suggerimenti: pillole */
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chipx{display:flex;align-items:center;gap:9px;height:50px;padding:0 10px 0 6px;text-align:left;line-height:1.15;border-radius:99px;background:var(--paper);border:1px solid var(--line);font-weight:600;font-size:13.5px;color:var(--ink);box-shadow:var(--shadow);transition:transform .15s}
+.chipx:active{transform:scale(.97)}
+.chipx .ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.chipx .ic svg.i{width:18px;height:18px}
 
 /* ---------- dock (composer + tabbar) ---------- */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 14px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
@@ -131,7 +117,7 @@ main{padding:0 var(--gutter) 190px}
 .composer textarea::placeholder{color:#6D7A72}
 .cbtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--green);flex:none;transition:background .15s}
 .cbtn:hover{background:rgba(14,59,44,.06)}
-.cbtn.plus{background:var(--mint)}
+.cbtn.plus{background:#ECE8DE}
 .cbtn.cam{background:var(--lime)}
 .cbtn.send{background:var(--green);color:#fff}
 .cbtn.send:disabled{background:#E4E1D8;color:#7A857E;cursor:default}
@@ -232,7 +218,7 @@ main{padding:0 var(--gutter) 190px}
 .page::after{content:"";position:absolute;left:0;right:0;height:46px;top:-46px;background:linear-gradient(to bottom,rgba(212,238,116,0),rgba(212,238,116,.75));border-bottom:2px solid var(--green-2);animation:scan 1.3s ease-in-out infinite}
 @keyframes scan{0%{top:-46px}100%{top:100%}}
 .found{display:flex;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:18px}
-.found .ic{width:48px;height:58px;border-radius:10px;background:var(--sky);color:var(--sky-ink);display:grid;place-items:center;flex:none}
+.found .ic{width:48px;height:58px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center;flex:none}
 .found b{display:block;font:500 17px/1.2 var(--serif)}
 .found span{font-size:13px;color:var(--ink-3)}
 .ok{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--green-2)}
@@ -335,27 +321,26 @@ main{padding:0 var(--gutter) 190px}
         <h1>Ciao Sebastiano,<br><em>cosa hai in mano oggi?</em></h1>
       </div>
 
-      <aside class="promo" id="promo" aria-label="Novità">
+      <aside class="promo" id="promo" aria-labelledby="promo-t">
         <button class="promo-x" data-act="promo-close" aria-label="Chiudi"><svg class="i"><use href="#i-x"/></svg></button>
-        <div class="promo-tx">
-          <span class="promo-tag">Nuovo</span>
-          <h2>Inquadra il documento.<br><em>Navisio fa il resto.</em></h2>
-          <button class="promo-cta" data-act="demo">Prova ora<svg class="i"><use href="#i-right"/></svg></button>
-        </div>
-        <div class="promo-art" aria-hidden="true">
-          <div class="sheet-ill"><i></i><i></i><i></i><i></i><b></b></div>
-          <span class="vf tl"></span><span class="vf tr"></span><span class="vf bl"></span><span class="vf br"></span>
-        </div>
+        <span class="promo-tag">Come funziona</span>
+        <h2 id="promo-t">Dal foglio alla risposta, <em>in tre mosse.</em></h2>
+        <ol class="how">
+          <li><span class="st" style="background:var(--lime);color:var(--green)"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
+          <li><span class="st" style="background:var(--violet);color:#fff"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
+          <li><span class="st" style="background:var(--orange);color:#fff"><svg class="i"><use href="#i-check"/></svg><em>3</em></span><b>Tu scegli<br>cosa fare</b></li>
+        </ol>
+        <button class="promo-cta" data-act="demo">Prova con un esempio<svg class="i"><use href="#i-right"/></svg></button>
       </aside>
 
       <div class="sec">
-        <div class="sec-h"><h2>Riprendi</h2><button data-view="pratiche">Tutte</button></div>
+        <div class="sec-h"><h2>Le tue attività</h2><button data-view="pratiche">Tutte</button></div>
         <div class="rail" id="rail"></div>
       </div>
 
       <div class="sec">
         <div class="sec-h"><h2>Suggerimenti</h2></div>
-        <div class="sugg" id="sugg"></div>
+        <div class="chips" id="sugg"></div>
       </div>
       <p class="proto">Prototipo di Vittoria Rossetti · dati di esempio</p>
     </section>
@@ -429,17 +414,19 @@ const ic = (n, cls='i') => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 
 /* ---------- dati di esempio ---------- */
 const cases = [
-  {tag:'confronto', icon:'scale', label:'Confronto', title:'Polizza casa', who:'Famiglia Bianchi', time:'ieri', prog:66, step:'2 preventivi su 3', q:'Confronta i preventivi casa della famiglia Bianchi'},
-  {tag:'sinistro', icon:'shield', label:'Sinistro', title:'RC auto', who:'Marco Ferri', time:'2 g fa', prog:40, step:'Mancano 2 documenti', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
-  {tag:'polizza', icon:'file', label:'Analisi', title:'Multirischio negozio', who:'Ottica Gallo Srl', time:'lun', prog:85, step:'Report quasi pronto', q:'Cosa copre la multirischio di Ottica Gallo?'}
+  {tag:'confronto', icon:'scale', ini:'FB', who:'Bianchi', kind:'Confronto', prog:66, q:'Confronta i preventivi casa della famiglia Bianchi'},
+  {tag:'sinistro', icon:'shield', ini:'MF', who:'Ferri', kind:'Sinistro', prog:40, q:'A che punto è il sinistro RC auto di Marco Ferri?'},
+  {tag:'polizza', icon:'file', ini:'OG', who:'Ottica Gallo', kind:'Analisi', prog:85, q:'Cosa copre la multirischio di Ottica Gallo?'},
+  {tag:'libreria', icon:'mail', ini:'ER', who:'Russo', kind:'Rinnovo', prog:20, q:'Scrivi la mail di rinnovo per Elena Russo'},
+  {tag:'confronto', icon:'scale', ini:'TL', who:'Lanza', kind:'Confronto', prog:55, q:'Confronta i preventivi flotta di Trasporti Lanza'}
 ];
 const sugg = [
-  {tag:'confronto', icon:'scale', q:'Confronta i preventivi di un cliente', sub:'Premi e garanzie in tabella', ask:'Confronta i preventivi di un cliente'},
-  {tag:'polizza', icon:'file', q:'Cosa copre questa polizza?', sub:'Garanzie, esclusioni, franchigie', act:'attach'},
-  {tag:'libreria', icon:'book', q:'Trova un prodotto in libreria', sub:'Tutte le principali compagnie', view:'libreria'},
-  {tag:'sinistro', icon:'mail', q:'Scrivi una mail di rinnovo', sub:'Con la tua carta intestata', ask:'Scrivi una mail di rinnovo per un cliente'}
+  {tag:'confronto', icon:'scale', q:'Confronta preventivi', ask:'Confronta i preventivi di un cliente'},
+  {tag:'polizza', icon:'file', q:'Cosa copre?', act:'attach'},
+  {tag:'libreria', icon:'book', q:'Trova un prodotto', view:'libreria'},
+  {tag:'sinistro', icon:'mail', q:'Mail di rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
 ];
-const tagStyle = {confronto:['var(--mint)','var(--green)'], sinistro:['var(--rose)','var(--rose-ink)'], polizza:['var(--sky)','var(--sky-ink)'], libreria:['var(--sand)','var(--sand-ink)']};
+const tagStyle = {confronto:['var(--violet)','#fff'], sinistro:['var(--orange)','#fff'], polizza:['var(--blue)','#fff'], libreria:['var(--lime)','var(--green)']};
 
 const pratiche = [
   ['FB','Famiglia Bianchi','Casa · confronto in corso','3 doc · ieri','confronto'],
@@ -458,21 +445,18 @@ const recenti = [
 
 /* ---------- render ---------- */
 function renderHome(){
-  $('#rail').innerHTML = cases.map((c,i)=>`
-    <button class="case" data-ask="${c.q}">
-      <span class="tag t-${c.tag}">${ic(c.icon)}${c.label}</span>
-      <div><h3>${c.title}</h3><div class="who">${c.who}</div></div>
-      <div class="bar" role="progressbar" aria-label="Avanzamento" aria-valuenow="${c.prog}" aria-valuemin="0" aria-valuemax="100"><i style="width:${c.prog}%"></i></div>
-    </button>`).join('');
-  $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
-    <button class="sg" ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}>
-      <span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>
-      <q>${x.q}</q>
+  $('#rail').innerHTML = `<button class="story add" data-act="attach"><span class="ring"><span class="face"><svg class="i"><use href="#i-plus"/></svg></span></span><b>Nuova</b><small>pratica</small></button>` +
+    cases.map(c=>{const [bg,fg]=tagStyle[c.tag];return `
+    <button class="story" data-ask="${c.q}" aria-label="${c.kind} ${c.who}, ${c.prog}% completato">
+      <span class="ring" style="--c:${bg};--p:${c.prog}"><span class="face">${c.ini}</span><span class="badge" style="background:${bg};color:${fg}">${ic(c.icon)}</span></span>
+      <b>${c.who}</b><small>${c.kind}</small>
     </button>`}).join('');
+  $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
+    <button class="chipx" ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = pratiche.map(p=>{const [bg,fg]=tagStyle[p[4]];return `
     <button class="row" data-ask="Riassumi la pratica di ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
-  $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--sand);color:var(--sand-ink)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
+  $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--lime);color:var(--green)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
 }
 
 /* ---------- navigazione ---------- */
@@ -515,8 +499,8 @@ function attachSheet(){
     <div class="opts">
       <button class="opt" data-act="camera"><span class="ic" style="background:var(--lime);color:var(--green)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
       <button class="opt" data-act="upload"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('upload')}</span><b>Carica file</b><span>PDF, foto, fascicoli</span></button>
-      <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--sky);color:var(--sky-ink)">${ic('folder')}</span><b>Da una pratica</b><span>Documenti dei clienti</span></button>
-      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--sand);color:var(--sand-ink)">${ic('book')}</span><b>Dalla libreria</b><span>Prodotti delle compagnie</span></button>
+      <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue);color:#fff">${ic('folder')}</span><b>Da una pratica</b><span>Documenti dei clienti</span></button>
+      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--lime);color:var(--green)">${ic('book')}</span><b>Dalla libreria</b><span>Prodotti delle compagnie</span></button>
     </div>`);
 }
 
@@ -536,9 +520,9 @@ function scan(name){
       </div>
       <div class="next fade-in">
         <button class="first" data-ask="Cosa copre questo preventivo RC Auto?" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic">${ic('file')}</span>Spiegami cosa copre<span class="go">${ic('right')}</span></button>
-        <button data-ask="Confronta questo preventivo con altri della libreria" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('scale')}</span>Confrontalo con altre compagnie<span class="go">${ic('right')}</span></button>
-        <button data-act="scheda"><span class="ic" style="background:var(--sand);color:var(--sand-ink)">${ic('user')}</span>Prepara la scheda per il cliente<span class="go">${ic('right')}</span></button>
-        <button data-toast="Aggiunto alla pratica di Marco Ferri"><span class="ic" style="background:var(--sky);color:var(--sky-ink)">${ic('folder')}</span>Aggiungi alla pratica Ferri<span class="go">${ic('right')}</span></button>
+        <button data-ask="Confronta questo preventivo con altri della libreria" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic" style="background:var(--violet);color:#fff">${ic('scale')}</span>Confrontalo con altre compagnie<span class="go">${ic('right')}</span></button>
+        <button data-act="scheda"><span class="ic" style="background:var(--lime);color:var(--green)">${ic('user')}</span>Prepara la scheda per il cliente<span class="go">${ic('right')}</span></button>
+        <button data-toast="Aggiunto alla pratica di Marco Ferri"><span class="ic" style="background:var(--blue);color:#fff">${ic('folder')}</span>Aggiungi alla pratica Ferri<span class="go">${ic('right')}</span></button>
       </div>`;
   }, 1900);
 }
