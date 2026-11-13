@@ -338,8 +338,7 @@ main{padding:0 var(--gutter) 230px}
     <!-- HOME -->
     <section id="v-home" class="fade-in">
       <div class="hello">
-        <h1><span id="greet">Buongiorno</span>, Sebastiano.<br><em>Cosa hai in mano oggi?</em></h1>
-        <p id="today">Nano i-Tech</p>
+        <h1>Ciao Sebastiano, <em>cosa hai in mano oggi?</em></h1>
       </div>
 
       <div class="hero">
@@ -466,10 +465,6 @@ const recenti = [
 
 /* ---------- render ---------- */
 function renderHome(){
-  const h = new Date().getHours();
-  $('#greet').textContent = h < 13 ? 'Buongiorno' : h < 18 ? 'Buon pomeriggio' : 'Buonasera';
-  const d = new Intl.DateTimeFormat('it-IT',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
-  $('#today').textContent = 'Nano i-Tech · ' + d;
   $('#rail').innerHTML = cases.map((c,i)=>`
     <button class="case" data-ask="${c.q}">
       <div class="top"><span class="tag t-${c.tag}">${ic(c.icon)}${c.label}</span><time>${c.time}</time></div>
