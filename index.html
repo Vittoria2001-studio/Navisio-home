@@ -515,7 +515,7 @@ main{padding:0 var(--gutter) 190px}
       <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
 
       <div class="sec">
-        <div class="sec-h"><h2>Le tue attività</h2><button data-view="pratiche">Vedi tutte</button></div>
+        <div class="sec-h"><h2>Pratiche in corso</h2><button data-view="pratiche">Vedi tutte</button></div>
         <div class="card" id="rail"></div>
       </div>
       <p class="proto">Prototipo di Vittoria Rossetti · dati di esempio</p>
@@ -566,7 +566,6 @@ main{padding:0 var(--gutter) 190px}
     <nav class="tabbar" aria-label="Sezioni">
       <button class="tab" data-view="home" aria-current="page"><svg class="i"><use href="#i-chat"/></svg><span>Chiedi</span></button>
       <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-folder"/></svg><span>Pratiche</span></button>
-      <button class="tab" data-view="libreria"><svg class="i"><use href="#i-book"/></svg><span>Libreria</span></button>
     </nav>
   </div>
 
@@ -640,11 +639,11 @@ function show(v){
   view = v;
   ['home','chat','pratiche','libreria'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
-  const nav = v==='chat' ? 'home' : v;
+  const nav = (v==='chat'||v==='libreria') ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
-  $('#back').hidden = v!=='chat';
-  document.querySelector('.topbar .avatar').hidden = v==='chat';
+  $('#back').hidden = !(v==='chat'||v==='libreria');
+  document.querySelector('.topbar .avatar').hidden = v==='chat'||v==='libreria';
   window.scrollTo({top:0,behavior:'instant'}); $('#scroller').scrollTop = 0;
 }
 
