@@ -63,7 +63,7 @@ main{padding:0 var(--gutter) 190px}
 /* ---------- home ---------- */
 .hello{padding:18px 0 20px}
 .hello h1{font:700 31px/1.15 var(--serif);letter-spacing:-.03em}
-.hello h1 em{display:block;font-style:italic;font-weight:600;font-size:26px;letter-spacing:-.025em;color:var(--green);margin-top:2px}
+.hello h1 em{display:inline;font-style:italic;font-weight:600;font-size:26px;letter-spacing:-.025em;color:var(--green);background:linear-gradient(transparent 12%,var(--lime) 12%,var(--lime) 92%,transparent 92%);padding:0 6px;margin-left:-4px;-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:6px}
 .promo{position:relative;color:#fff;border-radius:24px;padding:16px 18px 16px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px;
   background:
     radial-gradient(90% 80% at 100% 0%,rgba(178,226,150,.75) 0%,rgba(178,226,150,0) 60%),
@@ -75,7 +75,7 @@ main{padding:0 var(--gutter) 190px}
 .promo-x svg.i{width:14px;height:14px}
 .promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
 .promo h2{font:600 19px/1.25 var(--serif);letter-spacing:-.02em;margin:0 0 14px;padding-right:34px}
-.promo h2 em{font-style:italic;color:var(--lime)}
+.promo h2 em{display:block;font-style:italic;font-weight:500;font-size:15px;color:var(--lime);margin-top:4px;letter-spacing:-.01em}
 .how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:14px}
 .how::before{content:"";position:absolute;top:21px;left:17%;right:17%;border-top:1.5px dashed rgba(255,255,255,.45)}
 .how li{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;position:relative}
@@ -321,12 +321,12 @@ main{padding:0 var(--gutter) 190px}
     <!-- HOME -->
     <section id="v-home" class="fade-in">
       <div class="hello">
-        <h1>Ciao Sebastiano,<em>cosa hai in mente oggi?</em></h1>
+        <h1>Ciao Sebastiano,<br><em>cosa hai in mente oggi?</em></h1>
       </div>
 
-      <aside class="promo" id="promo" aria-labelledby="promo-t">
+      <aside class="promo" id="promo" aria-labelledby="promo-t" aria-label="Primo accesso">
         <button class="promo-x" data-act="promo-close" aria-label="Chiudi"><svg class="i"><use href="#i-x"/></svg></button>
-        <h2 id="promo-t">Dal foglio alla risposta<br><em>in tre mosse.</em></h2>
+        <h2 id="promo-t">Benvenuto su Navisio<br><em>Ecco come funziona, in 3 mosse.</em></h2>
         <ol class="how">
           <li><span class="st"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
           <li><span class="st"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
