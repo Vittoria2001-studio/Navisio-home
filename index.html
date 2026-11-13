@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F5F5F2">
+<meta name="theme-color" content="#F3F5F7">
 <meta name="description" content="Navisio AI: proposta di redesign della home. Mostra un documento, Navisio capisce cosa fare.">
 <title>Navisio AI · Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cream:#F5F5F2;
+  --cream:#F3F5F7;
   --paper:#FFFFFF;
   --ink:#13231C;
   --ink-2:#44544B;
@@ -30,7 +30,7 @@
   --rose-ink:#7A2E17;
   --sky:#DCE6EF;
   --sky-ink:#1E4566;
-  --line:rgba(19,35,28,.09);
+  --line:rgba(20,30,40,.08);
   --shadow:0 1px 2px rgba(14,59,44,.06),0 8px 24px -12px rgba(14,59,44,.18);
   --shadow-lg:0 2px 6px rgba(14,59,44,.08),0 24px 48px -20px rgba(14,59,44,.35);
   --brand:"Fraunces",Georgia,serif;
@@ -52,7 +52,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;str
 .app{min-height:100dvh}
 main{padding:0 var(--gutter) 190px}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(245,245,242,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(243,245,247,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
 .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font:600 14px var(--sans);letter-spacing:.04em}
 .logo{font:500 19px var(--brand);letter-spacing:.24em;color:var(--green)}
 .logo b{font-weight:500;color:var(--green-2)}
@@ -63,28 +63,23 @@ main{padding:0 var(--gutter) 190px}
 /* ---------- home ---------- */
 .hello{padding:18px 0 20px}
 .hello h1{font:700 31px/1.15 var(--serif);letter-spacing:-.03em}
-.hello h1 em{font-style:normal;color:#2E8B57}
-.promo{position:relative;color:#fff;border-radius:28px;padding:22px 20px 20px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px;
-  background:
-    radial-gradient(90% 80% at 100% 0%,rgba(178,226,150,.75) 0%,rgba(178,226,150,0) 60%),
-    radial-gradient(70% 70% at 0% 100%,rgba(16,58,44,.9) 0%,rgba(16,58,44,0) 70%),
-    linear-gradient(155deg,#1B5641 0%,#2D7556 55%,#5E9C73 100%);
-  box-shadow:0 18px 40px -24px rgba(14,59,44,.55)}
+.hello h1 em{display:block;font-style:italic;font-weight:600;font-size:26px;letter-spacing:-.025em;color:var(--green);margin-top:2px}
+.promo{position:relative;color:#fff;border-radius:24px;padding:18px 18px 16px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:300px;
+  background:linear-gradient(120deg,#0E3B2C 0%,#174E3B 60%,#24654C 100%)}
+.promo::before,.promo::after{content:"";position:absolute;z-index:-1;border-radius:50%;border:1px solid rgba(212,238,116,.22)}
+.promo::before{width:220px;height:220px;right:-90px;top:-110px}
+.promo::after{width:150px;height:150px;right:-55px;top:-75px;border-color:rgba(212,238,116,.14)}
 .promo.gone{opacity:0;transform:scale(.96);max-height:0;padding-top:0;padding-bottom:0;margin:0}
-.promo-x{position:absolute;top:14px;right:14px;z-index:2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.18)}
-.promo-x svg.i{width:16px;height:16px}
-.promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
-.promo h2{font:600 24px/1.12 var(--serif);letter-spacing:-.01em;margin:8px 0 20px;padding-right:30px}
-.promo h2 em{font-style:normal;color:var(--lime)}
-.how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:20px}
-.how::before{content:"";position:absolute;top:26px;left:17%;right:17%;border-top:1.5px dashed rgba(255,255,255,.45)}
-.how li{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;position:relative}
-.how .st{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.how .st svg.i{width:23px;height:23px}
-.how .st em{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--green);font:600 11px/20px var(--sans);font-style:normal;text-align:center}
-.how b{font-weight:600;font-size:13px;line-height:1.25}
-.promo-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:99px;background:var(--lime);color:var(--green);font-weight:600;font-size:15px}
-.promo-cta svg.i{width:18px;height:18px}
+.promo-x{position:absolute;top:12px;right:12px;z-index:2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:rgba(255,255,255,.85);background:rgba(255,255,255,.1)}
+.promo-x svg.i{width:14px;height:14px}
+.promo h2{font:600 19px/1.25 var(--serif);letter-spacing:-.02em;padding-right:34px}
+.promo h2 em{font-style:italic;color:var(--lime)}
+.how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);margin:14px 0 16px;border-top:1px solid rgba(255,255,255,.14);counter-reset:h}
+.how li{counter-increment:h;padding:10px 8px 0 0;font-size:12.5px;line-height:1.3;color:rgba(255,255,255,.85)}
+.how li+li{padding-left:10px;border-left:1px solid rgba(255,255,255,.14)}
+.how li::before{content:"0" counter(h);display:block;font:600 11px var(--sans);letter-spacing:.08em;color:var(--lime);margin-bottom:3px}
+.promo-cta{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;background:var(--lime);color:var(--green);font-weight:600;font-size:13px}
+.promo-cta svg.i{width:15px;height:15px}
 
 .sec{margin-top:28px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
@@ -93,7 +88,7 @@ main{padding:0 var(--gutter) 190px}
 
 /* azioni rapide */
 .qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:22px}
-.qa button{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:var(--ink-2);line-height:1.2;text-align:center}
+.qa button{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--ink-2);line-height:1.25;text-align:center;padding:0 2px}
 .qa .ic{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}
 .qa .ic svg.i{width:24px;height:24px}
 .qa button:active .ic{transform:scale(.94)}
@@ -102,7 +97,7 @@ main{padding:0 var(--gutter) 190px}
 .card{background:var(--paper);border-radius:24px;padding:4px 16px;box-shadow:0 1px 2px rgba(19,35,28,.04)}
 .act{display:flex;align-items:center;gap:14px;width:100%;padding:13px 0;text-align:left}
 .act+.act{border-top:1px solid var(--line)}
-.ring{width:46px;height:46px;border-radius:50%;padding:2.5px;flex:none;background:conic-gradient(var(--c) calc(var(--p)*1%),#ECEBE6 0)}
+.ring{width:46px;height:46px;border-radius:50%;padding:2.5px;flex:none;background:conic-gradient(var(--c) calc(var(--p)*1%),#E8ECF0 0)}
 .face{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--paper);font:600 13px var(--sans);letter-spacing:.02em}
 .act .tx{flex:1;min-width:0}
 .act b{display:block;font-weight:600;font-size:15px}
@@ -112,19 +107,19 @@ main{padding:0 var(--gutter) 190px}
 /* ---------- dock (composer + tabbar) ---------- */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 14px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
 .dock::before{content:"";position:absolute;inset:-50px 0 0 0;z-index:-1;pointer-events:none;
-  background:linear-gradient(to top,rgba(245,245,242,1) 35%,rgba(245,245,242,.85) 60%,rgba(245,245,242,0));
+  background:linear-gradient(to top,rgba(243,245,247,1) 35%,rgba(243,245,247,.85) 60%,rgba(243,245,247,0));
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   -webkit-mask-image:linear-gradient(to top,#000 55%,transparent);mask-image:linear-gradient(to top,#000 55%,transparent)}
 .dock>*{pointer-events:auto}
 .composer{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,.9);border-radius:30px;box-shadow:0 0 0 1px var(--line),var(--shadow-lg);padding:5px;display:flex;align-items:flex-end;gap:2px;position:relative}
 .composer textarea{flex:1;border:0;background:none;resize:none;outline:none;padding:10px 6px;max-height:120px;font-size:16px;line-height:1.35;min-width:0}
-.composer textarea::placeholder{color:#6D7A72}
+.composer textarea::placeholder{color:#6E7882}
 .cbtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--green);flex:none;transition:background .15s}
 .cbtn:hover{background:rgba(14,59,44,.06)}
-.cbtn.plus{background:#ECE8DE}
+.cbtn.plus{background:#EBEEF2;color:#2A3640}
 .cbtn.cam{background:var(--lime);color:var(--green)}
 .cbtn.send{background:var(--green);color:#fff}
-.cbtn.send:disabled{background:#E4E1D8;color:#7A857E;cursor:default}
+.cbtn.send:disabled{background:#E4E8ED;color:#7B8590;cursor:default}
 .composer.listening textarea{opacity:0}
 .wave{position:absolute;left:54px;right:136px;top:50%;transform:translateY(-50%);display:none;align-items:center;gap:10px;color:var(--green);font-weight:500;font-size:15px}
 .composer.listening .wave{display:flex}
@@ -136,7 +131,7 @@ main{padding:0 var(--gutter) 190px}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(194,65,12,.45)}100%{box-shadow:0 0 0 14px rgba(194,65,12,0)}}
 
 .tabbar{margin:8px auto 0;width:fit-content;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(14,59,44,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
-.tab{height:44px;min-width:56px;padding:0 16px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(245,245,242,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
+.tab{height:44px;min-width:56px;padding:0 16px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(243,245,247,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
 .tab:hover{color:#fff}
 .tab[aria-current="page"]{background:var(--lime);color:var(--green)}
 .tab:not([aria-current="page"]) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -161,7 +156,7 @@ main{padding:0 var(--gutter) 190px}
 .src span{font-size:12px;color:var(--ink-3)}
 .tbl{width:100%;border-collapse:collapse;background:var(--paper);border-radius:16px;overflow:hidden;border:1px solid var(--line);font-size:13.5px}
 .tbl th,.tbl td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
-.tbl th{font-weight:600;background:#FAF8F3;font-size:12px;color:var(--ink-2)}
+.tbl th{font-weight:600;background:#F6F8FA;font-size:12px;color:var(--ink-2)}
 .tbl tr:last-child td{border-bottom:0}
 .tbl .best{color:var(--green-2);font-weight:600}
 .steps{list-style:none;display:grid;gap:8px;counter-reset:s}
@@ -216,7 +211,7 @@ main{padding:0 var(--gutter) 190px}
 .opt span{font-size:12.5px;color:var(--ink-3);margin-top:-8px}
 .scan{display:grid;place-items:center;padding:26px 0 10px;gap:18px;text-align:center}
 .page{width:150px;height:196px;border-radius:14px;background:var(--paper);box-shadow:var(--shadow-lg);position:relative;overflow:hidden;padding:20px 16px;display:flex;flex-direction:column;gap:9px}
-.page i{display:block;height:6px;border-radius:3px;background:#E8E5DC}
+.page i{display:block;height:6px;border-radius:3px;background:#E4E8ED}
 .page i:nth-child(1){width:60%;height:9px;background:#CFE0D4}
 .page i:nth-child(3){width:85%}.page i:nth-child(5){width:70%}.page i:nth-child(7){width:50%}
 .page::after{content:"";position:absolute;left:0;right:0;height:46px;top:-46px;background:linear-gradient(to bottom,rgba(212,238,116,0),rgba(212,238,116,.75));border-bottom:2px solid var(--green-2);animation:scan 1.3s ease-in-out infinite}
@@ -256,7 +251,7 @@ main{padding:0 var(--gutter) 190px}
 .statusbar,.homebar{display:none}
 /* ---------- da computer: telefono vero 390x844 con scroll interno ---------- */
 @media (min-width:520px){
-  body{background:radial-gradient(80% 60% at 50% 30%,#F0F0ED 0%,#DCDCD6 100%);height:100dvh;overflow:hidden}
+  body{background:radial-gradient(80% 60% at 50% 30%,#EEF1F4 0%,#D6DCE2 100%);height:100dvh;overflow:hidden}
   .phone{position:fixed;left:50%;top:50%;width:390px;height:844px;border-radius:54px;overflow:hidden;overflow:clip;background:var(--cream);
     transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
     box-shadow:0 0 0 11px #1A1D1B,0 0 0 13px #3A3F3C,0 40px 90px -20px rgba(14,40,30,.55)}
@@ -315,26 +310,24 @@ main{padding:0 var(--gutter) 190px}
     <header class="topbar">
       <div class="avatar" aria-hidden="true">SA</div>
       <button class="back" id="back" hidden><svg class="i"><use href="#i-left"/></svg>Indietro</button>
-      <div class="logo" aria-label="Navisio AI">NAVISIO<b>.AI</b></div>
       <button class="iconbtn" aria-label="Notifiche, 2 nuove" data-toast="2 novità in libreria per i tuoi mandati"><svg class="i"><use href="#i-bell"/></svg><span class="dot"></span></button>
     </header>
 
     <!-- HOME -->
     <section id="v-home" class="fade-in">
       <div class="hello">
-        <h1>Ciao Sebastiano,<br><em>cosa hai in mente oggi?</em></h1>
+        <h1>Ciao Sebastiano,<em>cosa hai in mente oggi?</em></h1>
       </div>
 
       <aside class="promo" id="promo" aria-labelledby="promo-t">
         <button class="promo-x" data-act="promo-close" aria-label="Chiudi"><svg class="i"><use href="#i-x"/></svg></button>
-        <span class="promo-tag">Come funziona</span>
-        <h2 id="promo-t">Dal foglio alla risposta, <em>in tre mosse.</em></h2>
+        <h2 id="promo-t">Dal foglio alla risposta<br><em>in tre mosse.</em></h2>
         <ol class="how">
-          <li><span class="st"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
-          <li><span class="st"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
-          <li><span class="st"><svg class="i"><use href="#i-check"/></svg><em>3</em></span><b>Tu scegli<br>cosa fare</b></li>
+          <li>Inquadra il documento</li>
+          <li>Navisio lo legge</li>
+          <li>Tu scegli cosa fare</li>
         </ol>
-        <button class="promo-cta" data-act="demo">Prova con un esempio<svg class="i"><use href="#i-right"/></svg></button>
+        <button class="promo-cta" data-act="demo">Prova un esempio<svg class="i"><use href="#i-right"/></svg></button>
       </aside>
 
       <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
@@ -420,10 +413,10 @@ const cases = [
   {tag:'polizza', ini:'OG', who:'Ottica Gallo Srl', kind:'Analisi multirischio', step:'report quasi pronto', prog:85, q:'Cosa copre la multirischio di Ottica Gallo?'}
 ];
 const sugg = [
-  {tag:'confronto', icon:'scale', q:'Confronta', ask:'Confronta i preventivi di un cliente'},
-  {tag:'polizza', icon:'file', q:'Cosa copre', act:'attach'},
-  {tag:'libreria', icon:'book', q:'Libreria', view:'libreria'},
-  {tag:'sinistro', icon:'mail', q:'Rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
+  {tag:'confronto', icon:'scale', q:'Confronta preventivi', ask:'Confronta i preventivi di un cliente'},
+  {tag:'polizza', icon:'file', q:'Copertura polizza', act:'attach'},
+  {tag:'libreria', icon:'book', q:'Libreria prodotti', view:'libreria'},
+  {tag:'sinistro', icon:'mail', q:'Mail di rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
 ];
 const tagStyle = {confronto:['var(--violet-t)','var(--violet)'], sinistro:['var(--orange-t)','var(--orange)'], polizza:['var(--blue-t)','var(--blue)'], libreria:['var(--leaf-t)','var(--leaf)']};
 
