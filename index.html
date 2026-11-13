@@ -442,9 +442,9 @@ const recenti = [
 
 /* ---------- render ---------- */
 function renderHome(){
-  $('#rail').innerHTML = cases.map(c=>{const [bg,fg]=tagStyle[c.tag];return `
+  $('#rail').innerHTML = cases.map(c=>{return `
     <button class="act" data-ask="${c.q}">
-      <span class="ring" style="--c:${fg};--p:${c.prog}" role="img" aria-label="${c.prog}% completato"><span class="face" style="background:${bg};color:${fg}">${c.ini}</span></span>
+      <span class="ring" style="--c:var(--green-2);--p:${c.prog}" role="img" aria-label="${c.prog}% completato"><span class="face" style="background:var(--leaf-t);color:var(--green)">${c.ini}</span></span>
       <span class="tx"><b>${c.who}</b><small>${c.kind}</small></span>
       <span class="pc">${c.prog}%</span>
     </button>`}).join('');
