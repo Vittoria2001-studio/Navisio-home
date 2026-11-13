@@ -255,7 +255,7 @@ main{padding:0 var(--gutter) 190px}
 .fade-in{animation:fi .35s ease both}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ---------- flusso: Confronta preventivi ---------- */
+/* ---------- flusso: Confronta documenti ---------- */
 .flow{--t:var(--green);--t-t:var(--leaf-t);position:fixed;inset:0;z-index:30;background:var(--cream);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .38s cubic-bezier(.2,.8,.2,1);visibility:hidden}
 .flow.on{transform:none;visibility:visible}
 .flow-open .dock{opacity:0;pointer-events:none;transition:opacity .2s}
@@ -567,7 +567,7 @@ main{padding:0 var(--gutter) 190px}
     </nav>
   </div>
 
-<section class="flow" id="flow" hidden aria-label="Confronta preventivi"></section>
+<section class="flow" id="flow" hidden aria-label="Confronta documenti"></section>
 <div class="scrim" id="scrim" hidden></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
   <div class="grab"></div>
@@ -593,7 +593,7 @@ const cases = [
   {tag:'polizza', ini:'OG', who:'Ottica Gallo Srl', kind:'Analisi multirischio', step:'report quasi pronto', prog:85, q:'Cosa copre la multirischio di Ottica Gallo?'}
 ];
 const sugg = [
-  {tag:'confronto', icon:'scale', q:'Confronta preventivi', act:'confronto'},
+  {tag:'confronto', icon:'scale', q:'Confronta documenti', act:'confronto'},
   {tag:'polizza', icon:'file', q:'Copertura polizza', act:'attach'},
   {tag:'libreria', icon:'book', q:'Libreria prodotti', view:'libreria'},
   {tag:'sinistro', icon:'mail', q:'Mail di rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
@@ -837,7 +837,7 @@ document.addEventListener('keydown',e=>{
 function fit(){ const s=Math.min(1,(innerHeight-48)/868,(innerWidth-40)/414); document.getElementById('phone').style.setProperty('--s',s); }
 addEventListener('resize',fit); fit();
 const now=new Date(); $('#clock').textContent = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
-/* ---------- flusso: Confronta preventivi ---------- */
+/* ---------- flusso: Confronta documenti ---------- */
 const CO = {
   al:{name:'Allianz', color:'#123E7C', ini:'A', premio:612, file:'Preventivo_Allianz_RCA.pdf', pages:6, prod:'RC Auto Base'},
   ge:{name:'Generali', color:'#B4231E', ini:'G', premio:548, file:'Preventivo_Generali_RCA.pdf', pages:8, prod:'Auto Facile', mine:true},
@@ -872,7 +872,7 @@ function flClose(){
 function flGo(step){ FL.step=step; flRender(); $('#fl-scroll').scrollTop=0; }
 
 const STEPS = {docs:1, lib:1, voci:2, wait:3, res:3};
-function flHead({back=true, kicker='Confronta preventivi', title, sub, sm}){
+function flHead({back=true, kicker='Confronta documenti', title, sub, sm}){
   const n = STEPS[FL.step]||0;
   return `<div class="fl-head">
     <div class="fl-top">
@@ -891,8 +891,8 @@ function flRender(){
   let h='', foot='';
   const s=FL.step;
   if(s==='start'){
-    h = flHead({back:false, title:'Cosa vuoi confrontare?', sub:'Trova le differenze tra più offerte, voce per voce, con le fonti.'}) + `<div class="fl-body">
-      <button class="fl-opt main" data-fl="path-docs"><span class="ic">${ic('camera')}</span><span class="tx"><b>Ho i preventivi<span class="fl-pill">Più veloce</span></b><span>Fotografa o carica i documenti del cliente</span></span><span class="go">${ic('right')}</span></button>
+    h = flHead({back:false, title:'Cosa vuoi confrontare?', sub:'Preventivi, polizze o set informativi: trova le differenze voce per voce, con le fonti.'}) + `<div class="fl-body">
+      <button class="fl-opt main" data-fl="path-docs"><span class="ic">${ic('camera')}</span><span class="tx"><b>Ho i documenti<span class="fl-pill">Più veloce</span></b><span>Fotografa o carica i documenti del cliente</span></span><span class="go">${ic('right')}</span></button>
       <button class="fl-opt" data-fl="path-lib"><span class="ic">${ic('book')}</span><span class="tx"><b>Scelgo dalla libreria</b><span>Confronta i prodotti delle tue compagnie</span></span><span class="go">${ic('right')}</span></button>
       <div class="fl-label">Confronti recenti</div>
       <button class="fl-recent" data-ask="Confronta i preventivi casa della famiglia Bianchi"><span class="ic">${ic('scale')}</span><span class="tx"><b>Famiglia Bianchi · Casa</b><span>2 di 3 preventivi · ieri</span></span>${ic('right')}</button>
@@ -900,12 +900,12 @@ function flRender(){
   }
   if(s==='docs'){
     const ready = FL.docs.filter(d=>d.ok).length;
-    h = flHead({title:'Aggiungi i preventivi', sub:'Navisio li legge e riconosce compagnia, ramo e premio.'}) + `<div class="fl-body">
+    h = flHead({title:'Aggiungi i documenti', sub:'Navisio li legge e riconosce compagnia, ramo e premio.'}) + `<div class="fl-body">
       <div class="fl-add">
         <button class="pri" data-fl="add">${ic('camera')}Fotografa</button>
         <button data-fl="add">${ic('upload')}Carica file</button>
       </div>
-      ${FL.docs.length?'':`<button class="fl-demo" data-fl="demo">Usa 3 preventivi di esempio</button>`}
+      ${FL.docs.length?'':`<button class="fl-demo" data-fl="demo">Usa 3 documenti di esempio</button>`}
       ${FL.docs.length?`<div class="fl-label">Documenti <span>${FL.docs.length} di 5</span></div>
       <div class="fl-docs">${FL.docs.map((d,i)=>{const nw=d.fresh; d.fresh=false; return `<div class="fl-doc${nw?' new':''}">
         <span class="fl-thumb${d.ok?'':' reading'}"><i></i><i></i><i></i><i></i></span>
@@ -919,7 +919,7 @@ function flRender(){
         <div>${ic('user')}<span>Cliente</span><b>Marco Ferri</b><button data-toast="Qui scegli un'altra pratica">Cambia</button></div>
       </div>`:''}
     </div>`;
-    foot = `${ready<2?`<p class="fl-hint">Aggiungi almeno 2 preventivi</p>`:''}<button class="fl-cta" data-fl="to-voci" ${ready<2?'disabled':''}>Continua${ic('right')}</button>`;
+    foot = `${ready<2?`<p class="fl-hint">Aggiungi almeno 2 documenti</p>`:''}<button class="fl-cta" data-fl="to-voci" ${ready<2?'disabled':''}>Continua${ic('right')}</button>`;
   }
   if(s==='lib'){
     h = flHead({title:'Scegli dalla libreria', sub:'Parti dal ramo: ti mostriamo i prodotti delle tue compagnie.'}) + `<div class="fl-body">
@@ -938,12 +938,12 @@ function flRender(){
       <div class="fl-list">${VOCI.map(v=>`<button class="fl-row" role="switch" aria-checked="${v.sel}" data-fl="voce" data-id="${v.id}"><span class="tx"><b>${v.lb}</b><span>${v.sub}</span></span><span class="fl-sw"></span></button>`).join('')}</div>
       <div class="fl-list" style="margin-top:10px"><button class="fl-row" role="switch" aria-checked="${FL.saveStd}" data-fl="std"><span class="tx"><b>Usa sempre queste voci</b><span>Per i prossimi confronti RC Auto</span></span><span class="fl-sw"></span></button></div>
     </div>`;
-    foot = `<button class="fl-cta" data-fl="run" ${n?'':'disabled'}>Confronta ${FL.path==='lib'?FL.picks.size+' prodotti':FL.docs.length+' preventivi'}${ic('right')}</button>`;
+    foot = `<button class="fl-cta" data-fl="run" ${n?'':'disabled'}>Confronta ${FL.path==='lib'?FL.picks.size+' prodotti':FL.docs.length+' documenti'}${ic('right')}</button>`;
   }
   if(s==='wait'){
     h = flHead({title:'Sto confrontando…', sub:'Leggo ogni documento e allineo le voci che hai scelto.', sm:true}) + `<div class="fl-body"><div class="fl-wait">
       <div class="fl-stack" aria-hidden="true">${[0,1,2].map(()=>`<span class="fl-thumb reading"><i></i><i></i><i></i><i></i><i></i></span>`).join('')}</div>
-      <ol class="fl-prog" id="fl-prog">${['Leggo condizioni e preventivi','Allineo garanzie e massimali','Verifico ogni valore con la sua fonte'].map((t,i)=>`<li class="${i?'':'run'}"><span class="d">${ic('check')}</span>${t}</li>`).join('')}</ol>
+      <ol class="fl-prog" id="fl-prog">${['Leggo i documenti','Allineo garanzie e massimali','Verifico ogni valore con la sua fonte'].map((t,i)=>`<li class="${i?'':'run'}"><span class="d">${ic('check')}</span>${t}</li>`).join('')}</ol>
     </div></div>`;
   }
   if(s==='res'){
@@ -973,7 +973,7 @@ function flRender(){
 
 function flAddDoc(){
   const next = ['al','ge','rm'].find(id=>!FL.docs.some(d=>d.id===id));
-  if(!next){ toast('Puoi confrontare fino a 5 preventivi'); return; }
+  if(!next){ toast('Puoi confrontare fino a 5 documenti'); return; }
   const d={id:next, ok:false, fresh:true}; FL.docs.push(d); flRender();
   setTimeout(()=>{ d.ok=true; if(FL.step==='docs') flRender(); }, 1100);
 }
