@@ -56,21 +56,41 @@ main{padding:0 var(--gutter) 190px}
 .back{display:flex;align-items:center;gap:6px;font-weight:500;color:var(--green);padding:8px 10px 8px 4px}
 
 /* ---------- home ---------- */
-.hello{padding:18px 0 4px}
+.hello{padding:18px 0 20px}
 .hello h1{font:500 34px/1.08 var(--serif);letter-spacing:-.015em;font-variation-settings:"opsz" 96}
 .hello h1 em{font-style:italic;font-weight:400;color:var(--green-2)}
-.hello p{margin-top:12px;color:var(--ink-2);font-size:15px;line-height:1.45}
-.try{color:var(--green);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--lime);text-decoration-thickness:2px;white-space:nowrap}
+.promo{position:relative;display:flex;align-items:center;gap:8px;background:var(--green);color:#fff;border-radius:30px;padding:22px 18px 22px 22px;overflow:hidden;box-shadow:0 20px 40px -24px rgba(14,59,44,.7);transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:260px}
+.promo.gone{opacity:0;transform:scale(.96);max-height:0;padding-top:0;padding-bottom:0;margin:0}
+.promo::before{content:"";position:absolute;right:-60px;bottom:-80px;width:220px;height:220px;border-radius:50%;background:var(--green-2)}
+.promo-tx{position:relative;flex:1;min-width:0}
+.promo-tag{display:inline-block;font:600 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;background:var(--lime);color:var(--green);padding:5px 10px;border-radius:99px}
+.promo h2{font:500 23px/1.12 var(--serif);letter-spacing:-.01em;margin:12px 0 16px}
+.promo h2 em{font-style:italic;font-weight:400;color:var(--lime)}
+.promo-cta{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:99px;background:#fff;color:var(--green);font-weight:600;font-size:14px}
+.promo-cta svg.i{width:16px;height:16px}
+.promo-x{position:absolute;top:12px;right:12px;z-index:2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.12)}
+.promo-x svg.i{width:16px;height:16px}
+.promo-art{position:relative;width:96px;height:118px;flex:none;margin-top:18px}
+.sheet-ill{position:absolute;inset:14px 16px;background:#FBFAF6;border-radius:6px;transform:rotate(-6deg);padding:12px 9px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 20px -8px rgba(0,0,0,.4)}
+.sheet-ill i{display:block;height:4px;border-radius:2px;background:#D9D5CA}
+.sheet-ill i:first-child{width:60%;height:6px;background:var(--green)}
+.sheet-ill i:nth-child(3){width:80%}
+.sheet-ill b{margin-top:auto;height:12px;width:55%;border-radius:3px;background:var(--lime)}
+.vf{position:absolute;width:20px;height:20px;border:3px solid var(--lime)}
+.vf.tl{top:0;left:0;border-right:0;border-bottom:0;border-radius:8px 0 0 0}
+.vf.tr{top:0;right:0;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
+.vf.bl{bottom:0;left:0;border-right:0;border-top:0;border-radius:0 0 0 8px}
+.vf.br{bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 8px 0}
 
-.sec{margin-top:26px}
+.sec{margin-top:28px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
-.sec-h h2{font:500 21px var(--serif);letter-spacing:-.005em}
+.sec-h h2{font:600 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .sec-h a,.sec-h button{font-size:13px;font-weight:500;color:var(--green-2)}
 
 /* riprendi */
 .rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gutter)*-1);padding:2px var(--gutter) 10px;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
-.case{flex:0 0 78%;scroll-snap-align:start;background:var(--paper);border-radius:22px;padding:16px;box-shadow:var(--shadow);text-align:left;display:flex;flex-direction:column;gap:10px;border:1px solid var(--line)}
+.case{flex:0 0 66%;scroll-snap-align:start;background:var(--paper);border-radius:22px;padding:16px;box-shadow:var(--shadow);text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:12px;border:1px solid var(--line)}
 .case .top{display:flex;align-items:center;justify-content:space-between}
 .tag{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border-radius:99px}
 .tag svg.i{width:14px;height:14px}
@@ -81,7 +101,7 @@ main{padding:0 var(--gutter) 190px}
 .case time{font-size:12px;color:var(--ink-3)}
 .case h3{font:500 18px/1.2 var(--serif)}
 .case .who{font-size:13px;color:var(--ink-3)}
-.bar{height:6px;border-radius:9px;background:#EEEBE3;overflow:hidden}
+.bar{align-self:stretch;height:6px;border-radius:9px;background:#EEEBE3;overflow:hidden}
 .bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--green-2),#58A37E)}
 .case .foot{display:flex;justify-content:space-between;align-items:center;font-size:13px}
 .case .foot span{color:var(--ink-2)}
@@ -90,13 +110,13 @@ main{padding:0 var(--gutter) 190px}
 
 /* suggerimenti */
 .sugg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.sg{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:var(--paper);border-radius:22px;padding:14px 14px 16px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease;min-height:150px}
+.sg{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:var(--paper);border-radius:22px;padding:14px 14px 16px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease;min-height:124px}
 .sg:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
 .sg:active{transform:scale(.98)}
 .sg .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;margin-bottom:auto}
 .sg .go{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#F4F1EA;color:var(--ink-3)}
 .sg .go svg.i{width:15px;height:15px}
-.sg q{display:block;font:500 16px/1.25 var(--serif);quotes:none;color:var(--ink);margin-top:18px}
+.sg q{display:block;font:500 17px/1.22 var(--serif);quotes:none;color:var(--ink);margin-top:16px}
 .sg small{display:block;margin-top:5px;font-size:12px;line-height:1.35;color:var(--ink-3)}
 
 /* ---------- dock (composer + tabbar) ---------- */
@@ -137,7 +157,7 @@ main{padding:0 var(--gutter) 190px}
 .me .att{display:flex;align-items:center;gap:8px;font-size:13px;opacity:.85;margin-bottom:6px}
 .ai{display:flex;flex-direction:column;gap:12px}
 .ai .who{display:flex;align-items:center;gap:8px;font:600 12px var(--sans);letter-spacing:.12em;color:var(--green-2);text-transform:uppercase}
-.ai .mark{width:26px;height:26px;border-radius:9px;background:var(--green);color:var(--lime);display:grid;place-items:center}
+.ai .mark{width:26px;height:26px;border-radius:50%;background:var(--green);color:var(--lime);display:grid;place-items:center;font:500 15px var(--serif);letter-spacing:0}
 .ai .mark svg.i{width:15px;height:15px}
 .ai .body{font-size:16px;line-height:1.55}
 .ai .body p+p{margin-top:10px}
@@ -312,12 +332,24 @@ main{padding:0 var(--gutter) 190px}
     <!-- HOME -->
     <section id="v-home" class="fade-in">
       <div class="hello">
-        <h1>Ciao Sebastiano, <em>cosa hai in mano oggi?</em></h1>
-        <p>Scrivi, detta o fotografa un documento: al resto pensa Navisio. <button class="try" data-act="demo">Prova un esempio</button></p>
+        <h1>Ciao Sebastiano,<br><em>cosa hai in mano oggi?</em></h1>
       </div>
 
+      <aside class="promo" id="promo" aria-label="Novità">
+        <button class="promo-x" data-act="promo-close" aria-label="Chiudi"><svg class="i"><use href="#i-x"/></svg></button>
+        <div class="promo-tx">
+          <span class="promo-tag">Nuovo</span>
+          <h2>Inquadra il documento.<br><em>Navisio fa il resto.</em></h2>
+          <button class="promo-cta" data-act="demo">Prova ora<svg class="i"><use href="#i-right"/></svg></button>
+        </div>
+        <div class="promo-art" aria-hidden="true">
+          <div class="sheet-ill"><i></i><i></i><i></i><i></i><b></b></div>
+          <span class="vf tl"></span><span class="vf tr"></span><span class="vf bl"></span><span class="vf br"></span>
+        </div>
+      </aside>
+
       <div class="sec">
-        <div class="sec-h"><h2>Riprendi da dove eri</h2><button data-view="pratiche">Tutte</button></div>
+        <div class="sec-h"><h2>Riprendi</h2><button data-view="pratiche">Tutte</button></div>
         <div class="rail" id="rail"></div>
       </div>
 
@@ -398,7 +430,7 @@ const ic = (n, cls='i') => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 /* ---------- dati di esempio ---------- */
 const cases = [
   {tag:'confronto', icon:'scale', label:'Confronto', title:'Polizza casa', who:'Famiglia Bianchi', time:'ieri', prog:66, step:'2 preventivi su 3', q:'Confronta i preventivi casa della famiglia Bianchi'},
-  {tag:'sinistro', icon:'shield', label:'Sinistro', title:'RC auto · tamponamento', who:'Marco Ferri', time:'2 g fa', prog:40, step:'Mancano 2 documenti', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
+  {tag:'sinistro', icon:'shield', label:'Sinistro', title:'RC auto', who:'Marco Ferri', time:'2 g fa', prog:40, step:'Mancano 2 documenti', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
   {tag:'polizza', icon:'file', label:'Analisi', title:'Multirischio negozio', who:'Ottica Gallo Srl', time:'lun', prog:85, step:'Report quasi pronto', q:'Cosa copre la multirischio di Ottica Gallo?'}
 ];
 const sugg = [
@@ -428,16 +460,14 @@ const recenti = [
 function renderHome(){
   $('#rail').innerHTML = cases.map((c,i)=>`
     <button class="case" data-ask="${c.q}">
-      <div class="top"><span class="tag t-${c.tag}">${ic(c.icon)}${c.label}</span><time>${c.time}</time></div>
+      <span class="tag t-${c.tag}">${ic(c.icon)}${c.label}</span>
       <div><h3>${c.title}</h3><div class="who">${c.who}</div></div>
       <div class="bar" role="progressbar" aria-label="Avanzamento" aria-valuenow="${c.prog}" aria-valuemin="0" aria-valuemax="100"><i style="width:${c.prog}%"></i></div>
-      <div class="foot"><span>${c.step}</span><b>Riprendi${ic('right')}</b></div>
     </button>`).join('');
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
     <button class="sg" ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}>
       <span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>
-      <span class="go">${ic('right')}</span>
-      <q>${x.q}</q><small>${x.sub}</small>
+      <q>${x.q}</q>
     </button>`}).join('');
   $('#plist').innerHTML = pratiche.map(p=>{const [bg,fg]=tagStyle[p[4]];return `
     <button class="row" data-ask="Riassumi la pratica di ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
@@ -505,7 +535,7 @@ function scan(name){
         <div><b>Allianz · RC Auto</b><span>6 pagine · premio 612 € · cliente: Marco Ferri?</span></div>
       </div>
       <div class="next fade-in">
-        <button class="first" data-ask="Cosa copre questo preventivo RC Auto?" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic">${ic('spark')}</span>Spiegami cosa copre<span class="go">${ic('right')}</span></button>
+        <button class="first" data-ask="Cosa copre questo preventivo RC Auto?" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic">${ic('file')}</span>Spiegami cosa copre<span class="go">${ic('right')}</span></button>
         <button data-ask="Confronta questo preventivo con altri della libreria" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('scale')}</span>Confrontalo con altre compagnie<span class="go">${ic('right')}</span></button>
         <button data-act="scheda"><span class="ic" style="background:var(--sand);color:var(--sand-ink)">${ic('user')}</span>Prepara la scheda per il cliente<span class="go">${ic('right')}</span></button>
         <button data-toast="Aggiunto alla pratica di Marco Ferri"><span class="ic" style="background:var(--sky);color:var(--sky-ink)">${ic('folder')}</span>Aggiungi alla pratica Ferri<span class="go">${ic('right')}</span></button>
@@ -581,12 +611,12 @@ function ask(q, doc){
   $('#thread').append(me);
   const ai = document.createElement('div');
   ai.className='ai fade-in';
-  ai.innerHTML = `<div class="who"><span class="mark">${ic('spark')}</span>Navisio</div><div class="typing" aria-label="Navisio sta scrivendo"><i></i><i></i><i></i></div>`;
+  ai.innerHTML = `<div class="who"><span class="mark">N</span>Navisio</div><div class="typing" aria-label="Navisio sta scrivendo"><i></i><i></i><i></i></div>`;
   $('#thread').append(ai);
   ai.scrollIntoView({behavior:'smooth',block:'end'});
   setTimeout(()=>{
     const ans = answerFor(q);
-    ai.innerHTML = `<div class="who"><span class="mark">${ic('spark')}</span>Navisio</div>
+    ai.innerHTML = `<div class="who"><span class="mark">N</span>Navisio</div>
       <div class="body">${ans.html}</div>
       <div class="src" aria-label="Fonti">${ans.src.map((x,i)=>`<button data-toast="Apro ${x[0]} · ${x[1]}"><span class="n">${i+1}</span><span><b>${x[0]}</b><span>${x[1]}</span></span></button>`).join('')}</div>
       <div class="acts">
@@ -628,6 +658,7 @@ document.addEventListener('click',e=>{
     case 'camera': closeSheetIfOpen(); $('#f-cam').click(); break;
     case 'upload': closeSheetIfOpen(); $('#f-doc').click(); break;
     case 'demo': scan('Preventivo RC Auto.pdf'); break;
+    case 'promo-close': $('#promo').classList.add('gone'); setTimeout(()=>$('#promo').hidden=true,320); break;
     case 'attach': attachSheet(); break;
     case 'mic': mic(); break;
     case 'close': closeSheet(); break;
