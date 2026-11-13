@@ -61,7 +61,7 @@ main{padding:0 var(--gutter) 190px}
 .back{display:flex;align-items:center;gap:6px;font-weight:500;color:var(--green);padding:8px 10px 8px 4px}
 
 /* ---------- home ---------- */
-.hello{padding:18px 0 20px}
+.hello{padding:18px 0 16px}
 .hello h1{font:700 31px/1.02 var(--serif);letter-spacing:-.03em;color:var(--green)}
 .hello h1 em{font-style:italic;font-weight:500;font-size:25px;line-height:1.1;letter-spacing:-.025em;color:#4C8C6A}
 .promo{position:relative;color:#fff;border-radius:24px;padding:16px 18px 16px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px;
@@ -92,7 +92,8 @@ main{padding:0 var(--gutter) 190px}
 .sec-h a,.sec-h button{font-size:14px;font-weight:600;color:var(--green-2)}
 
 /* azioni rapide */
-.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:24px}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:22px}
+.promo[hidden]+.qa{margin-top:6px}
 .qa button{display:flex;flex-direction:column;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.25;text-align:center;padding:0 2px}
 .qa .ic{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;transition:transform .15s;box-shadow:0 6px 14px -8px rgba(20,30,40,.25)}
 .qa .ic svg.i{width:26px;height:26px;stroke-width:1.9}
@@ -321,7 +322,7 @@ main{padding:0 var(--gutter) 190px}
     <!-- HOME -->
     <section id="v-home" class="fade-in">
       <div class="hello">
-        <h1>Ciao Sebastiano,<br><em>cosa hai in mano oggi?</em></h1>
+        <h1>Ciao Sebastiano,<br><em>come posso aiutarti?</em></h1>
       </div>
 
       <aside class="promo" id="promo" aria-labelledby="promo-t">
