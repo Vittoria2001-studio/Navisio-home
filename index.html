@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F4F1EA">
+<meta name="theme-color" content="#F5F5F2">
 <meta name="description" content="Navisio AI: proposta di redesign della home. Mostra un documento, Navisio capisce cosa fare.">
 <title>Navisio AI · Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,17 +11,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cream:#F4F1EA;
+  --cream:#F5F5F2;
   --paper:#FFFFFF;
   --ink:#13231C;
   --ink-2:#44544B;
   --ink-3:#5B6961;
   --green:#0E3B2C;
   --green-2:#1D5A42;
-  --lime:#D4FF3A;
-  --violet:#6C4DFF;
-  --orange:#FF5A1F;
-  --blue:#1F6BFF;
+  --lime:#DDF2B8;
+  --violet:#5B3FD9;--violet-t:#EEEAFE;
+  --orange:#C2410C;--orange-t:#FFEDE3;
+  --blue:#1D5FD1;--blue-t:#E6EFFE;
+  --leaf:#1B7A45;--leaf-t:#E3F3E8;
   --mint:#DDEBE0;
   --sand:#F1E4C8;
   --sand-ink:#6A4A10;
@@ -50,7 +51,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;str
 .app{min-height:100dvh}
 main{padding:0 var(--gutter) 190px}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(244,241,234,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(245,245,242,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
 .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font:600 14px var(--sans);letter-spacing:.04em}
 .logo{font:500 19px var(--serif);letter-spacing:.24em;color:var(--green)}
 .logo b{font-weight:500;color:var(--green-2)}
@@ -62,53 +63,55 @@ main{padding:0 var(--gutter) 190px}
 .hello{padding:18px 0 20px}
 .hello h1{font:500 34px/1.08 var(--serif);letter-spacing:-.015em;font-variation-settings:"opsz" 96}
 .hello h1 em{font-style:italic;font-weight:400;color:var(--green-2)}
-.promo{position:relative;background:var(--green);color:#fff;border-radius:30px;padding:22px 20px 20px;overflow:hidden;box-shadow:0 24px 44px -26px rgba(14,59,44,.8);transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px}
+.promo{position:relative;color:#fff;border-radius:28px;padding:22px 20px 20px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px;
+  background:
+    radial-gradient(90% 80% at 100% 0%,rgba(178,226,150,.75) 0%,rgba(178,226,150,0) 60%),
+    radial-gradient(70% 70% at 0% 100%,rgba(16,58,44,.9) 0%,rgba(16,58,44,0) 70%),
+    linear-gradient(155deg,#1B5641 0%,#2D7556 55%,#5E9C73 100%);
+  box-shadow:0 18px 40px -24px rgba(14,59,44,.55)}
 .promo.gone{opacity:0;transform:scale(.96);max-height:0;padding-top:0;padding-bottom:0;margin:0}
-.promo-x{position:absolute;top:14px;right:14px;z-index:2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.12)}
+.promo-x{position:absolute;top:14px;right:14px;z-index:2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.18)}
 .promo-x svg.i{width:16px;height:16px}
-.promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
-.promo h2{font:500 24px/1.1 var(--serif);letter-spacing:-.01em;margin:8px 0 20px;padding-right:30px}
+.promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.promo h2{font:500 24px/1.12 var(--serif);letter-spacing:-.01em;margin:8px 0 20px;padding-right:30px}
 .promo h2 em{font-style:italic;font-weight:400;color:var(--lime)}
 .how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:20px}
-.how::before{content:"";position:absolute;top:26px;left:16%;right:16%;border-top:2px dashed rgba(255,255,255,.28)}
+.how::before{content:"";position:absolute;top:26px;left:17%;right:17%;border-top:1.5px dashed rgba(255,255,255,.45)}
 .how li{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;position:relative}
-.how .st{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 0 5px var(--green)}
-.how .st svg.i{width:24px;height:24px}
-.how .st em{position:absolute;top:-4px;right:-6px;width:21px;height:21px;border-radius:50%;background:#fff;color:var(--green);font:600 11px/21px var(--sans);font-style:normal;text-align:center}
-.how b{font-weight:600;font-size:13.5px;line-height:1.2}
-.promo-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:99px;background:var(--lime);color:var(--green);font-weight:600;font-size:15px}
+.how .st{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.how .st svg.i{width:23px;height:23px}
+.how .st em{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--green);font:600 11px/20px var(--sans);font-style:normal;text-align:center}
+.how b{font-weight:600;font-size:13px;line-height:1.25}
+.promo-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:99px;background:#fff;color:var(--green);font-weight:600;font-size:15px}
 .promo-cta svg.i{width:18px;height:18px}
 
 .sec{margin-top:28px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
-.sec-h h2{font:600 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.sec-h a,.sec-h button{font-size:13px;font-weight:500;color:var(--green-2)}
+.sec-h h2{font:600 18px var(--sans);letter-spacing:-.01em;color:var(--ink)}
+.sec-h a,.sec-h button{font-size:14px;font-weight:600;color:var(--green-2)}
 
-/* attività: anelli di avanzamento */
-.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);margin:0 calc(var(--gutter)*-1);padding:4px var(--gutter) 6px;scrollbar-width:none}
-.rail::-webkit-scrollbar{display:none}
-.story{flex:none;width:76px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
-.ring{width:72px;height:72px;border-radius:50%;padding:3.5px;position:relative;background:conic-gradient(var(--c) calc(var(--p)*1%),rgba(19,35,28,.12) 0)}
-.face{width:100%;height:100%;border-radius:50%;background:var(--paper);border:3px solid var(--cream);display:grid;place-items:center;font:500 21px var(--serif);color:var(--ink)}
-.badge{position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--cream)}
-.badge svg.i{width:13px;height:13px;stroke-width:2.2}
-.story b{font-weight:600;font-size:12.5px;line-height:1.2;max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.story small{font-size:11.5px;color:var(--ink-3);margin-top:-5px}
-.story.add .ring{background:none;border:2px dashed rgba(19,35,28,.25);padding:0}
-.story.add .face{border:0;background:transparent;color:var(--green)}
-.story.add .face svg.i{width:26px;height:26px}
+/* azioni rapide */
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:22px}
+.qa button{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:var(--ink-2);line-height:1.2;text-align:center}
+.qa .ic{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}
+.qa .ic svg.i{width:24px;height:24px}
+.qa button:active .ic{transform:scale(.94)}
 
-/* suggerimenti: pillole */
-.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.chipx{display:flex;align-items:center;gap:9px;height:50px;padding:0 10px 0 6px;text-align:left;line-height:1.15;border-radius:99px;background:var(--paper);border:1px solid var(--line);font-weight:600;font-size:13.5px;color:var(--ink);box-shadow:var(--shadow);transition:transform .15s}
-.chipx:active{transform:scale(.97)}
-.chipx .ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
-.chipx .ic svg.i{width:18px;height:18px}
+/* attività */
+.card{background:var(--paper);border-radius:24px;padding:4px 16px;box-shadow:0 1px 2px rgba(19,35,28,.04)}
+.act{display:flex;align-items:center;gap:14px;width:100%;padding:13px 0;text-align:left}
+.act+.act{border-top:1px solid var(--line)}
+.ring{width:46px;height:46px;border-radius:50%;padding:2.5px;flex:none;background:conic-gradient(var(--c) calc(var(--p)*1%),#ECEBE6 0)}
+.face{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--paper);font:600 13px var(--sans);letter-spacing:.02em}
+.act .tx{flex:1;min-width:0}
+.act b{display:block;font-weight:600;font-size:15px}
+.act small{display:block;font-size:13px;color:var(--ink-3);margin-top:1px}
+.act .pc{font-weight:600;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 
 /* ---------- dock (composer + tabbar) ---------- */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 14px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
 .dock::before{content:"";position:absolute;inset:-50px 0 0 0;z-index:-1;pointer-events:none;
-  background:linear-gradient(to top,rgba(244,241,234,1) 35%,rgba(244,241,234,.85) 60%,rgba(244,241,234,0));
+  background:linear-gradient(to top,rgba(245,245,242,1) 35%,rgba(245,245,242,.85) 60%,rgba(245,245,242,0));
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   -webkit-mask-image:linear-gradient(to top,#000 55%,transparent);mask-image:linear-gradient(to top,#000 55%,transparent)}
 .dock>*{pointer-events:auto}
@@ -118,7 +121,7 @@ main{padding:0 var(--gutter) 190px}
 .cbtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--green);flex:none;transition:background .15s}
 .cbtn:hover{background:rgba(14,59,44,.06)}
 .cbtn.plus{background:#ECE8DE}
-.cbtn.cam{background:var(--lime)}
+.cbtn.cam{background:var(--green);color:#fff}
 .cbtn.send{background:var(--green);color:#fff}
 .cbtn.send:disabled{background:#E4E1D8;color:#7A857E;cursor:default}
 .composer.listening textarea{opacity:0}
@@ -131,10 +134,10 @@ main{padding:0 var(--gutter) 190px}
 .composer.listening .mic{background:#C2410C;color:#fff;animation:pulse 1.4s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(194,65,12,.45)}100%{box-shadow:0 0 0 14px rgba(194,65,12,0)}}
 
-.tabbar{margin:8px auto 0;width:fit-content;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(14,59,44,.94);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
-.tab{height:44px;min-width:56px;padding:0 16px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(244,241,234,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
-.tab:hover{color:#fff}
-.tab[aria-current="page"]{background:var(--lime);color:var(--green)}
+.tabbar{margin:8px auto 0;width:fit-content;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
+.tab{height:44px;min-width:56px;padding:0 16px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:var(--ink-3);font-weight:600;font-size:14px;transition:background .2s,color .2s}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{background:var(--green);color:#fff}
 .tab:not([aria-current="page"]) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- chat ---------- */
@@ -218,7 +221,7 @@ main{padding:0 var(--gutter) 190px}
 .page::after{content:"";position:absolute;left:0;right:0;height:46px;top:-46px;background:linear-gradient(to bottom,rgba(212,238,116,0),rgba(212,238,116,.75));border-bottom:2px solid var(--green-2);animation:scan 1.3s ease-in-out infinite}
 @keyframes scan{0%{top:-46px}100%{top:100%}}
 .found{display:flex;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:18px}
-.found .ic{width:48px;height:58px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center;flex:none}
+.found .ic{width:48px;height:58px;border-radius:10px;background:var(--blue-t);color:var(--blue);display:grid;place-items:center;flex:none}
 .found b{display:block;font:500 17px/1.2 var(--serif)}
 .found span{font-size:13px;color:var(--ink-3)}
 .ok{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--green-2)}
@@ -252,7 +255,7 @@ main{padding:0 var(--gutter) 190px}
 .statusbar,.homebar{display:none}
 /* ---------- da computer: telefono vero 390x844 con scroll interno ---------- */
 @media (min-width:520px){
-  body{background:radial-gradient(80% 60% at 50% 30%,#EFEBE1 0%,#DCD6C8 100%);height:100dvh;overflow:hidden}
+  body{background:radial-gradient(80% 60% at 50% 30%,#F0F0ED 0%,#DCDCD6 100%);height:100dvh;overflow:hidden}
   .phone{position:fixed;left:50%;top:50%;width:390px;height:844px;border-radius:54px;overflow:hidden;overflow:clip;background:var(--cream);
     transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
     box-shadow:0 0 0 11px #1A1D1B,0 0 0 13px #3A3F3C,0 40px 90px -20px rgba(14,40,30,.55)}
@@ -326,21 +329,18 @@ main{padding:0 var(--gutter) 190px}
         <span class="promo-tag">Come funziona</span>
         <h2 id="promo-t">Dal foglio alla risposta, <em>in tre mosse.</em></h2>
         <ol class="how">
-          <li><span class="st" style="background:var(--lime);color:var(--green)"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
-          <li><span class="st" style="background:var(--violet);color:#fff"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
-          <li><span class="st" style="background:var(--orange);color:#fff"><svg class="i"><use href="#i-check"/></svg><em>3</em></span><b>Tu scegli<br>cosa fare</b></li>
+          <li><span class="st"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
+          <li><span class="st"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
+          <li><span class="st"><svg class="i"><use href="#i-check"/></svg><em>3</em></span><b>Tu scegli<br>cosa fare</b></li>
         </ol>
         <button class="promo-cta" data-act="demo">Prova con un esempio<svg class="i"><use href="#i-right"/></svg></button>
       </aside>
 
-      <div class="sec">
-        <div class="sec-h"><h2>Le tue attività</h2><button data-view="pratiche">Tutte</button></div>
-        <div class="rail" id="rail"></div>
-      </div>
+      <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
 
       <div class="sec">
-        <div class="sec-h"><h2>Suggerimenti</h2></div>
-        <div class="chips" id="sugg"></div>
+        <div class="sec-h"><h2>Le tue attività</h2><button data-view="pratiche">Vedi tutte</button></div>
+        <div class="card" id="rail"></div>
       </div>
       <p class="proto">Prototipo di Vittoria Rossetti · dati di esempio</p>
     </section>
@@ -414,19 +414,17 @@ const ic = (n, cls='i') => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 
 /* ---------- dati di esempio ---------- */
 const cases = [
-  {tag:'confronto', icon:'scale', ini:'FB', who:'Bianchi', kind:'Confronto', prog:66, q:'Confronta i preventivi casa della famiglia Bianchi'},
-  {tag:'sinistro', icon:'shield', ini:'MF', who:'Ferri', kind:'Sinistro', prog:40, q:'A che punto è il sinistro RC auto di Marco Ferri?'},
-  {tag:'polizza', icon:'file', ini:'OG', who:'Ottica Gallo', kind:'Analisi', prog:85, q:'Cosa copre la multirischio di Ottica Gallo?'},
-  {tag:'libreria', icon:'mail', ini:'ER', who:'Russo', kind:'Rinnovo', prog:20, q:'Scrivi la mail di rinnovo per Elena Russo'},
-  {tag:'confronto', icon:'scale', ini:'TL', who:'Lanza', kind:'Confronto', prog:55, q:'Confronta i preventivi flotta di Trasporti Lanza'}
+  {tag:'confronto', ini:'FB', who:'Famiglia Bianchi', kind:'Confronto casa', step:'2 di 3 preventivi', prog:66, q:'Confronta i preventivi casa della famiglia Bianchi'},
+  {tag:'sinistro', ini:'MF', who:'Marco Ferri', kind:'Sinistro RC auto', step:'mancano 2 documenti', prog:40, q:'A che punto è il sinistro RC auto di Marco Ferri?'},
+  {tag:'polizza', ini:'OG', who:'Ottica Gallo Srl', kind:'Analisi multirischio', step:'report quasi pronto', prog:85, q:'Cosa copre la multirischio di Ottica Gallo?'}
 ];
 const sugg = [
-  {tag:'confronto', icon:'scale', q:'Confronta preventivi', ask:'Confronta i preventivi di un cliente'},
-  {tag:'polizza', icon:'file', q:'Cosa copre?', act:'attach'},
-  {tag:'libreria', icon:'book', q:'Trova un prodotto', view:'libreria'},
-  {tag:'sinistro', icon:'mail', q:'Mail di rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
+  {tag:'confronto', icon:'scale', q:'Confronta', ask:'Confronta i preventivi di un cliente'},
+  {tag:'polizza', icon:'file', q:'Cosa copre', act:'attach'},
+  {tag:'libreria', icon:'book', q:'Libreria', view:'libreria'},
+  {tag:'sinistro', icon:'mail', q:'Rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
 ];
-const tagStyle = {confronto:['var(--violet)','#fff'], sinistro:['var(--orange)','#fff'], polizza:['var(--blue)','#fff'], libreria:['var(--lime)','var(--green)']};
+const tagStyle = {confronto:['var(--violet-t)','var(--violet)'], sinistro:['var(--orange-t)','var(--orange)'], polizza:['var(--blue-t)','var(--blue)'], libreria:['var(--leaf-t)','var(--leaf)']};
 
 const pratiche = [
   ['FB','Famiglia Bianchi','Casa · confronto in corso','3 doc · ieri','confronto'],
@@ -445,18 +443,18 @@ const recenti = [
 
 /* ---------- render ---------- */
 function renderHome(){
-  $('#rail').innerHTML = `<button class="story add" data-act="attach"><span class="ring"><span class="face"><svg class="i"><use href="#i-plus"/></svg></span></span><b>Nuova</b><small>pratica</small></button>` +
-    cases.map(c=>{const [bg,fg]=tagStyle[c.tag];return `
-    <button class="story" data-ask="${c.q}" aria-label="${c.kind} ${c.who}, ${c.prog}% completato">
-      <span class="ring" style="--c:${bg};--p:${c.prog}"><span class="face">${c.ini}</span><span class="badge" style="background:${bg};color:${fg}">${ic(c.icon)}</span></span>
-      <b>${c.who}</b><small>${c.kind}</small>
+  $('#rail').innerHTML = cases.map(c=>{const [bg,fg]=tagStyle[c.tag];return `
+    <button class="act" data-ask="${c.q}">
+      <span class="ring" style="--c:${fg};--p:${c.prog}" role="img" aria-label="${c.prog}% completato"><span class="face" style="background:${bg};color:${fg}">${c.ini}</span></span>
+      <span class="tx"><b>${c.who}</b><small>${c.kind}</small></span>
+      <span class="pc">${c.prog}%</span>
     </button>`}).join('');
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
-    <button class="chipx" ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
+    <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = pratiche.map(p=>{const [bg,fg]=tagStyle[p[4]];return `
     <button class="row" data-ask="Riassumi la pratica di ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
-  $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--lime);color:var(--green)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
+  $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
 }
 
 /* ---------- navigazione ---------- */
@@ -497,10 +495,10 @@ function attachSheet(){
     <h2 id="sheet-title">Dai un documento a Navisio</h2>
     <p class="sub">Lo legge e ti dice cosa può fare.</p>
     <div class="opts">
-      <button class="opt" data-act="camera"><span class="ic" style="background:var(--lime);color:var(--green)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
+      <button class="opt" data-act="camera"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
       <button class="opt" data-act="upload"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('upload')}</span><b>Carica file</b><span>PDF, foto, fascicoli</span></button>
-      <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue);color:#fff">${ic('folder')}</span><b>Da una pratica</b><span>Documenti dei clienti</span></button>
-      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--lime);color:var(--green)">${ic('book')}</span><b>Dalla libreria</b><span>Prodotti delle compagnie</span></button>
+      <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span><b>Da una pratica</b><span>Documenti dei clienti</span></button>
+      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Dalla libreria</b><span>Prodotti delle compagnie</span></button>
     </div>`);
 }
 
@@ -520,9 +518,9 @@ function scan(name){
       </div>
       <div class="next fade-in">
         <button class="first" data-ask="Cosa copre questo preventivo RC Auto?" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic">${ic('file')}</span>Spiegami cosa copre<span class="go">${ic('right')}</span></button>
-        <button data-ask="Confronta questo preventivo con altri della libreria" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic" style="background:var(--violet);color:#fff">${ic('scale')}</span>Confrontalo con altre compagnie<span class="go">${ic('right')}</span></button>
-        <button data-act="scheda"><span class="ic" style="background:var(--lime);color:var(--green)">${ic('user')}</span>Prepara la scheda per il cliente<span class="go">${ic('right')}</span></button>
-        <button data-toast="Aggiunto alla pratica di Marco Ferri"><span class="ic" style="background:var(--blue);color:#fff">${ic('folder')}</span>Aggiungi alla pratica Ferri<span class="go">${ic('right')}</span></button>
+        <button data-ask="Confronta questo preventivo con altri della libreria" data-doc="${name||'Preventivo RC Auto.pdf'}"><span class="ic" style="background:var(--violet-t);color:var(--violet)">${ic('scale')}</span>Confrontalo con altre compagnie<span class="go">${ic('right')}</span></button>
+        <button data-act="scheda"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('user')}</span>Prepara la scheda per il cliente<span class="go">${ic('right')}</span></button>
+        <button data-toast="Aggiunto alla pratica di Marco Ferri"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span>Aggiungi alla pratica Ferri<span class="go">${ic('right')}</span></button>
       </div>`;
   }, 1900);
 }
