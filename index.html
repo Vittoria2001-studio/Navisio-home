@@ -64,20 +64,25 @@ main{padding:0 var(--gutter) 190px}
 .hello{padding:18px 0 20px}
 .hello h1{font:700 31px/1.15 var(--serif);letter-spacing:-.03em}
 .hello h1 em{display:block;font-style:italic;font-weight:600;font-size:26px;letter-spacing:-.025em;color:var(--green);margin-top:2px}
-.promo{position:relative;color:#fff;border-radius:24px;padding:18px 18px 16px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:300px;
-  background:linear-gradient(120deg,#0E3B2C 0%,#174E3B 60%,#24654C 100%)}
-.promo::before,.promo::after{content:"";position:absolute;z-index:-1;border-radius:50%;border:1px solid rgba(212,238,116,.22)}
-.promo::before{width:220px;height:220px;right:-90px;top:-110px}
-.promo::after{width:150px;height:150px;right:-55px;top:-75px;border-color:rgba(212,238,116,.14)}
+.promo{position:relative;color:#fff;border-radius:24px;padding:16px 18px 16px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px;
+  background:
+    radial-gradient(90% 80% at 100% 0%,rgba(178,226,150,.75) 0%,rgba(178,226,150,0) 60%),
+    radial-gradient(70% 70% at 0% 100%,rgba(16,58,44,.9) 0%,rgba(16,58,44,0) 70%),
+    linear-gradient(155deg,#1B5641 0%,#2D7556 55%,#5E9C73 100%);
+  box-shadow:0 18px 40px -24px rgba(14,59,44,.55)}
 .promo.gone{opacity:0;transform:scale(.96);max-height:0;padding-top:0;padding-bottom:0;margin:0}
-.promo-x{position:absolute;top:12px;right:12px;z-index:2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:rgba(255,255,255,.85);background:rgba(255,255,255,.1)}
+.promo-x{position:absolute;top:12px;right:12px;z-index:2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.18)}
 .promo-x svg.i{width:14px;height:14px}
-.promo h2{font:600 19px/1.25 var(--serif);letter-spacing:-.02em;padding-right:34px}
+.promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.promo h2{font:600 19px/1.25 var(--serif);letter-spacing:-.02em;margin:0 0 14px;padding-right:34px}
 .promo h2 em{font-style:italic;color:var(--lime)}
-.how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);margin:14px 0 16px;border-top:1px solid rgba(255,255,255,.14);counter-reset:h}
-.how li{counter-increment:h;padding:10px 8px 0 0;font-size:12.5px;line-height:1.3;color:rgba(255,255,255,.85)}
-.how li+li{padding-left:10px;border-left:1px solid rgba(255,255,255,.14)}
-.how li::before{content:"0" counter(h);display:block;font:600 11px var(--sans);letter-spacing:.08em;color:var(--lime);margin-bottom:3px}
+.how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:14px}
+.how::before{content:"";position:absolute;top:21px;left:17%;right:17%;border-top:1.5px dashed rgba(255,255,255,.45)}
+.how li{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;position:relative}
+.how .st{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;position:relative;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.how .st svg.i{width:19px;height:19px}
+.how .st em{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:#fff;color:var(--green);font:600 10px/18px var(--sans);font-style:normal;text-align:center}
+.how b{font-weight:600;font-size:12px;line-height:1.25}
 .promo-cta{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;background:var(--lime);color:var(--green);font-weight:600;font-size:13px}
 .promo-cta svg.i{width:15px;height:15px}
 
@@ -323,11 +328,11 @@ main{padding:0 var(--gutter) 190px}
         <button class="promo-x" data-act="promo-close" aria-label="Chiudi"><svg class="i"><use href="#i-x"/></svg></button>
         <h2 id="promo-t">Dal foglio alla risposta<br><em>in tre mosse.</em></h2>
         <ol class="how">
-          <li>Inquadra il documento</li>
-          <li>Navisio lo legge</li>
-          <li>Tu scegli cosa fare</li>
+          <li><span class="st"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
+          <li><span class="st"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
+          <li><span class="st"><svg class="i"><use href="#i-check"/></svg><em>3</em></span><b>Tu scegli<br>cosa fare</b></li>
         </ol>
-        <button class="promo-cta" data-act="demo">Prova un esempio<svg class="i"><use href="#i-right"/></svg></button>
+        <div style="text-align:center"><button class="promo-cta" data-act="demo">Prova un esempio<svg class="i"><use href="#i-right"/></svg></button></div>
       </aside>
 
       <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
