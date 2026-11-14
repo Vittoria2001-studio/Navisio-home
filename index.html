@@ -737,6 +737,9 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act.cl .pz{flex:none;font-size:13px;color:rgba(255,255,255,.72);font-variant-numeric:tabular-nums}
 .act.cl b{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .act.cl svg.star{width:13px;height:13px;color:var(--lime);fill:var(--lime);stroke:var(--lime);flex:none}
+.addbtn{width:auto;height:auto;padding:6px;background:none;border:0;border-radius:10px}
+.addbtn svg.i{width:26px;height:26px;stroke-width:2}
+.cli-sort[aria-pressed="true"]{background:#fff;color:#0E241B;padding:0 12px}
 </style>
 </head>
 <body>
@@ -816,7 +819,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
           <button data-act="clif" data-k="az" aria-pressed="false">Aziende</button>
           <button data-act="clif" data-k="fav" aria-pressed="false"><svg class="i"><use href="#i-star"/></svg>Preferiti</button>
         </div>
-        <button class="cli-sort" data-act="clisort" aria-label="Cambia ordinamento"><svg class="i"><use href="#i-sort"/></svg><span id="cli-sort-l">A–Z</span></button>
+        <button class="cli-sort" data-act="clisort" aria-label="Ordina per premio" aria-pressed="false"><svg class="i"><use href="#i-sort"/></svg><span id="cli-sort-l">Premio</span></button>
       </div>
       <div class="list" id="plist"></div>
     </section>
@@ -952,9 +955,10 @@ function renderClienti(q){
   if(CF.k==='fav') list = list.filter(n=>FAV.has(n));
   const row = n => `<button class="act cl" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}${FAV.has(n)?`<svg class="i star"><use href="#i-star"/></svg>`:''}</b></span><span class="pz">${eur(PREMIO(n))}</span></button>`;
   if(!list.length){ $('#plist').innerHTML = `<p class="empty">Nessun cliente trovato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`; return; }
-  if(CF.sort==='pr'){
-    list = [...list].sort((a,b)=>PREMIO(b)-PREMIO(a));
-    $('#plist').innerHTML = `<div class="az">Premio annuo, dal più alto</div><div class="card cl-card">${list.map(row).join('')}</div>`;
+  if(CF.sort!=='az'){
+    const up = CF.sort==='up';
+    list = [...list].sort((a,b)=> up ? PREMIO(a)-PREMIO(b) : PREMIO(b)-PREMIO(a));
+    $('#plist').innerHTML = `<div class="az">Premio annuo, dal più ${up?'basso':'alto'}</div><div class="card cl-card">${list.map(row).join('')}</div>`;
     return;
   }
   const groups = {};
@@ -1239,7 +1243,7 @@ document.addEventListener('click',e=>{
     case 'cliente': clienteSheet(+t.dataset.i); break;
     case 'cartella': toast('Non fa parte della demo'); break;
     case 'clif': CF.k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); renderClienti(); break;
-    case 'clisort': CF.sort = CF.sort==='az'?'pr':'az'; $('#cli-sort-l').textContent = CF.sort==='az'?'A–Z':'Premio'; renderClienti(); break;
+    case 'clisort': CF.sort = {az:'pr', pr:'up', up:'az'}[CF.sort]; t.setAttribute('aria-pressed', CF.sort!=='az'); t.dataset.dir = CF.sort; renderClienti(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
