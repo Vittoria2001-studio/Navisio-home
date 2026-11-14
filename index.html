@@ -692,8 +692,6 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act+.act{border-top-color:rgba(255,255,255,.08)}
 .qa{margin-top:16px}
 .qa+.sec{margin-top:30px}
-.act.folder{padding:15px 0}
-.act.folder b{font-size:16px}
 .act .face svg.i,.act .go svg.i{width:19px;height:19px}
 .cl-acts{display:flex;gap:8px;flex-wrap:wrap}
 .cl-btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 15px;border-radius:99px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;font-weight:600;font-size:13.5px}
@@ -909,7 +907,7 @@ function openCliente(i){
   $('#cl-name').textContent = p[1];
   $('#cl-ask').dataset.ask = 'Riassumi la situazione di '+p[1];
   $('#cl-risk').dataset.toast = 'Risk Analysis per '+p[1]+': nel prototipo si ferma qui';
-  $('#cl-docs').innerHTML = (CDOCS[i]||[]).map(d=>`<button class="act" data-ask="Riassumi: ${d[0]} di ${p[1]}"><span class="face">${ic('file')}</span><span class="tx"><b>${d[0]}</b><small>${d[1]}</small></span><span class="go">${ic('right')}</span></button>`).join('');
+  $('#cl-docs').innerHTML = (CDOCS[i]||[]).map(d=>`<button class="act" data-ask="Riassumi: ${d[0]} di ${p[1]}"><span class="face">${ic('file')}</span><span class="tx"><b>${d[0]}</b><small>${d[1]}</small></span></button>`).join('');
   const w = cases.filter(c=>c.who===p[1]);
   $('#cl-work-sec').hidden = !w.length;
   $('#cl-work').innerHTML = w.map(c=>`<button class="act" data-ask="${c.q}"><span class="face">${ic('clock')}</span><span class="tx"><b>${c.kind}</b><small>${c.st}</small></span><span class="when">${c.when}</span></button>`).join('');
@@ -962,7 +960,7 @@ function renderHome(){
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = `<div class="card">${pratiche.map((p,i)=>`
-    <button class="act folder" data-act="cartella" data-i="${i}"><span class="face">${ic('folder')}</span><span class="tx"><b>${p[1]}</b></span><span class="go">${ic('right')}</span></button>`).join('')}</div>`;
+    <button class="act" data-act="cartella" data-i="${i}"><span class="face">${ic('user')}</span><span class="tx"><b>${p[1]}</b></span></button>`).join('')}</div>`;
   renderNotes();
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
   $('#alist2').innerHTML = agenzia.map(r=>`<button class="row" data-ask="Riassumi: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('folder')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
