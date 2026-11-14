@@ -696,6 +696,11 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .cl-acts{display:flex;gap:8px;flex-wrap:wrap}
 .cl-btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 15px;border-radius:99px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;font-weight:600;font-size:13.5px}
 .cl-btn svg.i{width:17px;height:17px}
+.az{font:600 12.5px var(--sans);letter-spacing:.06em;color:rgba(255,255,255,.75);margin:18px 4px 8px}
+#plist{display:block}
+#plist .az:first-child{margin-top:14px}
+.empty{margin-top:24px;text-align:center;color:rgba(255,255,255,.75);font-size:14px}
+.search input::-webkit-search-cancel-button{filter:invert(1);opacity:.7}
 </style>
 </head>
 <body>
@@ -766,7 +771,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <!-- PRATICHE -->
     <section id="v-pratiche" hidden>
       <div class="page-h"><h1>Clienti</h1></div>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca un cliente</span><input placeholder="Cerca cliente…"></label>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca un cliente</span><input id="cli-q" type="search" autocomplete="off" placeholder="Cerca cliente…"></label>
       <div class="list" id="plist"></div>
     </section>
 
@@ -902,12 +907,25 @@ const CDOCS = [
   [['Polizza Vita in corso','Zurich'],['Questionario bisogni IDD','3 sett fa']]
 ];
 let curCli = 0;
-function openCliente(i){
-  curCli = i; const p = pratiche[i];
+const CLIENTI = ['Agriturismo La Quercia','Alberto Conti','Bar Centrale Snc','Barbara Greco','Carlo Rinaldi','Chiara Fontana','Davide Marino','Edil Costruzioni Srl','Elena Russo','Famiglia Bianchi','Farmacia San Marco','Federica Gallo','Francesco Esposito','Giorgio Lombardi','Giulia Moretti','Hotel Bellavista','Laura Ricci','Luca Bruno','Marco Ferri','Martina Colombo','Matteo Romano','Nicola De Luca','Ottica Gallo Srl','Panificio Rossi','Paola Mancini','Roberto Costa','Sara Villa','Silvia Caruso','Studio Dentistico Leone','Tommaso Ferrara','Trasporti Lanza','Valentina Serra'].sort((a,b)=>a.localeCompare(b,'it'));
+const norm = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function renderClienti(q){
+  const k = norm(q.trim());
+  const list = CLIENTI.filter(n => !k || norm(n).split(/\s+/).some(w=>w.startsWith(k)) || norm(n).includes(k));
+  const groups = {};
+  list.forEach(n => (groups[n[0].toUpperCase()] ||= []).push(n));
+  $('#plist').innerHTML = list.length ? Object.keys(groups).map(L=>`
+    <div class="az">${L}</div>
+    <div class="card">${groups[L].map(n=>`<button class="act" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}</b></span></button>`).join('')}</div>`).join('')
+    : `<p class="empty">Nessun cliente trovato per “${esc(q.trim())}”</p>`;
+}
+function openCliente(name){
+  const i = pratiche.findIndex(x=>x[1]===name);
+  curCli = i; const p = i>=0 ? pratiche[i] : ['', name];
   $('#cl-name').textContent = p[1];
   $('#cl-ask').dataset.ask = 'Riassumi la situazione di '+p[1];
   $('#cl-risk').dataset.toast = 'Risk Analysis per '+p[1]+': nel prototipo si ferma qui';
-  $('#cl-docs').innerHTML = (CDOCS[i]||[]).map(d=>`<button class="act" data-ask="Riassumi: ${d[0]} di ${p[1]}"><span class="face">${ic('file')}</span><span class="tx"><b>${d[0]}</b><small>${d[1]}</small></span></button>`).join('');
+  $('#cl-docs').innerHTML = (CDOCS[i]||[['Polizza in corso','Aggiornata di recente'],['Documento di identità','Caricato dal team']]).map(d=>`<button class="act" data-ask="Riassumi: ${d[0]} di ${p[1]}"><span class="face">${ic('file')}</span><span class="tx"><b>${d[0]}</b><small>${d[1]}</small></span></button>`).join('');
   const w = cases.filter(c=>c.who===p[1]);
   $('#cl-work-sec').hidden = !w.length;
   $('#cl-work').innerHTML = w.map(c=>`<button class="act" data-ask="${c.q}"><span class="face">${ic('clock')}</span><span class="tx"><b>${c.kind}</b><small>${c.st}</small></span><span class="when">${c.when}</span></button>`).join('');
@@ -959,8 +977,7 @@ function renderHome(){
   $('#alist').innerHTML = cases.map(c=>actRow(c,false)).join('');
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
-  $('#plist').innerHTML = `<div class="card">${pratiche.map((p,i)=>`
-    <button class="act" data-act="cartella" data-i="${i}"><span class="face">${ic('user')}</span><span class="tx"><b>${p[1]}</b></span></button>`).join('')}</div>`;
+  renderClienti('');
   renderNotes();
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
   $('#alist2').innerHTML = agenzia.map(r=>`<button class="row" data-ask="Riassumi: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('folder')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
@@ -1191,7 +1208,7 @@ document.addEventListener('click',e=>{
     case 'scrivi': scriviSheet(); break;
     case 'risk': riskSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
-    case 'cartella': openCliente(+t.dataset.i); break;
+    case 'cartella': openCliente(t.dataset.n); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
@@ -1214,6 +1231,7 @@ document.addEventListener('keydown',e=>{
 });
 ['f-cam','f-doc'].forEach(id=>$('#'+id).addEventListener('change',e=>{ const f=e.target.files; if(f && f.length){ scan(f.length>1 ? f.length+' documenti' : f[0].name); e.target.value=''; } }));
 
+document.addEventListener('input',e=>{ if(e.target.id==='cli-q') renderClienti(e.target.value); });
 function fit(){ const s=Math.min(1,(innerHeight-48)/868,(innerWidth-40)/414); document.getElementById('phone').style.setProperty('--s',s); }
 addEventListener('resize',fit); fit();
 const now=new Date(); $('#clock').textContent = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
