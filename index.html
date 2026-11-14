@@ -1046,10 +1046,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 
     <!-- DRIVE -->
     <section id="v-drive" hidden>
-      <div class="page-h ph-row"><h1>Drive</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nel Drive</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
+      <div class="page-h ph-row"><h1>Documenti</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nei documenti</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
       <div class="cli-tools">
-        <div class="cli-chips" role="group" aria-label="Ordina il Drive">
+        <div class="cli-chips" role="group" aria-label="Ordina i documenti">
           <button data-act="drv" data-k="tipo" aria-pressed="true">Tipo</button>
           <button data-act="drv" data-k="co" aria-pressed="false">Compagnia</button>
           <button data-act="drv" data-k="ag" aria-pressed="false">Agenzia</button>
@@ -1100,7 +1100,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <button class="tab" data-view="home" aria-current="page"><svg class="i"><use href="#i-chat"/></svg><span>Chiedi</span></button>
       <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-users"/></svg><span>Clienti</span></button>
       <button class="tab" data-view="libreria"><svg class="i"><use href="#i-book"/></svg><span>Libreria</span></button>
-      <button class="tab" data-view="drive"><svg class="i"><use href="#i-folder"/></svg><span>Drive</span></button>
+      <button class="tab" data-view="drive"><svg class="i"><use href="#i-folder"/></svg><span>Documenti</span></button>
       <button class="tab" data-view="appunti"><svg class="i"><use href="#i-note"/></svg><span>Note</span></button>
     </nav>
   </div>
@@ -1503,7 +1503,7 @@ function attachSheet(title='Dai un documento a Navisio', sub='Lo legge e ti dice
       <button class="opt" data-act="camera"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
       <button class="opt" data-act="upload"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('upload')}</span><b>Carica file</b><span>PDF, foto, fascicoli</span></button>
       <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span><b>Da un cliente</b><span>Documenti dei clienti</span></button>
-      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Libreria o Drive</b><span>Prodotti e tuoi documenti</span></button>
+      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Libreria o documenti</b><span>Prodotti e tuoi documenti</span></button>
     </div>`);
 }
 
@@ -1879,7 +1879,7 @@ function flCliDocs(){
 }
 function flLibSheet(){
   FL.sheet='lib';
-  const tabs=`<div class="fl-seg" style="margin-top:14px">${[['co','Libreria Navisio'],['ag','Drive']].map(([k,t])=>`<button data-fl="libtab" data-k="${k}" aria-pressed="${FL.libTab===k}">${t}</button>`).join('')}</div>`;
+  const tabs=`<div class="fl-seg" style="margin-top:14px">${[['co','Libreria Navisio'],['ag','I tuoi documenti']].map(([k,t])=>`<button data-fl="libtab" data-k="${k}" aria-pressed="${FL.libTab===k}">${t}</button>`).join('')}</div>`;
   if(FL.libTab==='ag'){
     openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
     <p class="sub">I documenti della tua agenzia, condivisi con il team.</p>${tabs}
