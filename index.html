@@ -720,7 +720,6 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <nav class="tabbar" aria-label="Sezioni">
       <button class="tab" data-view="home" aria-current="page"><svg class="i"><use href="#i-chat"/></svg><span>Chiedi</span></button>
       <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-users"/></svg><span>Clienti</span></button>
-      <button class="tab" data-view="attivita" aria-label="Attività, 1 da completare"><svg class="i"><use href="#i-clock"/></svg><span>Attività</span><i class="bdg" aria-hidden="true">1</i></button>
       <button class="tab" data-view="libreria"><svg class="i"><use href="#i-folder"/></svg><span>Drive</span></button>
       <button class="tab" data-view="appunti"><svg class="i"><use href="#i-note"/></svg><span>Note</span></button>
     </nav>
@@ -822,11 +821,12 @@ function show(v){
   view = v;
   ['home','chat','pratiche','attivita','libreria','appunti'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
-  const nav = v==='chat' ? 'home' : v;
+  const sub = v==='chat'||v==='attivita';
+  const nav = sub ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
-  $('#back').hidden = v!=='chat';
-  document.querySelector('.topbar .avatar').hidden = v==='chat';
+  $('#back').hidden = !sub;
+  document.querySelector('.topbar .avatar').hidden = sub;
   window.scrollTo({top:0,behavior:'instant'}); $('#scroller').scrollTop = 0;
 }
 
