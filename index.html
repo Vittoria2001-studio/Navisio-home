@@ -934,6 +934,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .tab{color:rgba(241,245,242,.38)}
 .tab[aria-current="page"]{color:#fff;font-weight:700}
 .tab[aria-current="page"] svg.i{stroke-width:2.2}
+.act.cl.dr{padding:10px 0;align-items:center}
+.act.cl.dr small{display:block;font-size:12.5px;color:rgba(255,255,255,.62);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act.cl.dr .tx{min-width:0}
+#v-drive .lib-hint{margin-top:10px}
 </style>
 </head>
 <body>
@@ -1044,7 +1048,14 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <section id="v-drive" hidden>
       <div class="page-h ph-row"><h1>Drive</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nel Drive</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
-      <p class="lib-hint">I documenti tuoi e del tuo team, come sul computer.</p>
+      <div class="cli-tools">
+        <div class="cli-chips" role="group" aria-label="Ordina il Drive">
+          <button data-act="drv" data-k="tipo" aria-pressed="true">Tipo</button>
+          <button data-act="drv" data-k="co" aria-pressed="false">Compagnia</button>
+          <button data-act="drv" data-k="ag" aria-pressed="false">Agenzia</button>
+        </div>
+      </div>
+      <p class="lib-hint">Carichi tu, Navisio riconosce ogni documento e lo ordina.</p>
       <div id="drive-list"></div>
     </section>
 
@@ -1369,17 +1380,54 @@ function renderLib(q){
   }
   $('#lib-list').innerHTML = h || `<p class="empty">Nessun risultato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`;
 }
-/* ---------- Drive: le cartelle e i file dell'agenzia ---------- */
-const DRIVE_DIRS = [['Polizze clienti',36],['Preventivi',14],['Convenzioni',2],['Circolari',2],['Modelli',3],['Procedure',2],['Fatture',8]];
-const DRIVE_FILES = [['Listino provvigioni 2026.xlsx','1 sett'],['Organigramma agenzia.pdf','2 mesi'],['Presentazione agenzia.pdf','3 mesi']];
+/* ---------- Drive: archivio unico, ordinato da Navisio (tipo, compagnia, agenzia) ---------- */
+const DOCS = [
+  {n:'Preventivo RC Auto', t:'Preventivi', c:'Marco Ferri', co:'Allianz', d:'3 g'},
+  {n:'Preventivo RC Auto', t:'Preventivi', c:'Marco Ferri', co:'Generali', d:'3 g'},
+  {n:'Preventivo RC Auto', t:'Preventivi', c:'Marco Ferri', co:'Reale Mutua', d:'3 g'},
+  {n:'Preventivo Casa', t:'Preventivi', c:'Famiglia Bianchi', co:'Reale Mutua', d:'Ieri'},
+  {n:'Preventivo Casa', t:'Preventivi', c:'Famiglia Bianchi', co:'Allianz', d:'Ieri'},
+  {n:'Preventivo Flotta auto', t:'Preventivi', c:'Trasporti Lanza', co:'Generali', d:'2 sett'},
+  {n:'Polizza Casa', t:'Polizze', c:'Famiglia Bianchi', co:'Generali', d:'Mar 2025'},
+  {n:'Polizza Multirischio', t:'Polizze', c:'Ottica Gallo Srl', co:'Allianz', d:'Giu 2025'},
+  {n:'Polizza Infortuni', t:'Polizze', c:'Elena Russo', co:'Unipol', d:'Dic 2025'},
+  {n:'Polizza Vita', t:'Polizze', c:'Giulia Moretti', co:'Zurich', d:'Set 2024'},
+  {n:'Polizza RC professionale', t:'Polizze', c:'Farmacia San Marco', co:'Generali', d:'Gen 2026'},
+  {n:'CGA Auto Plus', t:'Condizioni (CGA)', co:'Reale Mutua', d:'1 mese'},
+  {n:'CGA Casa Sicura', t:'Condizioni (CGA)', co:'Generali', d:'2 mesi'},
+  {n:'CGA Multirischio Impresa', t:'Condizioni (CGA)', co:'Allianz', d:'2 mesi'},
+  {n:'Denuncia sinistro (CID)', t:'Sinistri', c:'Marco Ferri', co:'Allianz', d:'2 g'},
+  {n:'Foto del danno', t:'Sinistri', c:'Marco Ferri', d:'2 g'},
+  {n:'Fattura idraulico', t:'Sinistri', c:'Ristorante Il Porto', co:'Generali', d:'1 mese'},
+  {n:'Convenzione dipendenti 2026', a:'Convenzioni', d:'1 sett'},
+  {n:'Convenzione commercialisti', a:'Convenzioni', d:'3 mesi'},
+  {n:'Circolare rinnovi RC Auto', a:'Circolari', d:'2 sett'},
+  {n:'Circolare IVASS 2026', a:'Circolari', d:'1 mese'},
+  {n:'Modello mail di rinnovo', a:'Modelli', d:'1 mese'},
+  {n:'Lettera di benvenuto', a:'Modelli', d:'2 mesi'},
+  {n:'Questionario IDD', a:'Modelli', d:'3 mesi'},
+  {n:'Procedura denuncia sinistri', a:'Procedure', d:'2 mesi'},
+  {n:'Checklist nuovo cliente', a:'Procedure', d:'4 mesi'}
+];
+let DRV = 'tipo';
 function renderDrive(q){
   if(q===undefined) q = ($('#drive-q')||{}).value||'';
-  const k = norm(q.trim()), hit = t => !k || norm(t).includes(k);
-  const dirs = DRIVE_DIRS.filter(d=>hit(d[0])), files = DRIVE_FILES.filter(f=>hit(f[0]));
-  let h = '';
-  if(dirs.length) h += `<div class="az">Cartelle</div><div class="card cl-card">${dirs.map(d=>`<button class="act cl" data-act="cartella"><span class="face dir">${ic('folder')}</span><span class="tx"><b>${d[0]}</b></span><span class="pz">${d[1]} file</span></button>`).join('')}</div>`;
-  if(files.length) h += `<div class="az">File</div><div class="card cl-card">${files.map(f=>`<button class="act cl" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${f[0]}</b></span><span class="pz">${f[1]}</span></button>`).join('')}</div>`;
-  $('#drive-list').innerHTML = h || `<p class="empty">Nessun risultato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`;
+  const k = norm(q.trim());
+  const sub = (x, skip) => [x.c, skip!=='co' && x.co, skip!=='t' && x.t].filter(Boolean).join(' · ') || 'Documento interno';
+  const row = (x, skip) => `<button class="act cl dr" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${x.n}</b><small>${sub(x,skip)}</small></span><span class="pz">${x.d}</span></button>`;
+  const group = (list, key, skip) => { const g={}; list.forEach(x=>(g[x[key]] ||= []).push(x)); return Object.keys(g).map(L=>`<div class="az">${L}</div><div class="card cl-card">${g[L].map(x=>row(x,skip)).join('')}</div>`).join(''); };
+  let h='';
+  if(k){
+    const r = DOCS.filter(x=>norm([x.n,x.c,x.co,x.t,x.a].filter(Boolean).join(' ')).includes(k));
+    h = r.length ? `<div class="az">Risultati</div><div class="card cl-card">${r.map(x=>row(x)).join('')}</div>` : '';
+  } else if(DRV==='tipo'){
+    h = group(DOCS.filter(x=>x.t), 't', 't');
+  } else if(DRV==='co'){
+    h = group(DOCS.filter(x=>x.co).sort((a,b)=>a.co.localeCompare(b.co,'it')), 'co', 'co');
+  } else {
+    h = group(DOCS.filter(x=>x.a), 'a', 'a');
+  }
+  $('#drive-list').innerHTML = h || `<p class="empty">Nessun documento trovato per “${esc(q.trim())}”</p>`;
 }
 const compagnie = [['Generali','#B4231E',true],['Reale Mutua','#1F3E73',true],['Allianz','#123E7C',false],['AXA','#1B2C8A',false],['Unipol','#0F5AA8',false],['Zurich','#2167AE',false]];
 const agenzia = [
@@ -1642,6 +1690,7 @@ document.addEventListener('click',e=>{
     case 'clisort': premioSheet(); break;
     case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
+    case 'drv': DRV=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); renderDrive(); break;
     case 'libt': LIBT=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b===t)); $('#lib-hint').textContent = LIBT==='nv' ? 'I prodotti delle compagnie, aggiornati da Navisio.' : 'I documenti caricati da te e dal tuo team.'; renderLib(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': openNote(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
