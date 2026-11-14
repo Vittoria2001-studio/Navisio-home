@@ -583,6 +583,22 @@ body{background:var(--grad) fixed;background-color:#030E09}
   .dock{padding-bottom:0}
   .tabbar{padding-bottom:30px}
 }
+
+/* barra "Chiedi a Navisio": più importante, contorno lime che gira sempre */
+@property --spin{syntax:'<angle>';inherits:false;initial-value:0deg}
+.composer{padding:7px;border-radius:32px;background:rgba(255,255,255,.1);border-color:transparent;
+  box-shadow:0 0 0 1px rgba(212,238,116,.18),0 0 28px -6px rgba(212,238,116,.35),var(--shadow-lg)}
+.composer::before{content:"";position:absolute;inset:-2px;border-radius:inherit;padding:2px;pointer-events:none;
+  background:conic-gradient(from var(--spin),rgba(212,238,116,.12) 0deg,rgba(212,238,116,.12) 160deg,rgba(212,238,116,.7) 270deg,#F0FFB0 335deg,rgba(212,238,116,.12) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:spin-border 3.6s linear infinite}
+@keyframes spin-border{to{--spin:360deg}}
+@media (prefers-reduced-motion:reduce){.composer::before{animation:none;background:rgba(212,238,116,.55)}}
+.composer textarea{font-size:17px;padding:11px 8px}
+.composer textarea::placeholder{color:rgba(241,245,242,.75)}
+.cbtn{width:44px;height:44px}
+.cbtn.send:not(:disabled){background:var(--lime);color:#0E241B}
+.wave{right:104px}
 </style>
 </head>
 <body>
@@ -697,7 +713,6 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <textarea id="q" rows="1" placeholder="Chiedi a Navisio…"></textarea>
       <div class="wave" aria-hidden="true"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div>Ti ascolto…</div>
       <button type="button" class="cbtn mic" aria-label="Detta la domanda" data-act="mic"><svg class="i"><use href="#i-mic"/></svg></button>
-      <button type="button" class="cbtn cam" aria-label="Fotografa un documento" data-act="camera"><svg class="i"><use href="#i-camera"/></svg></button>
       <button type="submit" class="cbtn send" aria-label="Invia" id="send" disabled><svg class="i"><use href="#i-up"/></svg></button>
     </form>
     <nav class="tabbar" aria-label="Sezioni">
