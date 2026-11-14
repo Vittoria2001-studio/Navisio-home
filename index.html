@@ -50,7 +50,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;str
 
 /* ---------- layout ---------- */
 .app{min-height:100dvh}
-main{padding:0 var(--gutter) 190px}
+main{padding:0 var(--gutter) 236px}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(243,245,247,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
 .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font:600 14px var(--sans);letter-spacing:.04em}
@@ -92,9 +92,13 @@ main{padding:0 var(--gutter) 190px}
 .sec-h a,.sec-h button{font-size:14px;font-weight:600;color:var(--green-2)}
 
 /* azioni rapide */
-.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:28px 0 8px}
+.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:28px 0 8px}
 .promo[hidden]+.qa{margin-top:22px}
-.qa+.sec{margin-top:40px}
+.soon{display:flex;align-items:center;gap:10px;margin-top:30px;padding:10px 10px 10px 16px;border-radius:18px;border:1px dashed rgba(20,30,40,.18)}
+.soon .tx{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--ink)}
+.soon .tx small{display:block;font-size:12.5px;font-weight:500;color:var(--ink-3);margin-top:1px}
+.soon button{flex:none;height:36px;padding:0 14px;border-radius:99px;background:var(--paper);font-size:13px;font-weight:600;color:var(--green-2);box-shadow:0 0 0 1px var(--line)}
+.soon+.sec{margin-top:30px}
 .qa button{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--ink);line-height:1.25;text-align:center;padding:0 2px}
 .qa .ic{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}
 .qa .ic svg.i{width:28px;height:28px;stroke-width:1.7}
@@ -104,12 +108,17 @@ main{padding:0 var(--gutter) 190px}
 .card{background:var(--paper);border-radius:24px;padding:4px 16px;box-shadow:0 1px 2px rgba(19,35,28,.04)}
 .act{display:flex;align-items:center;gap:14px;width:100%;padding:13px 0;text-align:left}
 .act+.act{border-top:1px solid var(--line)}
-.ring{width:46px;height:46px;border-radius:50%;padding:2.5px;flex:none;background:conic-gradient(var(--c) calc(var(--p)*1%),#E8ECF0 0)}
-.face{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--paper);font:600 13px var(--sans);letter-spacing:.02em}
+.face{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;font:600 13px var(--sans);letter-spacing:.02em;background:var(--leaf-t);color:var(--green)}
 .act .tx{flex:1;min-width:0}
 .act b{display:block;font-weight:600;font-size:15px}
 .act small{display:block;font-size:13px;color:var(--ink-3);margin-top:1px}
-.act .pc{font-weight:600;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.act small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stt{flex:none;display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.stt::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--leaf)}
+.stt.run::before{background:#9AA3AD;animation:blink 1.2s ease-in-out infinite}
+.stt.todo::before{background:var(--orange)}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.stt.run::before{animation:none}}
 
 /* ---------- dock (composer + tabbar) ---------- */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 14px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
@@ -137,8 +146,11 @@ main{padding:0 var(--gutter) 190px}
 .composer.listening .mic{background:#C2410C;color:#fff;animation:pulse 1.4s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(194,65,12,.45)}100%{box-shadow:0 0 0 14px rgba(194,65,12,0)}}
 
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -14px 8px;padding:2px 14px}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;height:38px;padding:0 14px;border-radius:99px;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 0 0 1px var(--line);font-size:13.5px;font-weight:500;color:var(--ink)}
 .tabbar{margin:8px auto 0;width:fit-content;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(14,59,44,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
-.tab{height:44px;min-width:56px;padding:0 16px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(243,245,247,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
+.tab{height:44px;min-width:52px;padding:0 15px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(243,245,247,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
 .tab:hover{color:#fff}
 .tab[aria-current="page"]{background:var(--lime);color:var(--green)}
 .tab:not([aria-current="page"]) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -478,6 +490,9 @@ main{padding:0 var(--gutter) 190px}
   <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -514,8 +529,13 @@ main{padding:0 var(--gutter) 190px}
 
       <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
 
+      <div class="soon">
+        <span class="tx">Analisi di portafoglio<small>In arrivo</small></span>
+        <button data-toast="Ti avvisiamo appena è disponibile">Avvisami</button>
+      </div>
+
       <div class="sec">
-        <div class="sec-h"><h2>Pratiche in corso</h2><button data-view="pratiche">Vedi tutte</button></div>
+        <div class="sec-h"><h2>Riprendi</h2><button data-view="attivita">Vedi tutte</button></div>
         <div class="card" id="rail"></div>
       </div>
       <p class="proto">Prototipo di Vittoria Rossetti · dati di esempio</p>
@@ -528,18 +548,24 @@ main{padding:0 var(--gutter) 190px}
 
     <!-- PRATICHE -->
     <section id="v-pratiche" hidden>
-      <div class="page-h"><h1>Pratiche</h1><p>Ogni cliente, con i suoi documenti, le domande e i risultati.</p></div>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca una pratica</span><input placeholder="Cerca cliente, polizza, sinistro…"></label>
-      <div class="filters" role="group" aria-label="Filtra pratiche">
-        <button aria-pressed="true">Tutte</button><button aria-pressed="false">In corso</button><button aria-pressed="false">Confronti</button><button aria-pressed="false">Sinistri</button><button aria-pressed="false">Risk analysis</button>
-      </div>
+      <div class="page-h"><h1>Clienti</h1><p>Ogni cliente, con i suoi documenti e i lavori fatti con Navisio.</p></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca un cliente</span><input placeholder="Cerca cliente…"></label>
       <div class="list" id="plist"></div>
     </section>
 
-    <!-- LIBRERIA -->
+    <!-- ATTIVITÀ -->
+    <section id="v-attivita" hidden>
+      <div class="page-h"><h1>Attività</h1><p>I lavori fatti con Navisio, dal più recente.</p></div>
+      <div class="filters" role="group" aria-label="Filtra attività">
+        <button aria-pressed="true">Tutte</button><button aria-pressed="false">Confronti</button><button aria-pressed="false">Sinistri</button><button aria-pressed="false">Risk Analysis</button>
+      </div>
+      <div class="card" id="alist" style="margin-top:12px"></div>
+    </section>
+
+    <!-- DRIVE -->
     <section id="v-libreria" hidden>
-      <div class="page-h"><h1>Libreria</h1><p>I prodotti delle compagnie e i documenti della tua agenzia.</p></div>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca in libreria</span><input placeholder="Cerca prodotto, garanzia, compagnia…"></label>
+      <div class="page-h"><h1>Drive</h1><p>I documenti della tua agenzia e i prodotti delle compagnie.</p></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nel Drive</span><input placeholder="Cerca prodotto, garanzia, compagnia…"></label>
       <div class="sec" style="margin-top:22px">
         <div class="sec-h"><h2>I tuoi mandati</h2><button data-toast="Qui gestisci le compagnie con cui lavori">Modifica</button></div>
         <div class="cos" id="cos"></div>
@@ -554,6 +580,11 @@ main{padding:0 var(--gutter) 190px}
 
   <!-- Dock -->
   <div class="dock">
+    <div class="chips" id="chips" role="group" aria-label="Suggerimenti">
+      <button data-act="attach">Cosa copre questa polizza?</button>
+      <button data-ask="Scrivi una mail di rinnovo per un cliente">Scrivi una mail di rinnovo</button>
+      <button data-view="libreria">Trova un prodotto in libreria</button>
+    </div>
     <form class="composer" id="composer" autocomplete="off">
       <button type="button" class="cbtn plus" aria-label="Aggiungi documento" data-act="attach"><svg class="i"><use href="#i-plus"/></svg></button>
       <label class="sr" for="q">Chiedi a Navisio</label>
@@ -565,7 +596,9 @@ main{padding:0 var(--gutter) 190px}
     </form>
     <nav class="tabbar" aria-label="Sezioni">
       <button class="tab" data-view="home" aria-current="page"><svg class="i"><use href="#i-chat"/></svg><span>Chiedi</span></button>
-      <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-folder"/></svg><span>Pratiche</span></button>
+      <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-user"/></svg><span>Clienti</span></button>
+      <button class="tab" data-view="attivita"><svg class="i"><use href="#i-clock"/></svg><span>Attività</span></button>
+      <button class="tab" data-view="libreria"><svg class="i"><use href="#i-folder"/></svg><span>Drive</span></button>
     </nav>
   </div>
 
@@ -590,15 +623,16 @@ const ic = (n, cls='i') => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 
 /* ---------- dati di esempio ---------- */
 const cases = [
-  {tag:'confronto', ini:'FB', who:'Famiglia Bianchi', kind:'Confronto casa', step:'2 di 3 preventivi', prog:66, q:'Confronta i preventivi casa della famiglia Bianchi'},
-  {tag:'sinistro', ini:'MF', who:'Marco Ferri', kind:'Sinistro RC auto', step:'mancano 2 documenti', prog:40, q:'A che punto è il sinistro RC auto di Marco Ferri?'},
-  {tag:'polizza', ini:'OG', who:'Ottica Gallo Srl', kind:'Analisi multirischio', step:'report quasi pronto', prog:85, q:'Cosa copre la multirischio di Ottica Gallo?'}
+  {tag:'confronto', ini:'FB', who:'Famiglia Bianchi', kind:'Confronto · Casa', st:'Pronto', s:'fin', q:'Confronta i preventivi casa della famiglia Bianchi'},
+  {tag:'sinistro', ini:'MF', who:'Marco Ferri', kind:'Sinistro · RC Auto', st:'Da completare', s:'todo', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
+  {tag:'risk', ini:'OG', who:'Ottica Gallo Srl', kind:'Risk Analysis', st:'In elaborazione', s:'run', q:'Cosa copre la multirischio di Ottica Gallo?'},
+  {tag:'confronto', ini:'ER', who:'Elena Russo', kind:'Confronto · Infortuni', st:'Pronto', s:'fin', q:'Confronta i preventivi infortuni di Elena Russo'},
+  {tag:'confronto', ini:'TL', who:'Trasporti Lanza', kind:'Confronto · Flotta auto', st:'Pronto', s:'fin', q:'Confronta i preventivi flotta di Trasporti Lanza'}
 ];
 const sugg = [
   {tag:'confronto', icon:'scale', q:'Confronta documenti', act:'confronto'},
-  {tag:'polizza', icon:'file', q:'Copertura polizza', act:'attach'},
-  {tag:'libreria', icon:'book', q:'Libreria prodotti', view:'libreria'},
-  {tag:'sinistro', icon:'mail', q:'Mail di rinnovo', ask:'Scrivi una mail di rinnovo per un cliente'}
+  {tag:'sinistro', icon:'clip', q:'Analizza un sinistro', ask:'Analizza un sinistro: cosa devo fare?'},
+  {tag:'polizza', icon:'alert', q:'Risk Analysis', toast:'Risk Analysis: nel prototipo si ferma qui'}
 ];
 const tagStyle = {confronto:['var(--violet-t)','var(--violet)'], sinistro:['var(--orange-t)','var(--orange)'], polizza:['var(--blue-t)','var(--blue)'], libreria:['var(--leaf-t)','var(--leaf)']};
 
@@ -619,16 +653,18 @@ const recenti = [
 
 /* ---------- render ---------- */
 function renderHome(){
-  $('#rail').innerHTML = cases.map(c=>{return `
+  const actRow = c=>`
     <button class="act" data-ask="${c.q}">
-      <span class="ring" style="--c:var(--green-2);--p:${c.prog}" role="img" aria-label="${c.prog}% completato"><span class="face" style="background:var(--leaf-t);color:var(--green)">${c.ini}</span></span>
+      <span class="face">${c.ini}</span>
       <span class="tx"><b>${c.who}</b><small>${c.kind}</small></span>
-      <span class="pc">${c.prog}%</span>
-    </button>`}).join('');
+      <span class="stt ${c.s}">${c.st}</span>
+    </button>`;
+  $('#rail').innerHTML = cases.slice(0,3).map(actRow).join('');
+  $('#alist').innerHTML = cases.map(actRow).join('');
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
-    <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
+    <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = pratiche.map(p=>{const [bg,fg]=tagStyle[p[4]];return `
-    <button class="row" data-ask="Riassumi la pratica di ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
+    <button class="row" data-ask="Riassumi i lavori fatti per ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
   $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
 }
@@ -637,13 +673,14 @@ function renderHome(){
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','libreria'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
-  const nav = (v==='chat'||v==='libreria') ? 'home' : v;
+  const nav = v==='chat' ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
-  $('#back').hidden = !(v==='chat'||v==='libreria');
-  document.querySelector('.topbar .avatar').hidden = v==='chat'||v==='libreria';
+  $('#back').hidden = v!=='chat';
+  document.querySelector('.topbar .avatar').hidden = v==='chat';
+  $('#chips').hidden = v!=='home';
   window.scrollTo({top:0,behavior:'instant'}); $('#scroller').scrollTop = 0;
 }
 
