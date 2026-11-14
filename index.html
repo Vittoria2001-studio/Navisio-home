@@ -740,6 +740,23 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .addbtn{width:auto;height:auto;padding:6px;background:none;border:0;border-radius:10px}
 .addbtn svg.i{width:26px;height:26px;stroke-width:2}
 .cli-sort[aria-pressed="true"]{background:#fff;color:#0E241B;padding:0 12px}
+.rvals{display:flex;justify-content:space-between;margin-bottom:12px}
+.rvals span{display:flex;flex-direction:column;gap:2px}
+.rvals span+span{text-align:right}
+.rvals small{font-size:12px;color:var(--ink-3)}
+.rvals b{font:600 20px var(--sans);font-variant-numeric:tabular-nums;color:#fff}
+.range2{position:relative;height:30px}
+.rtrack{position:absolute;left:0;right:0;top:13px;height:4px;border-radius:4px;background:rgba(255,255,255,.15)}
+.rtrack i{position:absolute;top:0;bottom:0;border-radius:4px;background:var(--lime)}
+.range2 input{position:absolute;left:0;right:0;top:0;width:100%;height:30px;margin:0;background:none;-webkit-appearance:none;appearance:none;pointer-events:none}
+.range2 input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:26px;height:26px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:grab}
+.range2 input::-moz-range-thumb{pointer-events:auto;width:26px;height:26px;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.range2 input::-webkit-slider-runnable-track{background:none}
+.range2 input:focus-visible::-webkit-slider-thumb{outline:2.5px solid var(--lime);outline-offset:2px}
+.pfoot{display:flex;align-items:center;gap:14px;margin-top:26px}
+.preset{font-weight:600;font-size:14px;color:rgba(255,255,255,.8);padding:0 6px}
+.pfoot .fl-cta{flex:1;background:#fff;color:#08140F}
+#psort button[aria-pressed="true"]{background:#fff;color:#0E241B}
 </style>
 </head>
 <body>
@@ -946,13 +963,14 @@ const FAV = new Set(['Marco Ferri','Famiglia Bianchi','Ottica Gallo Srl','Traspo
 const hash = t => [...t].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
 const PREMIO = n => { const biz=BIZ.test(n), h=hash(n); return biz ? 1500+(h%165)*100 : 280+(h%23)*95; };
 const eur = v => String(v).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €';
-const CF = {k:'all', sort:'az'};
+const CF = {k:'all', sort:'az', min:0, max:18000};
 function renderClienti(q){
   if(q===undefined) q = ($('#cli-q')||{}).value||'';
   const k = norm(q.trim());
   let list = CLIENTI.filter(n => !k || norm(n).split(/\s+/).some(w=>w.startsWith(k)) || norm(n).includes(k));
   if(CF.k==='az') list = list.filter(n=>BIZ.test(n));
   if(CF.k==='fav') list = list.filter(n=>FAV.has(n));
+  list = list.filter(n=>PREMIO(n)>=CF.min && PREMIO(n)<=CF.max);
   const row = n => `<button class="act cl" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}${FAV.has(n)?`<svg class="i star"><use href="#i-star"/></svg>`:''}</b></span><span class="pz">${eur(PREMIO(n))}</span></button>`;
   if(!list.length){ $('#plist').innerHTML = `<p class="empty">Nessun cliente trovato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`; return; }
   if(CF.sort!=='az'){
@@ -964,6 +982,36 @@ function renderClienti(q){
   const groups = {};
   list.forEach(n => (groups[n[0].toUpperCase()] ||= []).push(n));
   $('#plist').innerHTML = Object.keys(groups).map(L=>`<div class="az">${L}</div><div class="card cl-card">${groups[L].map(row).join('')}</div>`).join('');
+}
+const PMAX = 18000;
+function premioCount(){
+  const q=($('#cli-q')||{}).value||'', k=norm(q.trim());
+  return CLIENTI.filter(n => (!k || norm(n).split(/\s+/).some(w=>w.startsWith(k)) || norm(n).includes(k))
+    && (CF.k!=='az' || BIZ.test(n)) && (CF.k!=='fav' || FAV.has(n))
+    && PREMIO(n)>=CF.min && PREMIO(n)<=CF.max).length;
+}
+function premioSync(){
+  const a=$('#rmin'), b=$('#rmax'); if(!a) return;
+  $('#rv-min').textContent = eur(CF.min); $('#rv-max').textContent = CF.max>=PMAX ? eur(PMAX)+'+' : eur(CF.max);
+  $('#rfill').style.left = (CF.min/PMAX*100)+'%'; $('#rfill').style.right = (100-CF.max/PMAX*100)+'%';
+  const n = premioCount(); $('#papply').textContent = n ? `Mostra ${n} client${n===1?'e':'i'}` : 'Nessun cliente';
+  document.querySelectorAll('#psort button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.k===CF.sort));
+  const on = CF.sort!=='az' || CF.min>0 || CF.max<PMAX;
+  const sb=$('.cli-sort'); sb.setAttribute('aria-pressed', on);
+  renderClienti();
+}
+function premioSheet(){
+  openSheet(`<h2 id="sheet-title">Premio annuo</h2>
+    <p class="sub">Scegli una fascia di premio e come ordinarli.</p>
+    <div class="fl-label" style="margin-top:20px">Ordina</div>
+    <div class="fl-seg" id="psort">${[['az','Alfabetico'],['pr','Dal più alto'],['up','Dal più basso']].map(([k,t])=>`<button data-act="psort" data-k="${k}" aria-pressed="${CF.sort===k}">${t}</button>`).join('')}</div>
+    <div class="fl-label" style="margin-top:22px">Fascia di premio</div>
+    <div class="rvals"><span><small>Da</small><b id="rv-min"></b></span><span><small>A</small><b id="rv-max"></b></span></div>
+    <div class="range2"><div class="rtrack"><i id="rfill"></i></div>
+      <input type="range" class="rng" id="rmin" min="0" max="${PMAX}" step="100" value="${CF.min}" aria-label="Premio minimo">
+      <input type="range" class="rng" id="rmax" min="0" max="${PMAX}" step="100" value="${CF.max}" aria-label="Premio massimo"></div>
+    <div class="pfoot"><button class="preset" data-act="preset">Azzera</button><button class="fl-cta" id="papply" data-act="close"></button></div>`);
+  premioSync();
 }
 let notes = [
   {t:'Bianchi: chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', d:'Oggi, 9:12'},
@@ -1243,7 +1291,9 @@ document.addEventListener('click',e=>{
     case 'cliente': clienteSheet(+t.dataset.i); break;
     case 'cartella': toast('Non fa parte della demo'); break;
     case 'clif': CF.k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); renderClienti(); break;
-    case 'clisort': CF.sort = {az:'pr', pr:'up', up:'az'}[CF.sort]; t.setAttribute('aria-pressed', CF.sort!=='az'); t.dataset.dir = CF.sort; renderClienti(); break;
+    case 'clisort': premioSheet(); break;
+    case 'psort': CF.sort=t.dataset.k; premioSync(); break;
+    case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
@@ -1266,7 +1316,11 @@ document.addEventListener('keydown',e=>{
 });
 ['f-cam','f-doc'].forEach(id=>$('#'+id).addEventListener('change',e=>{ const f=e.target.files; if(f && f.length){ scan(f.length>1 ? f.length+' documenti' : f[0].name); e.target.value=''; } }));
 
-document.addEventListener('input',e=>{ if(e.target.id==='cli-q') renderClienti(e.target.value); });
+document.addEventListener('input',e=>{
+  if(e.target.id==='cli-q') renderClienti(e.target.value);
+  if(e.target.id==='rmin'){ CF.min=Math.min(+e.target.value, CF.max-500); e.target.value=CF.min; premioSync(); }
+  if(e.target.id==='rmax'){ CF.max=Math.max(+e.target.value, CF.min+500); e.target.value=CF.max; premioSync(); }
+});
 function fit(){ const s=Math.min(1,(innerHeight-48)/868,(innerWidth-40)/414); document.getElementById('phone').style.setProperty('--s',s); }
 addEventListener('resize',fit); fit();
 const now=new Date(); $('#clock').textContent = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
