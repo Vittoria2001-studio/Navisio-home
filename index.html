@@ -64,27 +64,6 @@ main{padding:0 var(--gutter) 200px}
 .hello{padding:18px 0 16px}
 .hello h1{font:700 31px/1.02 var(--serif);letter-spacing:-.03em;color:#1F2327}
 .hello h1 em{font-style:italic;font-weight:500;font-size:25px;line-height:1.1;letter-spacing:-.025em;color:#4C8C6A}
-.promo{position:relative;color:#fff;border-radius:24px;padding:16px 18px 16px;overflow:hidden;isolation:isolate;transition:opacity .25s,transform .25s,max-height .3s,margin .3s,padding .3s;max-height:400px;
-  background:
-    radial-gradient(90% 80% at 100% 0%,rgba(178,226,150,.75) 0%,rgba(178,226,150,0) 60%),
-    radial-gradient(70% 70% at 0% 100%,rgba(16,58,44,.9) 0%,rgba(16,58,44,0) 70%),
-    linear-gradient(155deg,#1B5641 0%,#2D7556 55%,#5E9C73 100%);
-  box-shadow:0 18px 40px -24px rgba(14,59,44,.55)}
-.promo.gone{opacity:0;transform:scale(.96);max-height:0;padding-top:0;padding-bottom:0;margin:0}
-.promo-x{position:absolute;top:12px;right:12px;z-index:2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.18)}
-.promo-x svg.i{width:14px;height:14px}
-.promo-tag{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
-.promo h2{font:600 19px/1.25 var(--serif);letter-spacing:-.02em;margin:0 0 14px;padding-right:34px}
-.promo h2 em{display:block;font-style:italic;font-weight:500;font-size:15px;color:var(--lime);margin-top:4px;letter-spacing:-.01em}
-.how{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:14px}
-.how::before{content:"";position:absolute;top:21px;left:17%;right:17%;border-top:1.5px dashed rgba(255,255,255,.45)}
-.how li{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;position:relative}
-.how .st{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;position:relative;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.how .st svg.i{width:19px;height:19px}
-.how .st em{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:#fff;color:var(--green);font:600 10px/18px var(--sans);font-style:normal;text-align:center}
-.how b{font-weight:600;font-size:12px;line-height:1.25}
-.promo-cta{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;background:var(--lime);color:var(--green);font-weight:600;font-size:13px}
-.promo-cta svg.i{width:15px;height:15px}
 
 .sec{margin-top:28px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
@@ -93,7 +72,6 @@ main{padding:0 var(--gutter) 200px}
 
 /* azioni rapide */
 .qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:28px 0 8px}
-.promo[hidden]+.qa{margin-top:22px}
 .qa+.sec{margin-top:40px}
 .qa button{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--ink);line-height:1.25;text-align:center;padding:0 2px}
 .qa .ic{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}
@@ -506,15 +484,6 @@ body{background:var(--grad) fixed;background-color:#030E09}
 /* home */
 .hello h1{color:#fff}
 .hello h1 em{color:#D4EE74}
-.promo{background:
-    radial-gradient(85% 90% at 105% -5%,rgba(212,238,116,.22) 0%,rgba(212,238,116,0) 58%),
-    radial-gradient(80% 90% at -5% 105%,rgba(52,150,106,.5) 0%,rgba(52,150,106,0) 62%),
-    rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:var(--glass);backdrop-filter:var(--glass);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 24px 50px -26px rgba(0,0,0,.8)}
-.how .st{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
-.how .st em{color:#0E241B}
-.promo-x{background:rgba(255,255,255,.12)}
 .qa .ic{background:rgba(255,255,255,.13)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.12);-webkit-backdrop-filter:var(--glass);backdrop-filter:var(--glass)}
 .card,.note,.row,.co,.opt,.found,.next button,.src button,.steps li,.search,.fl-opt,.fl-recent,.fl-doc,.fl-ctx,.fl-list,.fl-offer,.fl-rows,.fl-add button,.fl-pick,.fl-badge,.fl-btn,.fl-round,.fl-edit,.fl-search,.fl-chips button{
   border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);-webkit-backdrop-filter:var(--glass);backdrop-filter:var(--glass)}
@@ -651,16 +620,6 @@ body{background:var(--grad) fixed;background-color:#030E09}
         <h1>Ciao Sebastiano,<br><em>come posso aiutarti?</em></h1>
       </div>
 
-      <aside class="promo" id="promo" aria-labelledby="promo-t">
-        <button class="promo-x" data-act="promo-close" aria-label="Chiudi"><svg class="i"><use href="#i-x"/></svg></button>
-        <h2 id="promo-t">Prima volta sull'app?</h2>
-        <ol class="how">
-          <li><span class="st"><svg class="i"><use href="#i-camera"/></svg><em>1</em></span><b>Inquadra<br>il documento</b></li>
-          <li><span class="st"><svg class="i"><use href="#i-file"/></svg><em>2</em></span><b>Navisio<br>lo legge</b></li>
-          <li><span class="st"><svg class="i"><use href="#i-check"/></svg><em>3</em></span><b>Tu scegli<br>cosa fare</b></li>
-        </ol>
-        <div style="text-align:center"><button class="promo-cta" data-act="demo">Prova un esempio<svg class="i"><use href="#i-right"/></svg></button></div>
-      </aside>
 
       <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
 
@@ -1042,7 +1001,6 @@ document.addEventListener('click',e=>{
     case 'upload': closeSheetIfOpen(); $('#f-doc').click(); break;
     case 'demo': scan('Preventivo RC Auto.pdf'); break;
     case 'confronto': flOpen(); break;
-    case 'promo-close': $('#promo').classList.add('gone'); setTimeout(()=>$('#promo').hidden=true,320); break;
     case 'attach': attachSheet(); break;
     case 'copertura': attachSheet('Quale polizza vuoi verificare?','Navisio la legge, poi fai la tua domanda.'); break;
     case 'sinistro': attachSheet('Cosa hai del sinistro?','Foto del danno, denuncia, polizza: Navisio ti indica i prossimi passi.'); break;
