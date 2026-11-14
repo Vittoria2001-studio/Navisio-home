@@ -961,6 +961,11 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
 .drv-count[hidden]{display:none}
 #v-tipo .page-h p{color:rgba(255,255,255,.75);font-size:13px}
 #v-tipo .card{margin-top:4px}
+/* pagina "Vedi tutti": verde scurissimo pieno, come l'editor nota */
+.phone:has(#v-tipo:not([hidden])){background:#0A1A14}
+.phone:has(#v-tipo:not([hidden])) .statusbar{background:#0A1A14}
+@media (max-width:519px){body:has(#v-tipo:not([hidden])){background:#0A1A14}}
+#v-tipo .page-h{padding-top:6px}
 </style>
 </head>
 <body>
@@ -1082,6 +1087,7 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
 
     <!-- TUTTI I DOCUMENTI DI UNA TIPOLOGIA -->
     <section id="v-tipo" hidden>
+      <div class="nhead"><button class="nback" data-act="tipo-back" aria-label="Torna ai documenti"><svg class="i"><use href="#i-left"/></svg></button></div>
       <div class="page-h"><h1 id="tipo-title"></h1><p id="tipo-count"></p></div>
       <div class="card cl-card" id="tipo-list"></div>
     </section>
@@ -1414,6 +1420,19 @@ const DOCS = [
   {n:'Preventivo Casa', t:'Preventivi', c:'Famiglia Bianchi', co:'Reale Mutua', d:'Ieri'},
   {n:'Preventivo Casa', t:'Preventivi', c:'Famiglia Bianchi', co:'Allianz', d:'Ieri'},
   {n:'Preventivo Flotta auto', t:'Preventivi', c:'Trasporti Lanza', co:'Generali', d:'2 sett'},
+  {n:'Preventivo Multirischio', t:'Preventivi', c:'Pizzeria Da Gennaro', co:'Unipol', d:'4 g'},
+  {n:'Preventivo RC professionale', t:'Preventivi', c:'Studio Legale Ferraris', co:'AXA', d:'1 sett'},
+  {n:'Preventivo Infortuni', t:'Preventivi', c:'Palestra Fit Point', co:'Generali', d:'1 sett'},
+  {n:'Preventivo Casa', t:'Preventivi', c:'Laura Ricci', co:'Zurich', d:'2 sett'},
+  {n:'Preventivo RC Auto', t:'Preventivi', c:'Luca Bruno', co:'Unipol', d:'3 sett'},
+  {n:'Preventivo Incendio', t:'Preventivi', c:'Caseificio Monviso', co:'Reale Mutua', d:'1 mese'},
+  {n:'Preventivo Merci trasportate', t:'Preventivi', c:'Trasporti Lanza', co:'Allianz', d:'1 mese'},
+  {n:'Preventivo Vita', t:'Preventivi', c:'Matteo Romano', co:'Zurich', d:'2 mesi'},
+  {n:'Polizza RC Auto', t:'Polizze', c:'Marco Ferri', co:'Allianz', d:'Feb 2026'},
+  {n:'Polizza Flotta auto', t:'Polizze', c:'Trasporti Lanza', co:'Generali', d:'Gen 2026'},
+  {n:'Polizza Incendio', t:'Polizze', c:'Pizzeria Da Gennaro', co:'Unipol', d:'Ott 2025'},
+  {n:'Polizza Casa', t:'Polizze', c:'Laura Ricci', co:'Zurich', d:'Lug 2025'},
+  {n:'Polizza RC professionale', t:'Polizze', c:'Studio Legale Ferraris', co:'AXA', d:'Mag 2025'},
   {n:'Polizza Casa', t:'Polizze', c:'Famiglia Bianchi', co:'Generali', d:'Mar 2025'},
   {n:'Polizza Multirischio', t:'Polizze', c:'Ottica Gallo Srl', co:'Allianz', d:'Giu 2025'},
   {n:'Polizza Infortuni', t:'Polizze', c:'Elena Russo', co:'Unipol', d:'Dic 2025'},
@@ -1496,7 +1515,7 @@ function show(v){
   const nav = v==='tipo' ? 'drive' : sub ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
-  document.querySelector('.topbar').hidden = v==='nota';
+  document.querySelector('.topbar').hidden = v==='nota'||v==='tipo';
   document.querySelector('.dock').hidden = v==='nota';
   $('#ntools').hidden = v!=='nota';
   $('#back').hidden = !sub;
@@ -1718,6 +1737,7 @@ document.addEventListener('click',e=>{
     case 'clisort': premioSheet(); break;
     case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
+    case 'tipo-back': show('drive'); break;
     case 'tipo-all': {
       const L=t.dataset.k, list=DOCS.filter(x=>x.t===L);
       $('#tipo-title').textContent=L; $('#tipo-count').textContent=list.length+' documenti';
