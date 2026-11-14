@@ -1601,12 +1601,12 @@ document.addEventListener('click',e=>{
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': openNote(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-back': closeNote(); break;
-    case 'nota-share': noteShare(); break;
-    case 'nota-more': noteMore(); break;
+    case 'nota-share': toast('Non fa parte della demo'); break;
+    case 'nota-more': toast('Non fa parte della demo'); break;
     case 'nota-del': noteDelete(); break;
-    case 'n-attach': attachSheet2(); break;
+    case 'n-attach': toast('Non fa parte della demo'); break;
     case 'n-send': noteSend(); break;
-    case 'n-cam': $('#nf-cam').click(); break;
+    case 'n-cam': toast('Non fa parte della demo'); break;
     case 'n-img': closeSheetIfOpen(); $('#nf-img').click(); break;
     case 'n-file': closeSheetIfOpen(); $('#nf-file').click(); break;
     case 'n-rm': NE.n.att.splice(+t.dataset.k,1); renderAtt(); break;
