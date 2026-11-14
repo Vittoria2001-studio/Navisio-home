@@ -954,6 +954,13 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
 .drv-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .drv-opts button{height:40px;padding:0 16px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14px;font-weight:500}
 .drv-opts button[aria-pressed="true"]{background:#fff;color:#0E241B;border-color:#fff;font-weight:600}
+.az-row{display:flex;align-items:baseline;justify-content:space-between;margin:16px 6px 6px}
+.az-row .az{margin:0!important}
+.az-row button{font-size:13px;font-weight:500;color:#fff}
+.drv-count{margin-right:auto;font-size:13px;color:rgba(255,255,255,.75)}
+.drv-count[hidden]{display:none}
+#v-tipo .page-h p{color:rgba(255,255,255,.75);font-size:13px}
+#v-tipo .card{margin-top:4px}
 </style>
 </head>
 <body>
@@ -1066,10 +1073,17 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
       <div class="page-h ph-row"><h1>I tuoi documenti</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nei documenti</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
       <div class="cli-tools drv-tools">
+        <span class="drv-count" id="drv-count"></span>
         <span class="drv-on" id="drv-on" hidden></span>
         <button class="cli-sort" data-act="drvsheet" aria-pressed="false" id="drv-btn"><svg class="i"><use href="#i-filter"/></svg><span>Filtra</span></button>
       </div>
       <div id="drive-list"></div>
+    </section>
+
+    <!-- TUTTI I DOCUMENTI DI UNA TIPOLOGIA -->
+    <section id="v-tipo" hidden>
+      <div class="page-h"><h1 id="tipo-title"></h1><p id="tipo-count"></p></div>
+      <div class="card cl-card" id="tipo-list"></div>
     </section>
 
     <!-- EDITOR NOTA -->
@@ -1408,6 +1422,10 @@ const DOCS = [
   {n:'CGA Auto Plus', t:'Condizioni (CGA)', co:'Reale Mutua', d:'1 mese'},
   {n:'CGA Casa Sicura', t:'Condizioni (CGA)', co:'Generali', d:'2 mesi'},
   {n:'CGA Multirischio Impresa', t:'Condizioni (CGA)', co:'Allianz', d:'2 mesi'},
+  {n:'CGA Infortuni', t:'Condizioni (CGA)', co:'Unipol', d:'3 mesi'},
+  {n:'CGA Vita Protezione', t:'Condizioni (CGA)', co:'Zurich', d:'4 mesi'},
+  {n:'Perizia danni', t:'Sinistri', c:'Ottica Gallo Srl', co:'Allianz', d:'3 sett'},
+  {n:'Constatazione amichevole', t:'Sinistri', c:'Elena Russo', co:'Unipol', d:'2 mesi'},
   {n:'Denuncia sinistro (CID)', t:'Sinistri', c:'Marco Ferri', co:'Allianz', d:'2 g'},
   {n:'Foto del danno', t:'Sinistri', c:'Marco Ferri', d:'2 g'},
   {n:'Fattura idraulico', t:'Sinistri', c:'Ristorante Il Porto', co:'Generali', d:'1 mese'},
@@ -1427,13 +1445,15 @@ function renderDrive(q){
   const k = norm(q.trim());
   const sub = (x, skip) => [x.c, skip!=='co' && x.co, skip!=='t' && x.t].filter(Boolean).join(' · ') || 'Documento interno';
   const row = (x, skip) => `<button class="act cl dr" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${x.n}</b><small>${sub(x,skip)}</small></span><span class="pz">${x.d}</span></button>`;
-  const group = (list, key, skip) => { const g={}; list.forEach(x=>(g[x[key]] ||= []).push(x)); return Object.keys(g).map(L=>`<div class="az">${L}</div><div class="card cl-card">${g[L].map(x=>row(x,skip)).join('')}</div>`).join(''); };
+  const group = (list, key, skip, max) => { const g={}; list.forEach(x=>(g[x[key]] ||= []).push(x)); return Object.keys(g).map(L=>`<div class="az-row"><div class="az">${L}</div>${max && g[L].length>max?`<button data-act="tipo-all" data-k="${L}">Vedi tutti (${g[L].length})</button>`:''}</div><div class="card cl-card">${g[L].slice(0,max||99).map(x=>row(x,skip)).join('')}</div>`).join(''); };
+  const shown = DRV==='all' ? DOCS.length : DOCS.filter(x=>x.t===DRV).length;
+  $('#drv-count').textContent = shown+' documenti'; $('#drv-count').hidden = DRV!=='all';
   let h='';
   if(k){
     const r = DOCS.filter(x=>norm([x.n,x.c,x.co,x.t,x.a].filter(Boolean).join(' ')).includes(k));
     h = r.length ? `<div class="az">Risultati</div><div class="card cl-card">${r.map(x=>row(x)).join('')}</div>` : '';
   } else {
-    h = group(DOCS.filter(x=>DRV==='all' || x.t===DRV), 't', 't');
+    h = group(DOCS.filter(x=>DRV==='all' || x.t===DRV), 't', 't', DRV==='all' ? 3 : 0);
   }
   $('#drive-list').innerHTML = h || `<p class="empty">Nessun documento trovato per “${esc(q.trim())}”</p>`;
 }
@@ -1470,10 +1490,10 @@ function renderHome(){
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','attivita','libreria','drive','appunti','nota'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria','drive','appunti','nota','tipo'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
-  const sub = v==='chat'||v==='attivita';
-  const nav = sub ? 'home' : v;
+  const sub = v==='chat'||v==='attivita'||v==='tipo';
+  const nav = v==='tipo' ? 'drive' : sub ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
   document.querySelector('.topbar').hidden = v==='nota';
@@ -1698,6 +1718,11 @@ document.addEventListener('click',e=>{
     case 'clisort': premioSheet(); break;
     case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
+    case 'tipo-all': {
+      const L=t.dataset.k, list=DOCS.filter(x=>x.t===L);
+      $('#tipo-title').textContent=L; $('#tipo-count').textContent=list.length+' documenti';
+      $('#tipo-list').innerHTML=list.map(x=>`<button class="act cl dr" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${x.n}</b><small>${[x.c,x.co].filter(Boolean).join(' · ')||'Documento interno'}</small></span><span class="pz">${x.d}</span></button>`).join('');
+      show('tipo'); break; }
     case 'drvsheet': {
       const T=['Preventivi','Polizze','Condizioni (CGA)','Sinistri',"Documenti dell'agenzia"];
       openSheet(`<h2 id="sheet-title">Filtra per tipologia</h2>
@@ -1706,7 +1731,7 @@ document.addEventListener('click',e=>{
     case 'drv': {
       DRV=t.dataset.k; closeSheet(); renderDrive();
       const on=DRV!=='all'; $('#drv-btn').setAttribute('aria-pressed',on);
-      $('#drv-on').hidden=!on; $('#drv-on').innerHTML = on ? `${DRV}<button data-act="drv" data-k="all" aria-label="Togli filtro">${ic('x')}</button>` : '';
+      $('#drv-count').hidden=on; $('#drv-on').hidden=!on; $('#drv-on').innerHTML = on ? `${DRV}<button data-act="drv" data-k="all" aria-label="Togli filtro">${ic('x')}</button>` : '';
       break; }
     case 'libt': LIBT=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b===t)); $('#lib-hint').textContent = LIBT==='nv' ? 'I prodotti delle compagnie, aggiornati da Navisio.' : 'I documenti caricati da te e dal tuo team.'; renderLib(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
@@ -1734,7 +1759,7 @@ document.addEventListener('click',e=>{
       break;
   }
 });
-$('#back').addEventListener('click',()=>show('home'));
+$('#back').addEventListener('click',()=>show(view==='tipo'?'drive':'home'));
 $('#scrim').addEventListener('click',closeSheet);
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape' && !$('#sheet').hidden) closeSheet();
