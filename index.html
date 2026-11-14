@@ -911,6 +911,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .ntools .nt-row{flex:none}
 .ntools .nt-mic2{box-shadow:none}
 .ntools.rec .nt-mic2{animation:pulse2 1.3s ease-out infinite}
+.nhead-r{display:flex;gap:8px}
+.ntitle{width:100%;background:none;border:0;outline:none;color:#fff;font:700 24px/1.25 var(--sans);letter-spacing:-.02em;margin-bottom:8px}
+.ntitle::placeholder{color:rgba(255,255,255,.4)}
+.fl-row.del b{color:#FF7A70}
 </style>
 </head>
 <body>
@@ -945,6 +949,8 @@ body{background:var(--grad) fixed;background-color:#030E09}
   <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 4v16"/><path d="m3 8 4-4 4 4"/><path d="M17 20V4"/><path d="m21 16-4 4-4-4"/></symbol>
   <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
   <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l8.6-8.6a4 4 0 0 1 5.7 5.7l-8.6 8.6a2 2 0 0 1-2.8-2.8l8.5-8.5"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c0-4 3.4-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -1019,9 +1025,14 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <section id="v-nota" hidden>
       <div class="nhead">
         <button class="nback" data-act="nota-back" aria-label="Torna alle note"><svg class="i"><use href="#i-left"/></svg></button>
-        <button class="nshare" data-act="nota-share" aria-label="Condividi la nota"><svg class="i"><use href="#i-share"/></svg></button>
+        <div class="nhead-r">
+          <button class="nshare" data-act="nota-share" aria-label="Condividi la nota"><svg class="i"><use href="#i-share"/></svg></button>
+          <button class="nshare" data-act="nota-more" aria-label="Altre azioni"><svg class="i"><use href="#i-more"/></svg></button>
+        </div>
       </div>
       <p class="ndate" id="n-date"></p>
+      <label class="sr" for="n-title">Titolo della nota</label>
+      <input id="n-title" class="ntitle" placeholder="Titolo" autocomplete="off">
       <label class="sr" for="n-text">Testo della nota</label>
       <textarea id="n-text" class="ntext" placeholder="Scrivi o parla…"></textarea>
       <div class="natt" id="n-att"></div>
@@ -1229,7 +1240,7 @@ function renderNotes(q){
   if(!items.length){ $('#nlist').innerHTML = `<p class="empty">Nessuna nota trovata${q.trim()?` per “${esc(q.trim())}”`:''}</p>`; return; }
   const groups = [];
   items.forEach(x=>{ const [g,when]=noteGroup(x.d,now); x.when=when; let G=groups.find(y=>y.g===g); if(!G) groups.push(G={g,list:[]}); G.list.push(x); });
-  $('#nlist').innerHTML = groups.map(G=>`<div class="az">${G.g}</div><div class="card cl-card">${G.list.map(x=>`<button class="nrow" data-act="nota" data-i="${x.i}"><span class="tx"><b>${esc(x.n.t)}</b>${x.n.c?`<small>${esc(x.n.c)}</small>`:''}</span><span class="when">${x.when}</span></button>`).join('')}</div>`).join('');
+  $('#nlist').innerHTML = groups.map(G=>`<div class="az">${G.g}</div><div class="card cl-card">${G.list.map(x=>`<button class="nrow" data-act="nota" data-i="${x.i}"><span class="tx"><b>${esc(x.n.title||x.n.t)}</b>${x.n.c?`<small>${esc(x.n.c)}</small>`:''}</span><span class="when">${x.when}</span></button>`).join('')}</div>`).join('');
 }
 function notaSheet(i){
   const n = i>=0 ? notes[i] : null;
@@ -1248,10 +1259,10 @@ function openNote(i){
   const base = i>=0 ? notes[i] : {t:'', c:'', at:new Date('2026-11-14T'+new Date().toTimeString().slice(0,5)).toISOString(), att:[]};
   NE = {i, n:{...base, att:[...(base.att||[])]}};
   $('#n-date').textContent = noteDate(NE.n.at) + (NE.n.c ? ' · '+NE.n.c : '');
-  $('#n-text').value = NE.n.t;
+  $('#n-text').value = NE.n.t; $('#n-title').value = NE.n.title||'';
   renderAtt();
   show('nota');
-  if(i<0) $('#n-text').focus({preventScroll:true});
+  if(i<0) $('#n-title').focus({preventScroll:true});
 }
 function renderBody(){
   $('#n-body').innerHTML = NE.n.t ? NE.n.t.split('\n').map(p=>`<p>${esc(p)}</p>`).join('') : `<p class="ph">Scrivi o registra una nota.</p>`;
@@ -1268,8 +1279,8 @@ function renderAtt(){
 function closeNote(){
   if(!NE) return show('appunti');
   if(REC) recStop();
-  NE.n.t = $('#n-text').value.trim();
-  const empty = !NE.n.t && !NE.n.att.length;
+  NE.n.t = $('#n-text').value.trim(); NE.n.title = $('#n-title').value.trim();
+  const empty = !NE.n.t && !NE.n.title && !NE.n.att.length;
   if(NE.i<0){ if(!empty) notes.unshift(NE.n); }
   else if(empty) notes.splice(NE.i,1);
   else notes[NE.i] = NE.n;
@@ -1307,8 +1318,18 @@ function noteMic(){
   b.classList.add('on'); b.querySelector('span').textContent='Ti ascolto…';
   setTimeout(()=>{ ta.value = (ta.value.trim()?ta.value.trim()+' ':'') + 'Richiamare il cliente lunedì per confermare la copertura.'; b.classList.remove('on'); b.querySelector('span').textContent='Detta'; },1800);
 }
+function noteMore(){
+  openSheet(`<h2 id="sheet-title">Nota</h2>
+    <div class="fl-list" style="margin-top:14px">
+      <button class="fl-row del" data-act="nota-del"><span class="lg" style="background:rgba(255,90,78,.16);color:#FF7A70">${ic('trash')}</span><span class="tx"><b>Elimina nota</b><span>Non si può annullare</span></span></button>
+    </div>`);
+}
+function noteDelete(){
+  if(NE && NE.i>=0) notes.splice(NE.i,1);
+  NE=null; saveNotes(); renderNotes(); closeSheet(); show('appunti'); toast('Nota eliminata');
+}
 function noteShare(){
-  const text = $('#n-text').value.trim() || 'Nota vuota';
+  const text = [$('#n-title').value.trim(), $('#n-text').value.trim()].filter(Boolean).join('\n\n') || 'Nota vuota';
   if(navigator.share){ navigator.share({title:'Nota', text}).catch(()=>{}); }
   else { try{ navigator.clipboard.writeText(text); }catch(e){} toast('Condivisione disponibile su iPhone · testo copiato'); }
 }
@@ -1579,6 +1600,8 @@ document.addEventListener('click',e=>{
     case 'nota': openNote(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-back': closeNote(); break;
     case 'nota-share': noteShare(); break;
+    case 'nota-more': noteMore(); break;
+    case 'nota-del': noteDelete(); break;
     case 'n-attach': attachSheet2(); break;
     case 'n-send': noteSend(); break;
     case 'n-cam': $('#nf-cam').click(); break;
