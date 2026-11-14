@@ -50,7 +50,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;str
 
 /* ---------- layout ---------- */
 .app{min-height:100dvh}
-main{padding:0 var(--gutter) 236px}
+main{padding:0 var(--gutter) 190px}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(243,245,247,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
 .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font:600 14px var(--sans);letter-spacing:.04em}
@@ -92,7 +92,7 @@ main{padding:0 var(--gutter) 236px}
 .sec-h a,.sec-h button{font-size:14px;font-weight:600;color:var(--green-2)}
 
 /* azioni rapide */
-.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:28px 0 8px}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:28px 0 8px}
 .promo[hidden]+.qa{margin-top:22px}
 .soon{display:flex;align-items:center;gap:10px;margin-top:30px;padding:10px 10px 10px 16px;border-radius:18px;border:1px dashed rgba(20,30,40,.18)}
 .soon .tx{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--ink)}
@@ -146,9 +146,6 @@ main{padding:0 var(--gutter) 236px}
 .composer.listening .mic{background:#C2410C;color:#fff;animation:pulse 1.4s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(194,65,12,.45)}100%{box-shadow:0 0 0 14px rgba(194,65,12,0)}}
 
-.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -14px 8px;padding:2px 14px}
-.chips::-webkit-scrollbar{display:none}
-.chips button{flex:none;height:38px;padding:0 14px;border-radius:99px;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 0 0 1px var(--line);font-size:13.5px;font-weight:500;color:var(--ink)}
 .tabbar{margin:8px auto 0;width:fit-content;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(14,59,44,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
 .tab{height:44px;min-width:52px;padding:0 15px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(243,245,247,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
 .tab:hover{color:#fff}
@@ -580,11 +577,6 @@ main{padding:0 var(--gutter) 236px}
 
   <!-- Dock -->
   <div class="dock">
-    <div class="chips" id="chips" role="group" aria-label="Suggerimenti">
-      <button data-act="attach">Cosa copre questa polizza?</button>
-      <button data-ask="Scrivi una mail di rinnovo per un cliente">Scrivi una mail di rinnovo</button>
-      <button data-view="libreria">Trova un prodotto in libreria</button>
-    </div>
     <form class="composer" id="composer" autocomplete="off">
       <button type="button" class="cbtn plus" aria-label="Aggiungi documento" data-act="attach"><svg class="i"><use href="#i-plus"/></svg></button>
       <label class="sr" for="q">Chiedi a Navisio</label>
@@ -631,8 +623,9 @@ const cases = [
 ];
 const sugg = [
   {tag:'confronto', icon:'scale', q:'Confronta documenti', act:'confronto'},
-  {tag:'sinistro', icon:'clip', q:'Analizza un sinistro', ask:'Analizza un sinistro: cosa devo fare?'},
-  {tag:'polizza', icon:'alert', q:'Risk Analysis', toast:'Risk Analysis: nel prototipo si ferma qui'}
+  {tag:'polizza', icon:'file', q:'Verifica una copertura', act:'copertura'},
+  {tag:'sinistro', icon:'clip', q:'Analizza un sinistro', act:'sinistro'},
+  {tag:'libreria', icon:'mail', q:'Scrivi al cliente', act:'scrivi'}
 ];
 const tagStyle = {confronto:['var(--violet-t)','var(--violet)'], sinistro:['var(--orange-t)','var(--orange)'], polizza:['var(--blue-t)','var(--blue)'], libreria:['var(--leaf-t)','var(--leaf)']};
 
@@ -663,8 +656,8 @@ function renderHome(){
   $('#alist').innerHTML = cases.map(actRow).join('');
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
-  $('#plist').innerHTML = pratiche.map(p=>{const [bg,fg]=tagStyle[p[4]];return `
-    <button class="row" data-ask="Riassumi i lavori fatti per ${p[1]}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
+  $('#plist').innerHTML = pratiche.map((p,i)=>{const [bg,fg]=tagStyle[p[4]];return `
+    <button class="row" data-act="cliente" data-i="${i}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
   $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
 }
@@ -680,7 +673,6 @@ function show(v){
   $('#composer').hidden = !(v==='home'||v==='chat');
   $('#back').hidden = v!=='chat';
   document.querySelector('.topbar .avatar').hidden = v==='chat';
-  $('#chips').hidden = v!=='home';
   window.scrollTo({top:0,behavior:'instant'}); $('#scroller').scrollTop = 0;
 }
 
@@ -703,15 +695,38 @@ function closeSheet(){
   lastFocus && lastFocus.focus && lastFocus.focus({preventScroll:true});
 }
 
-function attachSheet(){
+function attachSheet(title='Dai un documento a Navisio', sub='Lo legge e ti dice cosa può fare.'){
   openSheet(`
-    <h2 id="sheet-title">Dai un documento a Navisio</h2>
-    <p class="sub">Lo legge e ti dice cosa può fare.</p>
+    <h2 id="sheet-title">${title}</h2>
+    <p class="sub">${sub}</p>
     <div class="opts">
       <button class="opt" data-act="camera"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
       <button class="opt" data-act="upload"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('upload')}</span><b>Carica file</b><span>PDF, foto, fascicoli</span></button>
-      <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span><b>Da una pratica</b><span>Documenti dei clienti</span></button>
+      <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span><b>Da un cliente</b><span>Documenti dei clienti</span></button>
       <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Dalla libreria</b><span>Prodotti delle compagnie</span></button>
+    </div>`);
+}
+
+function scriviSheet(){
+  const no = 'data-toast="Nel prototipo trovi solo l\'esempio del rinnovo"';
+  openSheet(`
+    <h2 id="sheet-title">Cosa vuoi scrivere?</h2>
+    <p class="sub">Navisio prepara la bozza, tu la controlli e la invii.</p>
+    <div class="opts">
+      <button class="opt" data-ask="Scrivi una mail di rinnovo per un cliente"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('mail')}</span><b>Rinnovo</b><span>Polizza in scadenza</span></button>
+      <button class="opt" ${no}><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><b>Documenti</b><span>Richiesta o sollecito</span></button>
+      <button class="opt" ${no}><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('shield')}</span><b>Coperture</b><span>Riepilogo per il cliente</span></button>
+      <button class="opt" ${no}><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('clip')}</span><b>Sinistro</b><span>Aggiornamento sullo stato</span></button>
+    </div>`);
+}
+function clienteSheet(i){
+  const c = pratiche[i];
+  openSheet(`
+    <h2 id="sheet-title">${c[1]}</h2>
+    <p class="sub">${c[2]}</p>
+    <div class="opts">
+      <button class="opt" data-ask="Riassumi i lavori fatti per ${c[1]}"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('clock')}</span><b>Riassumi i lavori</b><span>Documenti e risultati</span></button>
+      <button class="opt" data-toast="Risk Analysis: nel prototipo si ferma qui"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('alert')}</span><b>Avvia Risk Analysis</b><span>Questionario sui rischi</span></button>
     </div>`);
 }
 
@@ -846,7 +861,7 @@ function mic(){
 document.addEventListener('click',e=>{
   const t = e.target.closest('button,[data-act]'); if(!t) return;
   if(t.dataset.view){ closeSheetIfOpen(); show(t.dataset.view); return; }
-  if(t.dataset.ask){ ask(t.dataset.ask, t.dataset.doc); return; }
+  if(t.dataset.ask){ closeSheetIfOpen(); ask(t.dataset.ask, t.dataset.doc); return; }
   if(t.dataset.toast){ toast(t.dataset.toast); return; }
   if(t.dataset.pick){ closeSheet(); setTimeout(()=>scan(t.dataset.pick==='pratica'?'Preventivo RC Auto · pratica Ferri':'Set informativo RC Auto · Allianz'),320); return; }
   if(t.closest('.filters')){ t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); return; }
@@ -857,6 +872,10 @@ document.addEventListener('click',e=>{
     case 'confronto': flOpen(); break;
     case 'promo-close': $('#promo').classList.add('gone'); setTimeout(()=>$('#promo').hidden=true,320); break;
     case 'attach': attachSheet(); break;
+    case 'copertura': attachSheet('Quale polizza vuoi verificare?','Navisio la legge, poi fai la tua domanda.'); break;
+    case 'sinistro': attachSheet('Cosa hai del sinistro?','Foto del danno, denuncia, polizza: Navisio ti indica i prossimi passi.'); break;
+    case 'scrivi': scriviSheet(); break;
+    case 'cliente': clienteSheet(+t.dataset.i); break;
     case 'mic': mic(); break;
     case 'close': closeSheet(); break;
     case 'scheda': schedaSheet(); break;
