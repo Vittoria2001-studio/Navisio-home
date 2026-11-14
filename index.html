@@ -938,6 +938,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act.cl.dr small{display:block;font-size:12.5px;color:rgba(255,255,255,.62);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .act.cl.dr .tx{min-width:0}
 #v-drive .lib-hint{margin-top:10px}
+/* lo scroll finisce con i contenuti: spazio in fondo solo quanto serve per le barre */
+main{padding-bottom:112px}
+main:has(#v-home:not([hidden])),main:has(#v-chat:not([hidden])){padding-bottom:196px}
+main:has(#v-nota:not([hidden])){padding-bottom:170px}
 </style>
 </head>
 <body>
