@@ -50,7 +50,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;str
 
 /* ---------- layout ---------- */
 .app{min-height:100dvh}
-main{padding:0 var(--gutter) 190px}
+main{padding:0 var(--gutter) 200px}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;position:sticky;top:0;z-index:5;background:rgba(243,245,247,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);margin:0 calc(var(--gutter)*-1);padding-left:var(--gutter);padding-right:var(--gutter)}
 .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font:600 14px var(--sans);letter-spacing:.04em}
@@ -142,11 +142,22 @@ main{padding:0 var(--gutter) 190px}
 .composer.listening .mic{background:#C2410C;color:#fff;animation:pulse 1.4s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(194,65,12,.45)}100%{box-shadow:0 0 0 14px rgba(194,65,12,0)}}
 
-.tabbar{margin:8px auto 0;width:fit-content;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(14,59,44,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
-.tab{height:44px;min-width:52px;padding:0 15px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(243,245,247,.8);font-weight:600;font-size:14px;transition:background .2s,color .2s}
+.tabbar{margin:8px auto 0;width:100%;display:flex;gap:2px;padding:5px;border-radius:999px;background:rgba(14,59,44,.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg)}
+.tab{flex:1;min-width:0;height:54px;padding:0 2px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:rgba(243,245,247,.82);font-weight:600;font-size:11px;line-height:1;transition:background .2s,color .2s}
+.tab svg.i{width:21px;height:21px}
 .tab:hover{color:#fff}
 .tab[aria-current="page"]{background:var(--lime);color:var(--green)}
-.tab:not([aria-current="page"]) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- appunti ---------- */
+.notes{display:grid;gap:10px;margin-top:16px}
+.note{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:14px 16px;text-align:left;width:100%}
+.note p{font-size:15px;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.note small{display:flex;gap:6px;margin-top:8px;font-size:12.5px;color:var(--ink-3)}
+.note small b{font-weight:600;color:var(--green-2)}
+.newnote{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;margin-top:4px;border-radius:16px;background:var(--green);color:#fff;font-weight:600;font-size:15px}
+.nt{width:100%;min-height:150px;margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--paper);font-size:16px;line-height:1.45;resize:none;outline:none}
+.nt:focus{border-color:var(--green-2)}
+.nsave{width:100%;height:50px;margin-top:12px;border-radius:16px;background:var(--green);color:#fff;font-weight:600;font-size:15px}
 
 /* ---------- chat ---------- */
 .thread{display:flex;flex-direction:column;gap:18px;padding-top:8px}
@@ -486,6 +497,7 @@ main{padding:0 var(--gutter) 190px}
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
   <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
   <symbol id="i-clip" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.6"/><path d="M21.4 4.6a2 2 0 0 0-3-3L11 9l-1 4 4-1Z"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -550,6 +562,13 @@ main{padding:0 var(--gutter) 190px}
       <div class="card" id="alist" style="margin-top:12px"></div>
     </section>
 
+    <!-- APPUNTI -->
+    <section id="v-appunti" hidden>
+      <div class="page-h"><h1>Appunti</h1><p>Le note veloci che prendi dal cliente o al telefono.</p></div>
+      <button class="newnote" data-act="nota"><svg class="i"><use href="#i-plus"/></svg>Nuovo appunto</button>
+      <div class="notes" id="nlist"></div>
+    </section>
+
     <!-- DRIVE -->
     <section id="v-libreria" hidden>
       <div class="page-h"><h1>Drive</h1><p>I documenti della tua agenzia e i prodotti delle compagnie.</p></div>
@@ -582,6 +601,7 @@ main{padding:0 var(--gutter) 190px}
       <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-user"/></svg><span>Clienti</span></button>
       <button class="tab" data-view="attivita"><svg class="i"><use href="#i-clock"/></svg><span>Attività</span></button>
       <button class="tab" data-view="libreria"><svg class="i"><use href="#i-folder"/></svg><span>Drive</span></button>
+      <button class="tab" data-view="appunti"><svg class="i"><use href="#i-note"/></svg><span>Appunti</span></button>
     </nav>
   </div>
 
@@ -628,6 +648,27 @@ const pratiche = [
   ['TL','Trasporti Lanza','Flotta auto · confronto','12 doc · 2 sett','confronto'],
   ['GM','Giulia Moretti','Vita · analisi bisogni IDD','4 doc · 3 sett','polizza']
 ];
+let notes = [
+  {t:'Bianchi: chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', d:'Oggi, 9:12'},
+  {t:'Ferri: manca il CID firmato e la foto del paraurti. Sollecitare entro venerdì.', c:'Marco Ferri', d:'Ieri'},
+  {t:'Ottica Gallo vuole capire se il fermo attività è coperto in caso di allagamento.', c:'Ottica Gallo Srl', d:'Lun'}
+];
+try{ const sv=JSON.parse(localStorage.getItem('nv-notes')); if(Array.isArray(sv)) notes=sv; }catch(e){}
+function saveNotes(){ try{ localStorage.setItem('nv-notes', JSON.stringify(notes)); }catch(e){} }
+function esc(x){ return String(x).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+function renderNotes(){
+  $('#nlist').innerHTML = notes.map((n,i)=>`<button class="note" data-act="nota" data-i="${i}"><p>${esc(n.t)}</p><small>${n.c?`<b>${esc(n.c)}</b>·`:''}<span>${esc(n.d)}</span></small></button>`).join('');
+}
+function notaSheet(i){
+  const n = i>=0 ? notes[i] : null;
+  openSheet(`
+    <h2 id="sheet-title">${n?'Appunto':'Nuovo appunto'}</h2>
+    <p class="sub">${n&&n.c?esc(n.c):'Scrivi o detta una nota veloce.'}</p>
+    <label class="sr" for="nt">Testo dell'appunto</label>
+    <textarea class="nt" id="nt" placeholder="Es. richiamare il cliente per il rinnovo…">${n?esc(n.t):''}</textarea>
+    <button class="nsave" data-act="nota-save" data-i="${n?i:-1}">Salva</button>`);
+  setTimeout(()=>{ const a=$('#nt'); a && a.focus({preventScroll:true}); },320);
+}
 const compagnie = [['Generali','#B4231E',true],['Reale Mutua','#1F3E73',true],['Allianz','#123E7C',false],['AXA','#1B2C8A',false],['Unipol','#0F5AA8',false],['Zurich','#2167AE',false]];
 const recenti = [
   ['Set informativo Casa','Generali · aggiornato 2 g fa'],
@@ -649,6 +690,7 @@ function renderHome(){
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = pratiche.map((p,i)=>{const [bg,fg]=tagStyle[p[4]];return `
     <button class="row" data-act="cliente" data-i="${i}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
+  renderNotes();
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
   $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
 }
@@ -657,7 +699,7 @@ function renderHome(){
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','attivita','libreria'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria','appunti'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
   const nav = v==='chat' ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
@@ -867,6 +909,11 @@ document.addEventListener('click',e=>{
     case 'sinistro': attachSheet('Cosa hai del sinistro?','Foto del danno, denuncia, polizza: Navisio ti indica i prossimi passi.'); break;
     case 'scrivi': scriviSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
+    case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
+    case 'nota-save': {
+      const v=$('#nt').value.trim(), i=+t.dataset.i;
+      if(v){ if(i>=0) notes[i].t=v; else notes.unshift({t:v,c:'',d:'Adesso'}); saveNotes(); renderNotes(); toast('Appunto salvato'); }
+      closeSheet(); break; }
     case 'mic': mic(); break;
     case 'close': closeSheet(); break;
     case 'scheda': schedaSheet(); break;
