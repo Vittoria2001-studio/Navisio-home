@@ -701,6 +701,9 @@ body{background:var(--grad) fixed;background-color:#030E09}
 #plist .az:first-child{margin-top:14px}
 .empty{margin-top:24px;text-align:center;color:rgba(255,255,255,.75);font-size:14px}
 .search input::-webkit-search-cancel-button{filter:invert(1);opacity:.7}
+.act.t1{padding:15px 0;gap:12px}
+.act.t1 b{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act.t1 .when{align-self:center;margin-top:0}
 </style>
 </head>
 <body>
@@ -875,12 +878,12 @@ const ic = (n, cls='i') => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 
 /* ---------- dati di esempio ---------- */
 const cases = [
-  {tag:'confronto', ini:'FB', who:'Famiglia Bianchi', kind:'Confronto · Casa', when:'Oggi, 11:40', st:'Pronto', s:'fin', q:'Confronta i preventivi casa della famiglia Bianchi'},
-  {tag:'sinistro', ini:'MF', who:'Marco Ferri', kind:'Sinistro · RC Auto', when:'Oggi, 9:12', st:'Da completare', s:'todo', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
-  {tag:'risk', ini:'OG', who:'Ottica Gallo Srl', kind:'Risk Analysis', when:'Ieri, 17:05', st:'In elaborazione', s:'run', q:'Cosa copre la multirischio di Ottica Gallo?'},
-  {tag:'confronto', ini:'ER', who:'Elena Russo', kind:'Confronto · Infortuni', when:'Ieri, 10:22', st:'Pronto', s:'fin', q:'Confronta i preventivi infortuni di Elena Russo'},
-  {tag:'polizza', ini:'GM', who:'Giulia Moretti', kind:'Verifica copertura · Vita', when:'12 nov, 15:30', st:'Pronto', s:'fin', q:'Cosa copre la polizza vita di Giulia Moretti?'},
-  {tag:'confronto', ini:'TL', who:'Trasporti Lanza', kind:'Confronto · Flotta auto', when:'11 nov, 16:48', st:'Pronto', s:'fin', q:'Confronta i preventivi flotta di Trasporti Lanza'}
+  {tag:'confronto', ini:'FB', title:'Confronto polizze casa Bianchi', who:'Famiglia Bianchi', kind:'Confronto · Casa', when:'Oggi, 11:40', st:'Pronto', s:'fin', q:'Confronta i preventivi casa della famiglia Bianchi'},
+  {tag:'sinistro', ini:'MF', title:'Sinistro RC Auto Ferri', who:'Marco Ferri', kind:'Sinistro · RC Auto', when:'Oggi, 9:12', st:'Da completare', s:'todo', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
+  {tag:'risk', ini:'OG', title:'Rischi Ottica Gallo', who:'Ottica Gallo Srl', kind:'Risk Analysis', when:'Ieri, 17:05', st:'In elaborazione', s:'run', q:'Cosa copre la multirischio di Ottica Gallo?'},
+  {tag:'confronto', ini:'ER', title:'Preventivi infortuni Russo', who:'Elena Russo', kind:'Confronto · Infortuni', when:'Ieri, 10:22', st:'Pronto', s:'fin', q:'Confronta i preventivi infortuni di Elena Russo'},
+  {tag:'polizza', ini:'GM', title:'Copertura vita Moretti', who:'Giulia Moretti', kind:'Verifica copertura · Vita', when:'12 nov, 15:30', st:'Pronto', s:'fin', q:'Cosa copre la polizza vita di Giulia Moretti?'},
+  {tag:'confronto', ini:'TL', title:'Flotta auto Lanza', who:'Trasporti Lanza', kind:'Confronto · Flotta auto', when:'11 nov, 16:48', st:'Pronto', s:'fin', q:'Confronta i preventivi flotta di Trasporti Lanza'}
 ];
 const sugg = [
   {tag:'confronto', icon:'scale', q:'Confronta documenti', act:'confronto'},
@@ -968,9 +971,8 @@ const recenti = [
 /* ---------- render ---------- */
 function renderHome(){
   const actRow = (c,home)=>`
-    <button class="act" data-ask="${c.q}">
-      <span class="face">${c.ini}</span>
-      <span class="tx"><b>${c.who}</b><small>${c.kind}${home?'':' · '+c.when}</small></span>
+    <button class="act t1" data-ask="${c.q}">
+      <span class="tx"><b>${c.title}</b>${home?'':`<small>${c.when}</small>`}</span>
       ${home ? `<span class="when">${c.when}</span>` : `<span class="stt ${c.s}">${c.st}</span>`}
     </button>`;
   $('#rail').innerHTML = cases.slice(0,5).map(c=>actRow(c,true)).join('');
