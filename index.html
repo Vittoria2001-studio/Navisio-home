@@ -1080,7 +1080,6 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
       <div class="cli-tools drv-tools">
         <span class="drv-count" id="drv-count"></span>
         <span class="drv-on" id="drv-on" hidden></span>
-        <button class="cli-sort" data-act="drvsheet" aria-pressed="false" id="drv-btn"><svg class="i"><use href="#i-filter"/></svg><span>Filtra</span></button>
       </div>
       <div id="drive-list"></div>
     </section>
@@ -1750,7 +1749,7 @@ document.addEventListener('click',e=>{
       break; }
     case 'drv': {
       DRV=t.dataset.k; closeSheet(); renderDrive();
-      const on=DRV!=='all'; $('#drv-btn').setAttribute('aria-pressed',on);
+      const on=DRV!=='all';
       $('#drv-count').hidden=on; $('#drv-on').hidden=!on; $('#drv-on').innerHTML = on ? `${DRV}<button data-act="drv" data-k="all" aria-label="Togli filtro">${ic('x')}</button>` : '';
       break; }
     case 'libt': LIBT=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b===t)); $('#lib-hint').textContent = LIBT==='nv' ? 'I prodotti delle compagnie, aggiornati da Navisio.' : 'I documenti caricati da te e dal tuo team.'; renderLib(); break;
