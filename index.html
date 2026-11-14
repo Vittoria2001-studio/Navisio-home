@@ -926,6 +926,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act.cl .co-lg{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;color:#fff;font:600 14px var(--sans)}
 #v-home .qa-h h2,#v-home .sec .sec-h h2{color:var(--lime)}
 #v-home .sec .sec-h button{color:#fff}
+#drive-list .az{margin:16px 6px 6px;font-size:12px;color:var(--lime);font-weight:600}
+.act.cl .face.dir{color:var(--lime)}
+.tab{padding:0 1px}
+.tab span{font-size:10.5px}
 </style>
 </head>
 <body>
@@ -1032,6 +1036,14 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <div id="nlist"></div>
     </section>
 
+    <!-- DRIVE -->
+    <section id="v-drive" hidden>
+      <div class="page-h ph-row"><h1>Drive</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nel Drive</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
+      <p class="lib-hint">I documenti tuoi e del tuo team, come sul computer.</p>
+      <div id="drive-list"></div>
+    </section>
+
     <!-- EDITOR NOTA -->
     <section id="v-nota" hidden>
       <div class="nhead">
@@ -1051,13 +1063,9 @@ body{background:var(--grad) fixed;background-color:#030E09}
 
     <!-- DRIVE -->
     <section id="v-libreria" hidden>
-      <div class="page-h ph-row"><h1>Libreria</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica un documento"><svg class="i"><use href="#i-plus"/></svg></button></div>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nella libreria</span><input id="lib-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
-      <div class="lib-seg" role="tablist" aria-label="Quale libreria">
-        <button role="tab" data-act="libt" data-k="nv" aria-selected="true">Libreria Navisio</button>
-        <button role="tab" data-act="libt" data-k="mine" aria-selected="false">I tuoi documenti</button>
-      </div>
-      <p class="lib-hint" id="lib-hint">I prodotti delle compagnie, aggiornati da Navisio.</p>
+      <div class="page-h"><h1>Libreria</h1></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nella libreria</span><input id="lib-q" type="search" autocomplete="off" placeholder="Cerca compagnia…"></label>
+      <p class="lib-hint">I prodotti delle compagnie, aggiornati da Navisio.</p>
       <div id="lib-list"></div>
     </section>
   </main>
@@ -1077,6 +1085,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <button class="tab" data-view="home" aria-current="page"><svg class="i"><use href="#i-chat"/></svg><span>Chiedi</span></button>
       <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-users"/></svg><span>Clienti</span></button>
       <button class="tab" data-view="libreria"><svg class="i"><use href="#i-book"/></svg><span>Libreria</span></button>
+      <button class="tab" data-view="drive"><svg class="i"><use href="#i-folder"/></svg><span>Drive</span></button>
       <button class="tab" data-view="appunti"><svg class="i"><use href="#i-note"/></svg><span>Note</span></button>
     </nav>
   </div>
@@ -1356,6 +1365,18 @@ function renderLib(q){
   }
   $('#lib-list').innerHTML = h || `<p class="empty">Nessun risultato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`;
 }
+/* ---------- Drive: le cartelle e i file dell'agenzia ---------- */
+const DRIVE_DIRS = [['Polizze clienti',36],['Preventivi',14],['Convenzioni',2],['Circolari',2],['Modelli',3],['Procedure',2],['Fatture',8]];
+const DRIVE_FILES = [['Listino provvigioni 2026.xlsx','1 sett'],['Organigramma agenzia.pdf','2 mesi'],['Presentazione agenzia.pdf','3 mesi']];
+function renderDrive(q){
+  if(q===undefined) q = ($('#drive-q')||{}).value||'';
+  const k = norm(q.trim()), hit = t => !k || norm(t).includes(k);
+  const dirs = DRIVE_DIRS.filter(d=>hit(d[0])), files = DRIVE_FILES.filter(f=>hit(f[0]));
+  let h = '';
+  if(dirs.length) h += `<div class="az">Cartelle</div><div class="card cl-card">${dirs.map(d=>`<button class="act cl" data-act="cartella"><span class="face dir">${ic('folder')}</span><span class="tx"><b>${d[0]}</b></span><span class="pz">${d[1]} file</span></button>`).join('')}</div>`;
+  if(files.length) h += `<div class="az">File</div><div class="card cl-card">${files.map(f=>`<button class="act cl" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${f[0]}</b></span><span class="pz">${f[1]}</span></button>`).join('')}</div>`;
+  $('#drive-list').innerHTML = h || `<p class="empty">Nessun risultato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`;
+}
 const compagnie = [['Generali','#B4231E',true],['Reale Mutua','#1F3E73',true],['Allianz','#123E7C',false],['AXA','#1B2C8A',false],['Unipol','#0F5AA8',false],['Zurich','#2167AE',false]];
 const agenzia = [
   ['Convenzione dipendenti 2026','Aggiornata 1 sett fa'],
@@ -1382,14 +1403,14 @@ function renderHome(){
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   renderClienti('');
   renderNotes();
-  renderLib('');
+  renderLib(''); renderDrive('');
 }
 
 /* ---------- navigazione ---------- */
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','attivita','libreria','appunti','nota'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria','drive','appunti','nota'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
   const sub = v==='chat'||v==='attivita';
   const nav = sub ? 'home' : v;
@@ -1430,7 +1451,7 @@ function attachSheet(title='Dai un documento a Navisio', sub='Lo legge e ti dice
       <button class="opt" data-act="camera"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
       <button class="opt" data-act="upload"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('upload')}</span><b>Carica file</b><span>PDF, foto, fascicoli</span></button>
       <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span><b>Da un cliente</b><span>Documenti dei clienti</span></button>
-      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Dalla libreria</b><span>Navisio o i tuoi documenti</span></button>
+      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Libreria o Drive</b><span>Prodotti e tuoi documenti</span></button>
     </div>`);
 }
 
@@ -1662,6 +1683,7 @@ document.addEventListener('input',e=>{
   if(e.target.id==='cli-q') renderClienti(e.target.value);
   if(e.target.id==='note-q') renderNotes(e.target.value);
   if(e.target.id==='lib-q') renderLib(e.target.value);
+  if(e.target.id==='drive-q') renderDrive(e.target.value);
   if(e.target.id==='n-in') inSync();
   if(e.target.id==='rmin'){ CF.min=Math.min(+e.target.value, CF.max-500); e.target.value=CF.min; premioSync(); }
   if(e.target.id==='rmax'){ CF.max=Math.max(+e.target.value, CF.min+500); e.target.value=CF.max; premioSync(); }
@@ -1804,7 +1826,7 @@ function flCliDocs(){
 }
 function flLibSheet(){
   FL.sheet='lib';
-  const tabs=`<div class="fl-seg" style="margin-top:14px">${[['co','Libreria Navisio'],['ag','I tuoi documenti']].map(([k,t])=>`<button data-fl="libtab" data-k="${k}" aria-pressed="${FL.libTab===k}">${t}</button>`).join('')}</div>`;
+  const tabs=`<div class="fl-seg" style="margin-top:14px">${[['co','Libreria Navisio'],['ag','Drive']].map(([k,t])=>`<button data-fl="libtab" data-k="${k}" aria-pressed="${FL.libTab===k}">${t}</button>`).join('')}</div>`;
   if(FL.libTab==='ag'){
     openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
     <p class="sub">I documenti della tua agenzia, condivisi con il team.</p>${tabs}
