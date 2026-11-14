@@ -1453,7 +1453,7 @@ function renderDrive(q){
     const r = DOCS.filter(x=>norm([x.n,x.c,x.co,x.t,x.a].filter(Boolean).join(' ')).includes(k));
     h = r.length ? `<div class="az">Risultati</div><div class="card cl-card">${r.map(x=>row(x)).join('')}</div>` : '';
   } else {
-    h = group(DOCS.filter(x=>DRV==='all' || x.t===DRV), 't', 't', DRV==='all' ? 3 : 0);
+    h = group(DOCS.filter(x=>DRV==='all' || x.t===DRV), 't', 't', DRV==='all' ? 2 : 0);
   }
   $('#drive-list').innerHTML = h || `<p class="empty">Nessun documento trovato per “${esc(q.trim())}”</p>`;
 }
