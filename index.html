@@ -603,10 +603,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act .go svg.i{width:18px;height:18px}
 
 /* avatar e campanella più visibili */
-.avatar{width:44px;height:44px;background:#fff;color:#0E3B2C;font-weight:700;font-size:15px;box-shadow:0 6px 18px -8px rgba(0,0,0,.5)}
-.iconbtn{width:44px;height:44px;background:#fff;border:0;color:#0E3B2C;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)}
+.avatar{width:44px;height:44px;background:rgba(255,255,255,.3);color:#fff;font-weight:700;font-size:15px;border:1px solid rgba(255,255,255,.45);-webkit-backdrop-filter:var(--glass);backdrop-filter:var(--glass);box-shadow:0 6px 18px -8px rgba(0,0,0,.5)}
+.iconbtn{width:44px;height:44px;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.45);color:#fff;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)}
 .iconbtn svg.i{width:21px;height:21px;stroke-width:2}
-.iconbtn .dot{top:8px;right:9px;width:11px;height:11px;background:#2E9E62;border:2px solid #fff}
+.iconbtn .dot{top:8px;right:9px;width:11px;height:11px;background:var(--lime);border:2px solid #3E9A6F}
 </style>
 </head>
 <body>
@@ -760,8 +760,8 @@ const cases = [
 ];
 const sugg = [
   {tag:'confronto', icon:'scale', q:'Confronta documenti', act:'confronto'},
-  {tag:'polizza', icon:'file', q:'Verifica una copertura', act:'copertura'},
-  {tag:'sinistro', icon:'clip', q:'Analizza un sinistro', act:'sinistro'},
+  {tag:'polizza', icon:'file', q:'Verifica copertura', act:'copertura'},
+  {tag:'sinistro', icon:'clip', q:'Analizza sinistro', act:'sinistro'},
   {tag:'libreria', icon:'shield', q:'Risk Analysis', act:'risk'}
 ];
 const tagStyle = {confronto:['var(--violet-t)','var(--violet)'], sinistro:['var(--orange-t)','var(--orange)'], polizza:['var(--blue-t)','var(--blue)'], libreria:['var(--leaf-t)','var(--leaf)']};
