@@ -966,6 +966,9 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
 .phone:has(#v-tipo:not([hidden])) .statusbar{background:#0A1A14}
 @media (max-width:519px){body:has(#v-tipo:not([hidden])){background:#0A1A14}}
 #v-tipo .page-h{padding-top:6px}
+#v-tipo .ph-row{align-items:flex-start}
+#v-tipo .addbtn svg.i{width:24px;height:24px}
+#tipo-s{margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -1087,7 +1090,8 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
     <!-- TUTTI I DOCUMENTI DI UNA TIPOLOGIA -->
     <section id="v-tipo" hidden>
       <div class="nhead"><button class="nback" data-act="tipo-back" aria-label="Torna ai documenti"><svg class="i"><use href="#i-left"/></svg></button></div>
-      <div class="page-h"><h1 id="tipo-title"></h1><p id="tipo-count"></p></div>
+      <div class="page-h ph-row"><div><h1 id="tipo-title"></h1><p id="tipo-count"></p></div><button class="addbtn" data-act="tipo-search" aria-label="Cerca"><svg class="i"><use href="#i-search"/></svg></button></div>
+      <label class="search" id="tipo-s" hidden><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca</span><input id="tipo-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
       <div class="card cl-card" id="tipo-list"></div>
     </section>
 
@@ -1457,7 +1461,13 @@ const DOCS = [
   {n:'Procedura denuncia sinistri', t:"Documenti dell'agenzia", d:'2 mesi'},
   {n:'Checklist nuovo cliente', t:"Documenti dell'agenzia", d:'4 mesi'}
 ];
-let DRV = 'all';
+let DRV = 'all', TIPO = '';
+function tipoFilter(q){
+  const k=norm(q.trim());
+  const list=DOCS.filter(x=>x.t===TIPO && (!k || norm([x.n,x.c,x.co].filter(Boolean).join(' ')).includes(k)));
+  $('#tipo-list').hidden=!list.length;
+  $('#tipo-list').innerHTML=list.map(x=>`<button class="act cl dr" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${x.n}</b><small>${[x.c,x.co].filter(Boolean).join(' · ')||'Documento interno'}</small></span><span class="pz">${x.d}</span></button>`).join('');
+}
 function renderDrive(q){
   if(q===undefined) q = ($('#drive-q')||{}).value||'';
   const k = norm(q.trim());
@@ -1737,9 +1747,11 @@ document.addEventListener('click',e=>{
     case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
     case 'tipo-back': show('drive'); break;
+    case 'tipo-search': { const b=$('#tipo-s'); b.hidden=!b.hidden; if(!b.hidden) $('#tipo-q').focus({preventScroll:true}); else { $('#tipo-q').value=''; tipoFilter(''); } break; }
     case 'tipo-all': {
       const L=t.dataset.k, list=DOCS.filter(x=>x.t===L);
       $('#tipo-title').textContent=L; $('#tipo-count').textContent=list.length+' documenti';
+      $('#tipo-s').hidden=true; $('#tipo-q').value=''; TIPO=L;
       $('#tipo-list').innerHTML=list.map(x=>`<button class="act cl dr" data-act="cartella"><span class="face">${ic('file')}</span><span class="tx"><b>${x.n}</b><small>${[x.c,x.co].filter(Boolean).join(' · ')||'Documento interno'}</small></span><span class="pz">${x.d}</span></button>`).join('');
       show('tipo'); break; }
     case 'drvsheet': {
@@ -1798,6 +1810,7 @@ document.addEventListener('input',e=>{
   if(e.target.id==='note-q') renderNotes(e.target.value);
   if(e.target.id==='lib-q') renderLib(e.target.value);
   if(e.target.id==='drive-q') renderDrive(e.target.value);
+  if(e.target.id==='tipo-q') tipoFilter(e.target.value);
   if(e.target.id==='n-in') inSync();
   if(e.target.id==='rmin'){ CF.min=Math.min(+e.target.value, CF.max-500); e.target.value=CF.min; premioSync(); }
   if(e.target.id==='rmax'){ CF.max=Math.max(+e.target.value, CF.min+500); e.target.value=CF.max; premioSync(); }
