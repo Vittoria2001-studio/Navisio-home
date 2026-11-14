@@ -607,6 +607,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .iconbtn{width:44px;height:44px;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.45);color:#fff;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)}
 .iconbtn svg.i{width:21px;height:21px;stroke-width:2}
 .iconbtn .dot{top:8px;right:9px;width:11px;height:11px;background:var(--lime);border:2px solid #3E9A6F}
+.iconbtn .dot{top:-4px;right:-4px;width:auto;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--lime);color:#0E241B;border:2px solid #3E9A6F;font:700 11px/16px var(--sans);text-align:center}
 </style>
 </head>
 <body>
@@ -651,7 +652,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <header class="topbar">
       <div class="avatar" aria-hidden="true">SA</div>
       <button class="back" id="back" hidden><svg class="i"><use href="#i-left"/></svg>Indietro</button>
-      <button class="iconbtn" aria-label="Notifiche, 2 nuove" data-toast="2 novità in libreria per i tuoi mandati"><svg class="i"><use href="#i-bell"/></svg><span class="dot"></span></button>
+      <button class="iconbtn" aria-label="Notifiche, 2 nuove" data-toast="2 novità in libreria per i tuoi mandati"><svg class="i"><use href="#i-bell"/></svg><span class="dot" aria-hidden="true">2</span></button>
     </header>
 
     <!-- HOME -->
