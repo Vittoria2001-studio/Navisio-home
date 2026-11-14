@@ -859,6 +859,29 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .wave2 i:nth-child(3n){height:14px}.wave2 i:nth-child(3n+1){height:7px}.wave2 i:nth-child(3n+2){height:18px}
 .att.audio button{top:50%;transform:translateY(-50%)}
 @media (min-width:520px){ .ntools{padding-bottom:42px} }
+/* barra nota: + · campo · fotocamera · microfono (come WhatsApp) */
+.ntools{gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));align-items:flex-end}
+.ntools .nt-btn{width:42px!important;height:42px;color:#fff;background:none;box-shadow:none;transform:none;animation:none}
+.ntools .nt-btn svg.i{width:24px;height:24px;stroke-width:1.8}
+.nt-field{flex:1;min-width:0;position:relative;display:flex;align-items:center;min-height:42px;padding:0 14px;border-radius:22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22)}
+.nt-field textarea{width:100%;border:0;outline:0;background:none;resize:none;color:#fff;font-size:16px;line-height:1.35;padding:10px 0;max-height:110px}
+.nt-field textarea::placeholder{color:rgba(255,255,255,.6)}
+.nt-field:focus-within{border-color:rgba(255,255,255,.45)}
+.ntools .rec-info{position:absolute;inset:0;padding:0 14px;display:none}
+.ntools.rec .rec-info{display:flex}
+.ntools.rec .nt-field textarea{visibility:hidden}
+.ntools.rec .nt-btn:not(.nt-mic){visibility:hidden}
+.ntools .nt-mic{width:42px!important;height:42px;background:none;color:#fff;box-shadow:none}
+.ntools.rec .nt-mic{background:var(--lime);color:#0E241B;transform:scale(1.15);animation:pulse2 1.3s ease-out infinite}
+.nt-send{display:none!important;background:var(--lime)!important;color:#0E241B!important;border-radius:50%}
+.ntools.typing .nt-mic,.ntools.typing .nt-cam{display:none!important}
+.ntools.typing .nt-send{display:grid!important}
+.ntools .nt-hint{display:none}
+.nbody{min-height:30vh;color:#fff;font-size:17px;line-height:1.5;padding-bottom:12px}
+.nbody p+p{margin-top:8px}
+.nbody .ph{color:rgba(255,255,255,.45)}
+@media (min-width:520px){ .ntools{padding-bottom:34px} }
+.nt-field textarea{height:40px;display:block}
 </style>
 </head>
 <body>
@@ -970,8 +993,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
         <button class="nshare" data-act="nota-share" aria-label="Condividi la nota"><svg class="i"><use href="#i-share"/></svg></button>
       </div>
       <p class="ndate" id="n-date"></p>
-      <label class="sr" for="n-text">Testo della nota</label>
-      <textarea id="n-text" class="ntext" placeholder="Scrivi una nota…"></textarea>
+      <div id="n-body" class="nbody"></div>
       <div class="natt" id="n-att"></div>
     </section>
 
@@ -1022,11 +1044,15 @@ body{background:var(--grad) fixed;background-color:#030E09}
   </div>
 
 <div class="ntools" id="ntools" hidden>
-  <button class="nt-btn" data-act="n-attach" aria-label="Allega immagine o file"><svg class="i"><use href="#i-paperclip"/></svg></button>
-  <button class="nt-btn" data-act="n-cam" aria-label="Scatta una foto"><svg class="i"><use href="#i-camera"/></svg></button>
-  <div class="rec-info" aria-live="polite"><i></i><span id="rec-time">0:00</span><small>Registrazione… tocca di nuovo per fermare</small></div>
-  <span class="nt-hint">Tieni premuto per registrare</span>
-  <button class="nt-mic" id="nt-mic" aria-label="Registra un audio"><svg class="i"><use href="#i-mic"/></svg></button>
+  <button class="nt-btn" data-act="n-attach" aria-label="Allega immagine o file"><svg class="i"><use href="#i-plus"/></svg></button>
+  <div class="nt-field">
+    <label class="sr" for="n-in">Scrivi nella nota</label>
+    <textarea id="n-in" rows="1" placeholder="Scrivi…"></textarea>
+    <div class="rec-info" aria-live="polite"><i></i><span id="rec-time">0:00</span><small>Registrazione…</small></div>
+  </div>
+  <button class="nt-btn nt-cam" data-act="n-cam" aria-label="Scatta una foto"><svg class="i"><use href="#i-camera"/></svg></button>
+  <button class="nt-btn nt-mic" id="nt-mic" aria-label="Registra un audio"><svg class="i"><use href="#i-mic"/></svg></button>
+  <button class="nt-btn nt-send" data-act="n-send" aria-label="Aggiungi alla nota"><svg class="i"><use href="#i-up"/></svg></button>
 </div>
 <section class="flow" id="flow" hidden aria-label="Confronta documenti"></section>
 <div class="scrim" id="scrim" hidden></div>
@@ -1195,11 +1221,16 @@ function openNote(i){
   const base = i>=0 ? notes[i] : {t:'', c:'', at:new Date('2026-11-14T'+new Date().toTimeString().slice(0,5)).toISOString(), att:[]};
   NE = {i, n:{...base, att:[...(base.att||[])]}};
   $('#n-date').textContent = noteDate(NE.n.at) + (NE.n.c ? ' · '+NE.n.c : '');
-  $('#n-text').value = NE.n.t;
+  renderBody(); $('#n-in').value=''; inSync();
   renderAtt();
   show('nota');
-  if(i<0) $('#n-text').focus({preventScroll:true});
+  if(i<0) $('#n-in').focus({preventScroll:true});
 }
+function renderBody(){
+  $('#n-body').innerHTML = NE.n.t ? NE.n.t.split('\n').map(p=>`<p>${esc(p)}</p>`).join('') : `<p class="ph">Scrivi o registra una nota.</p>`;
+}
+function inSync(){ const v=$('#n-in').value.trim(); $('#ntools').classList.toggle('typing', !!v); const ta=$('#n-in'); ta.style.height=''; if(v && ta.scrollHeight) ta.style.height=Math.min(ta.scrollHeight,110)+'px'; }
+function noteSend(){ const v=$('#n-in').value.trim(); if(!v) return; NE.n.t=(NE.n.t?NE.n.t+'\n':'')+v; $('#n-in').value=''; inSync(); renderBody(); $('#n-in').focus({preventScroll:true}); }
 function renderAtt(){
   $('#n-att').innerHTML = NE.n.att.map((a,k)=> a.audio
     ? `<span class="att audio"><span class="play">${ic('mic')}</span><span class="wave2">${'<i></i>'.repeat(18)}</span><span>${esc(a.name.replace('Audio · ',''))}</span><button data-act="n-rm" data-k="${k}" aria-label="Rimuovi">${ic('x')}</button></span>`
@@ -1210,7 +1241,7 @@ function renderAtt(){
 function closeNote(){
   if(!NE) return show('appunti');
   if(REC) recStop();
-  NE.n.t = $('#n-text').value.trim();
+  const pend=$('#n-in').value.trim(); if(pend) NE.n.t = (NE.n.t?NE.n.t+'\n':'')+pend;
   const empty = !NE.n.t && !NE.n.att.length;
   if(NE.i<0){ if(!empty) notes.unshift(NE.n); }
   else if(empty) notes.splice(NE.i,1);
@@ -1234,8 +1265,8 @@ function recStop(){
   const secs = Math.max(1, Math.round((Date.now()-REC.t0)/1000)); REC=null;
   $('#ntools').classList.remove('rec');
   NE.n.att.push({name:'Audio · 0:'+String(secs).padStart(2,'0'), audio:true});
-  const ta=$('#n-text'); ta.value = (ta.value.trim()?ta.value.trim()+' ':'') + 'Richiamare il cliente lunedì per confermare la copertura.';
-  renderAtt();
+  NE.n.t = (NE.n.t?NE.n.t+'\n':'') + 'Richiamare il cliente lunedì per confermare la copertura.';
+  renderBody(); renderAtt();
 }
 function attachSheet2(){
   openSheet(`<h2 id="sheet-title">Allega</h2>
@@ -1251,7 +1282,7 @@ function noteMic(){
   setTimeout(()=>{ ta.value = (ta.value.trim()?ta.value.trim()+' ':'') + 'Richiamare il cliente lunedì per confermare la copertura.'; b.classList.remove('on'); b.querySelector('span').textContent='Detta'; },1800);
 }
 function noteShare(){
-  const text = $('#n-text').value.trim() || 'Nota vuota';
+  const text = (NE && NE.n.t) || 'Nota vuota';
   if(navigator.share){ navigator.share({title:'Nota', text}).catch(()=>{}); }
   else { try{ navigator.clipboard.writeText(text); }catch(e){} toast('Condivisione disponibile su iPhone · testo copiato'); }
 }
@@ -1523,6 +1554,7 @@ document.addEventListener('click',e=>{
     case 'nota-back': closeNote(); break;
     case 'nota-share': noteShare(); break;
     case 'n-attach': attachSheet2(); break;
+    case 'n-send': noteSend(); break;
     case 'n-cam': $('#nf-cam').click(); break;
     case 'n-img': closeSheetIfOpen(); $('#nf-img').click(); break;
     case 'n-file': closeSheetIfOpen(); $('#nf-file').click(); break;
@@ -1553,9 +1585,11 @@ document.addEventListener('keydown',e=>{
   m.addEventListener('pointerup',()=>{ const held=Date.now()-down; if(wasRec) recStop(); else if(held>450) recStop(); });
   m.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); REC?recStop():recStart(); } });
 })();
+document.addEventListener('keydown',e=>{ if(e.target.id==='n-in' && e.key==='Enter' && !e.shiftKey){ e.preventDefault(); noteSend(); } });
 document.addEventListener('input',e=>{
   if(e.target.id==='cli-q') renderClienti(e.target.value);
   if(e.target.id==='note-q') renderNotes(e.target.value);
+  if(e.target.id==='n-in') inSync();
   if(e.target.id==='rmin'){ CF.min=Math.min(+e.target.value, CF.max-500); e.target.value=CF.min; premioSync(); }
   if(e.target.id==='rmax'){ CF.max=Math.max(+e.target.value, CF.min+500); e.target.value=CF.max; premioSync(); }
 });
