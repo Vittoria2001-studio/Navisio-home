@@ -795,6 +795,14 @@ body{background:var(--grad) fixed;background-color:#030E09}
 #v-home .qa-h+.qa{margin-top:14px}
 #v-home .qa+.sec{margin-top:28px}
 #v-home .qa-h{margin-top:16px}
+#nlist .az{margin:16px 6px 6px;font-size:12px;color:rgba(255,255,255,.7)}
+#nlist .az:first-child{margin-top:14px}
+.nrow{display:flex;align-items:flex-start;gap:14px;width:100%;padding:12px 0;text-align:left}
+.nrow+.nrow{border-top:1px solid rgba(255,255,255,.08)}
+.nrow .tx{flex:1;min-width:0}
+.nrow b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:500;font-size:14.5px;line-height:1.35;color:#fff}
+.nrow small{display:block;margin-top:3px;font-size:12.5px;color:rgba(255,255,255,.62)}
+.nrow .when{flex:none;font-size:12.5px;color:rgba(255,255,255,.55);margin-top:2px;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -892,9 +900,9 @@ body{background:var(--grad) fixed;background-color:#030E09}
 
     <!-- APPUNTI -->
     <section id="v-appunti" hidden>
-      <div class="page-h"><h1>Note</h1><p>Le note veloci che prendi dal cliente o al telefono.</p></div>
-      <button class="newnote" data-act="nota"><svg class="i"><use href="#i-plus"/></svg>Nuova nota</button>
-      <div class="notes" id="nlist"></div>
+      <div class="page-h ph-row"><h1>Note</h1><button class="addbtn" data-act="nota" aria-label="Nuova nota"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nelle note</span><input id="note-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
+      <div id="nlist"></div>
     </section>
 
     <!-- DRIVE -->
@@ -1053,15 +1061,42 @@ function premioSheet(){
   premioSync();
 }
 let notes = [
-  {t:'Bianchi: chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', d:'Oggi, 9:12'},
-  {t:'Ferri: manca il CID firmato e la foto del paraurti. Sollecitare entro venerdì.', c:'Marco Ferri', d:'Ieri'},
-  {t:'Ottica Gallo vuole capire se il fermo attività è coperto in caso di allagamento.', c:'Ottica Gallo Srl', d:'Lun'}
+  {t:'Chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', at:'2026-11-14T09:12'},
+  {t:'Manca il CID firmato e la foto del paraurti. Sollecitare entro venerdì.', c:'Marco Ferri', at:'2026-11-13T18:40'},
+  {t:'Chiedere l\'elenco dei dipendenti per la polizza infortuni.', c:'Hotel Bellavista', at:'2026-11-13T11:05'},
+  {t:'Vuole capire se il fermo attività è coperto in caso di allagamento.', c:'Ottica Gallo Srl', at:'2026-11-10T16:20'},
+  {t:'Aggiungere due furgoni nuovi alla flotta da gennaio.', c:'Trasporti Lanza', at:'2026-11-09T10:15'},
+  {t:'Rinnovo infortuni: verificare la franchigia proposta da Unipol.', c:'Elena Russo', at:'2026-11-02T15:30'},
+  {t:'Preparare un preventivo RC professionale con massimale più alto.', c:'Farmacia San Marco', at:'2026-10-28T12:00'},
+  {t:'Far firmare il questionario sui bisogni IDD.', c:'Giulia Moretti', at:'2026-10-20T17:45'},
+  {t:'Sinistro allagamento della cucina: raccogliere le foto e la fattura dell\'idraulico.', c:'Ristorante Il Porto', at:'2026-10-03T09:30'},
+  {t:'Rinnovo incendio: chiedere se hanno cambiato il forno a legna.', c:'Pizzeria Da Gennaro', at:'2026-09-18T14:10'},
+  {t:'Valutare l\'aumento del massimale RC professionale.', c:'Studio Legale Ferraris', at:'2026-09-05T11:00'},
+  {t:'Serve una copertura per le auto dei clienti in custodia.', c:'Autofficina Martini Snc', at:'2026-08-27T16:00'},
+  {t:'Chiedere se la grandine sul magazzino è coperta.', c:'Caseificio Monviso', at:'2026-08-12T10:40'}
 ];
-try{ const sv=JSON.parse(localStorage.getItem('nv-notes')); if(Array.isArray(sv)) notes=sv; }catch(e){}
-function saveNotes(){ try{ localStorage.setItem('nv-notes', JSON.stringify(notes)); }catch(e){} }
+try{ const sv=JSON.parse(localStorage.getItem('nv-notes2')); if(Array.isArray(sv) && sv.every(n=>n.at)) notes=sv; }catch(e){}
+function saveNotes(){ try{ localStorage.setItem('nv-notes2', JSON.stringify(notes)); }catch(e){} }
 function esc(x){ return String(x).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
-function renderNotes(){
-  $('#nlist').innerHTML = notes.map((n,i)=>`<button class="note" data-act="nota" data-i="${i}"><p>${esc(n.t)}</p><small>${n.c?`<b>${esc(n.c)}</b>·`:''}<span>${esc(n.d)}</span></small></button>`).join('');
+const MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+const GIORNI = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+function noteGroup(d, now){
+  const day = x => new Date(x.getFullYear(), x.getMonth(), x.getDate());
+  const diff = Math.round((day(now)-day(d))/864e5);
+  if(diff<=0) return ['Oggi', d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')];
+  if(diff===1) return ['Ieri', d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')];
+  if(diff<=7) return ['Ultimi 7 giorni', GIORNI[d.getDay()]];
+  if(diff<=30) return ['Ultimi 30 giorni', d.getDate()+' '+MESI[d.getMonth()].slice(0,3)];
+  const m = MESI[d.getMonth()]; return [m[0].toUpperCase()+m.slice(1)+(d.getFullYear()!==now.getFullYear()?' '+d.getFullYear():''), d.getDate()+' '+m.slice(0,3)];
+}
+function renderNotes(q){
+  if(q===undefined) q = ($('#note-q')||{}).value||'';
+  const k = norm(q.trim()), now = new Date('2026-11-14T12:00');
+  const items = notes.map((n,i)=>({n,i,d:new Date(n.at)})).filter(x=>!k || norm(x.n.t+' '+x.n.c).includes(k)).sort((a,b)=>b.d-a.d);
+  if(!items.length){ $('#nlist').innerHTML = `<p class="empty">Nessuna nota trovata${q.trim()?` per “${esc(q.trim())}”`:''}</p>`; return; }
+  const groups = [];
+  items.forEach(x=>{ const [g,when]=noteGroup(x.d,now); x.when=when; let G=groups.find(y=>y.g===g); if(!G) groups.push(G={g,list:[]}); G.list.push(x); });
+  $('#nlist').innerHTML = groups.map(G=>`<div class="az">${G.g}</div><div class="card cl-card">${G.list.map(x=>`<button class="nrow" data-act="nota" data-i="${x.i}"><span class="tx"><b>${esc(x.n.t)}</b>${x.n.c?`<small>${esc(x.n.c)}</small>`:''}</span><span class="when">${x.when}</span></button>`).join('')}</div>`).join('');
 }
 function notaSheet(i){
   const n = i>=0 ? notes[i] : null;
@@ -1337,7 +1372,7 @@ document.addEventListener('click',e=>{
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
       const v=$('#nt').value.trim(), i=+t.dataset.i;
-      if(v){ if(i>=0) notes[i].t=v; else notes.unshift({t:v,c:'',d:'Adesso'}); saveNotes(); renderNotes(); toast('Nota salvata'); }
+      if(v){ if(i>=0) notes[i].t=v; else notes.unshift({t:v,c:'',at:new Date('2026-11-14T'+new Date().toTimeString().slice(0,5)).toISOString()}); saveNotes(); renderNotes(); toast('Nota salvata'); }
       closeSheet(); break; }
     case 'mic': mic(); break;
     case 'close': closeSheet(); break;
@@ -1357,6 +1392,7 @@ document.addEventListener('keydown',e=>{
 
 document.addEventListener('input',e=>{
   if(e.target.id==='cli-q') renderClienti(e.target.value);
+  if(e.target.id==='note-q') renderNotes(e.target.value);
   if(e.target.id==='rmin'){ CF.min=Math.min(+e.target.value, CF.max-500); e.target.value=CF.min; premioSync(); }
   if(e.target.id==='rmax'){ CF.max=Math.max(+e.target.value, CF.min+500); e.target.value=CF.max; premioSync(); }
 });
