@@ -716,6 +716,11 @@ body{background:var(--grad) fixed;background-color:#030E09}
 #plist .az{margin:16px 6px 6px;font-size:12px;color:rgba(255,255,255,.7)}
 #plist .az:first-child{margin-top:14px}
 .cl-card{padding:2px 16px}
+
+/* navbar: vetro vero, contenuto in penombra, nessuna ombra sopra, nessuna riga in fondo */
+.dock::before{inset:-12px -2px -40px -2px;background:rgba(4,18,12,.58);
+  -webkit-mask-image:none;mask-image:none;box-shadow:none;
+  -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5)}
 </style>
 </head>
 <body>
