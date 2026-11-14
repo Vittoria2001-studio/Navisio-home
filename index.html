@@ -898,6 +898,17 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .ntools.rec .nt-btn.nt-mic{display:grid!important}
 .qa .ic{width:60px;height:60px}
 .qa .ic svg.i{width:25px;height:25px}
+/* barra nota v4: microfono grande in alto, + e fotocamera sotto */
+.ntools{flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;padding-top:12px}
+.nt-mic2{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--lime);color:#0E241B;box-shadow:0 10px 26px -10px rgba(212,238,116,.7);touch-action:none;transition:transform .15s}
+.nt-mic2 svg.i{width:28px;height:28px;stroke-width:2.1}
+.nt-mic2:active{transform:scale(.95)}
+.nt-row{display:flex;align-items:center;justify-content:center;gap:48px}
+.ntools.rec .nt-row{display:none}
+.ntools.rec .rec-info{display:flex;height:44px}
+.ntools.rec .nt-mic2{transform:scale(1.08);animation:pulse2 1.3s ease-out infinite}
+.ntools .nt-mic2{flex:none!important;width:64px!important;height:64px!important;min-height:64px;color:#0E241B!important;background:var(--lime)!important;display:grid!important;padding:0}
+.ntools .nt-row{flex:none}
 </style>
 </head>
 <body>
@@ -1010,7 +1021,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
       </div>
       <p class="ndate" id="n-date"></p>
       <label class="sr" for="n-text">Testo della nota</label>
-      <textarea id="n-text" class="ntext" placeholder="Scrivi una nota…"></textarea>
+      <textarea id="n-text" class="ntext" placeholder="Scrivi o parla…"></textarea>
       <div class="natt" id="n-att"></div>
     </section>
 
@@ -1061,12 +1072,12 @@ body{background:var(--grad) fixed;background-color:#030E09}
   </div>
 
 <div class="ntools" id="ntools" hidden>
-  <div class="rec-info" aria-live="polite"><i></i><span id="rec-time">0:00</span><small>Tocca per fermare</small></div>
-  <div class="nt-group">
+  <button class="nt-mic2" id="nt-mic" aria-label="Registra un audio"><svg class="i"><use href="#i-mic"/></svg></button>
+  <div class="nt-row">
     <button class="nt-btn" data-act="n-attach" aria-label="Allega immagine o file"><svg class="i"><use href="#i-plus"/></svg></button>
     <button class="nt-btn" data-act="n-cam" aria-label="Scatta una foto"><svg class="i"><use href="#i-camera"/></svg></button>
-    <button class="nt-btn nt-mic" id="nt-mic" aria-label="Registra un audio"><svg class="i"><use href="#i-mic"/></svg></button>
   </div>
+  <div class="rec-info" aria-live="polite"><i></i><span id="rec-time">0:00</span><small>Tocca per fermare</small></div>
 </div>
 <section class="flow" id="flow" hidden aria-label="Confronta documenti"></section>
 <div class="scrim" id="scrim" hidden></div>
