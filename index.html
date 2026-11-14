@@ -942,6 +942,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 main{padding-bottom:112px}
 main:has(#v-home:not([hidden])),main:has(#v-chat:not([hidden])){padding-bottom:196px}
 main:has(#v-nota:not([hidden])){padding-bottom:170px}
+.drv-chips{overflow-x:auto;scrollbar-width:none;margin:0 calc(var(--gutter)*-1);padding:0 var(--gutter);flex:1}
+.drv-chips::-webkit-scrollbar{display:none}
+.drv-chips button{flex:none}
+#v-drive .cli-tools{margin-right:0}
 </style>
 </head>
 <body>
@@ -1053,10 +1057,13 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
       <div class="page-h ph-row"><h1>I tuoi documenti</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nei documenti</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
       <div class="cli-tools">
-        <div class="cli-chips" role="group" aria-label="Ordina i documenti">
-          <button data-act="drv" data-k="tipo" aria-pressed="true">Tipo</button>
-          <button data-act="drv" data-k="co" aria-pressed="false">Compagnia</button>
-          <button data-act="drv" data-k="ag" aria-pressed="false">Agenzia</button>
+        <div class="cli-chips drv-chips" role="group" aria-label="Tipologia di documento">
+          <button data-act="drv" data-k="all" aria-pressed="true">Tutti</button>
+          <button data-act="drv" data-k="Preventivi" aria-pressed="false">Preventivi</button>
+          <button data-act="drv" data-k="Polizze" aria-pressed="false">Polizze</button>
+          <button data-act="drv" data-k="Condizioni (CGA)" aria-pressed="false">CGA</button>
+          <button data-act="drv" data-k="Sinistri" aria-pressed="false">Sinistri</button>
+          <button data-act="drv" data-k="Interni" aria-pressed="false">Interni</button>
         </div>
       </div>
       <div id="drive-list"></div>
@@ -1401,17 +1408,17 @@ const DOCS = [
   {n:'Denuncia sinistro (CID)', t:'Sinistri', c:'Marco Ferri', co:'Allianz', d:'2 g'},
   {n:'Foto del danno', t:'Sinistri', c:'Marco Ferri', d:'2 g'},
   {n:'Fattura idraulico', t:'Sinistri', c:'Ristorante Il Porto', co:'Generali', d:'1 mese'},
-  {n:'Convenzione dipendenti 2026', a:'Convenzioni', d:'1 sett'},
-  {n:'Convenzione commercialisti', a:'Convenzioni', d:'3 mesi'},
-  {n:'Circolare rinnovi RC Auto', a:'Circolari', d:'2 sett'},
-  {n:'Circolare IVASS 2026', a:'Circolari', d:'1 mese'},
-  {n:'Modello mail di rinnovo', a:'Modelli', d:'1 mese'},
-  {n:'Lettera di benvenuto', a:'Modelli', d:'2 mesi'},
-  {n:'Questionario IDD', a:'Modelli', d:'3 mesi'},
-  {n:'Procedura denuncia sinistri', a:'Procedure', d:'2 mesi'},
-  {n:'Checklist nuovo cliente', a:'Procedure', d:'4 mesi'}
+  {n:'Convenzione dipendenti 2026', t:'Interni', d:'1 sett'},
+  {n:'Convenzione commercialisti', t:'Interni', d:'3 mesi'},
+  {n:'Circolare rinnovi RC Auto', t:'Interni', d:'2 sett'},
+  {n:'Circolare IVASS 2026', t:'Interni', d:'1 mese'},
+  {n:'Modello mail di rinnovo', t:'Interni', d:'1 mese'},
+  {n:'Lettera di benvenuto', t:'Interni', d:'2 mesi'},
+  {n:'Questionario IDD', t:'Interni', d:'3 mesi'},
+  {n:'Procedura denuncia sinistri', t:'Interni', d:'2 mesi'},
+  {n:'Checklist nuovo cliente', t:'Interni', d:'4 mesi'}
 ];
-let DRV = 'tipo';
+let DRV = 'all';
 function renderDrive(q){
   if(q===undefined) q = ($('#drive-q')||{}).value||'';
   const k = norm(q.trim());
@@ -1422,12 +1429,8 @@ function renderDrive(q){
   if(k){
     const r = DOCS.filter(x=>norm([x.n,x.c,x.co,x.t,x.a].filter(Boolean).join(' ')).includes(k));
     h = r.length ? `<div class="az">Risultati</div><div class="card cl-card">${r.map(x=>row(x)).join('')}</div>` : '';
-  } else if(DRV==='tipo'){
-    h = group(DOCS.filter(x=>x.t), 't', 't');
-  } else if(DRV==='co'){
-    h = group(DOCS.filter(x=>x.co).sort((a,b)=>a.co.localeCompare(b.co,'it')), 'co', 'co');
   } else {
-    h = group(DOCS.filter(x=>x.a), 'a', 'a');
+    h = group(DOCS.filter(x=>DRV==='all' || x.t===DRV), 't', 't');
   }
   $('#drive-list').innerHTML = h || `<p class="empty">Nessun documento trovato per “${esc(q.trim())}”</p>`;
 }
