@@ -642,6 +642,9 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .flow .fl-add button:active{background:rgba(255,255,255,.1)}
 .flow .fl-recent .ic,.flow .fl-opt .ic,.flow .fl-kicker .k{background:rgba(255,255,255,.13);color:#fff;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.12)}
+.fl-add{grid-template-columns:repeat(2,1fr)}
+.fl-add button{height:80px}
+.fl-row .lg svg.i{width:17px;height:17px}
 </style>
 </head>
 <body>
@@ -1121,7 +1124,7 @@ const VOCI = [
   {id:'guida', lb:'Tipo di guida', sub:'Chi può guidare il veicolo', on:false, v:{al:'Esperta',ge:'Libera',rm:'Libera'}, best:['ge','rm'], src:'Art. 7 · pag. 6'}
 ];
 const RAMI = ['RC Auto','Polizza Casa','RC Impresa','Condomini','Infortuni','Multirischio'];
-const FL = {step:'start', path:null, docs:[], ramo:null, kind:'Set informativo', picks:new Set(), tab:'over', pair:['rm','ge'], only:false, saveStd:true};
+const FL = {sheet:null, client:null, libTab:'co', step:'start', path:null, docs:[], ramo:null, kind:'Set informativo', picks:new Set(), tab:'over', pair:['rm','ge'], only:false, saveStd:true};
 VOCI.forEach(v=>v.sel=v.on);
 
 const fl = () => $('#flow');
@@ -1159,6 +1162,7 @@ function flRender(){
       <div class="fl-add">
         <button data-fl="add">${ic('camera')}Fotografa</button>
         <button data-fl="add">${ic('upload')}Carica</button>
+        <button data-fl="cli">${ic('users')}Clienti</button>
         <button data-fl="lib">${ic('book')}Libreria</button>
       </div>
       ${FL.docs.length?'':`<button class="fl-demo" data-fl="demo">Usa 3 documenti di esempio</button>
@@ -1167,14 +1171,14 @@ function flRender(){
       ${FL.docs.length?`<div class="fl-label">Documenti <span>${FL.docs.length} di 5</span></div>
       <div class="fl-docs">${FL.docs.map((d,i)=>{const nw=d.fresh; d.fresh=false; return `<div class="fl-doc${nw?' new':''}">
         <span class="fl-thumb${d.ok?'':' reading'}"><i></i><i></i><i></i><i></i></span>
-        <span class="tx">${d.ok?`<b><span class="sq" style="background:${CO[d.id].color}"></span>${CO[d.id].name}</b><span>${d.lib?'Libreria · '+CO[d.id].prod:'RC Auto · '+CO[d.id].pages+' pagine'}</span>`:`<b>Sto leggendo…</b><span>${CO[d.id].file}</span>`}</span>
+        <span class="tx">${d.ok?`<b><span class="sq" style="background:${CO[d.id].color}"></span>${CO[d.id].name}</b><span>${d.lib?'Libreria · '+CO[d.id].prod:d.cli?'Da '+d.cli+' · preventivo':'RC Auto · '+CO[d.id].pages+' pagine'}</span>`:`<b>Sto leggendo…</b><span>${CO[d.id].file}</span>`}</span>
         ${d.ok?`<span class="pr">${CO[d.id].premio} €</span>`:''}
         <button class="rm" data-fl="rm" data-i="${i}" aria-label="Rimuovi">${ic('x')}</button>
       </div>`}).join('')}</div>`:''}
       ${ready?`<div class="fl-label">Riconosciuto da Navisio</div>
       <div class="fl-ctx">
         <div>${ic('shield')}<span>Ramo</span><b>RC Auto</b><button data-toast="Qui puoi cambiare ramo">Modifica</button></div>
-        <div>${ic('user')}<span>Cliente</span><b>Marco Ferri</b><button data-toast="Qui scegli un'altra pratica">Cambia</button></div>
+        <div>${ic('user')}<span>Cliente</span><b>${FL.client||'Marco Ferri'}</b><button data-fl="cli">Cambia</button></div>
       </div>`:''}
     </div>`;
     foot = `${ready<2?`<p class="fl-hint">Aggiungi almeno 2 documenti</p>`:''}<button class="fl-cta" data-fl="run" ${ready<2?'disabled':''}>${ready<2?'Confronta':'Confronta '+ready+' documenti'}${ic('right')}</button>`;
@@ -1222,10 +1226,32 @@ function flRun(){
   [500,1000,1500].forEach((t,i)=>setTimeout(()=>{ const l=li(); if(!l.length) return; l[i].className='done'; if(l[i+1]) l[i+1].className='run'; },t));
   setTimeout(()=>{ if(FL.step==='wait') flGo('res'); },1900);
 }
-function flLibSheet(){
-  openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
-    <p class="sub">Prodotti RC Auto delle tue compagnie, aggiornati.</p>
+function flCliSheet(){
+  FL.sheet='cli';
+  openSheet(`<h2 id="sheet-title">Da quale cliente?</h2>
+    <p class="sub">Prendi i documenti che hai già nella sua cartella.</p>
+    <div class="fl-list" style="margin-top:14px">${pratiche.slice(0,5).map((p,i)=>`<button class="fl-row" data-fl="cli-pick" data-c="${i}"><span class="lg" style="background:rgba(255,255,255,.13)">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[3]}</span></span>${ic('right')}</button>`).join('')}</div>`);
+}
+function flCliDocs(){
+  const c=FL.client;
+  openSheet(`<h2 id="sheet-title">Documenti di ${c}</h2>
+    <p class="sub">Scegli quelli da confrontare.</p>
     <div class="fl-list" style="margin-top:14px" role="group">${Object.keys(CO).map(id=>{const on=FL.picks.has(id), added=FL.docs.some(d=>d.id===id);
+      return `<button class="fl-row" role="checkbox" aria-checked="${on||added}" ${added?'disabled':''} data-fl="pick" data-id="${id}">${lg(id)}<span class="tx"><b>Preventivo ${CO[id].name}</b><span>${added?'Già aggiunto':'RC Auto · '+CO[id].pages+' pagine · ricevuto 3 g fa'}</span></span><span class="fl-check">${ic('check')}</span></button>`}).join('')}</div>
+    <button class="fl-cta" style="width:100%;margin-top:16px;flex:none" data-fl="cli-add" ${FL.picks.size?'':'disabled'}>${FL.picks.size?'Aggiungi '+FL.picks.size:'Scegli i documenti'}</button>`);
+}
+function flLibSheet(){
+  FL.sheet='lib';
+  const tabs=`<div class="fl-seg" style="margin-top:14px">${[['co','Compagnie'],['ag','Agenzia']].map(([k,t])=>`<button data-fl="libtab" data-k="${k}" aria-pressed="${FL.libTab===k}">${t}</button>`).join('')}</div>`;
+  if(FL.libTab==='ag'){
+    openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
+    <p class="sub">I documenti della tua agenzia, condivisi con il team.</p>${tabs}
+    <div class="fl-list" style="margin-top:12px">${recenti.map(r=>`<button class="fl-row" data-toast="Nel prototipo il confronto usa i preventivi di esempio"><span class="lg" style="background:rgba(255,255,255,.13)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span></button>`).join('')}</div>`);
+    return;
+  }
+  openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
+    <p class="sub">Prodotti RC Auto delle tue compagnie, aggiornati.</p>${tabs}
+    <div class="fl-list" style="margin-top:12px" role="group">${Object.keys(CO).map(id=>{const on=FL.picks.has(id), added=FL.docs.some(d=>d.id===id);
       return `<button class="fl-row" role="checkbox" aria-checked="${on||added}" ${added?'disabled':''} data-fl="pick" data-id="${id}">${lg(id)}<span class="tx"><b>${CO[id].name} · ${CO[id].prod}</b><span>${added?'Già aggiunto':(CO[id].mine?'Tuo mandato · ':'')+'aggiornato 3 g fa'}</span></span><span class="fl-check">${ic('check')}</span></button>`}).join('')}</div>
     <button class="fl-cta" style="width:100%;margin-top:16px;flex:none" data-fl="lib-add" ${FL.picks.size?'':'disabled'}>${FL.picks.size?'Aggiungi '+FL.picks.size:'Scegli i prodotti'}</button>`);
 }
@@ -1263,8 +1289,12 @@ document.addEventListener('click',e=>{
   if(a==='add') return flAddDoc();
   if(a==='demo'){ ['al','ge','rm'].forEach((id,i)=>setTimeout(flAddDoc,i*250)); return; }
   if(a==='rm'){ FL.docs.splice(+t.dataset.i,1); return flRender(); }
-  if(a==='lib'){ FL.picks=new Set(); return flLibSheet(); }
-  if(a==='pick'){ const id=t.dataset.id; FL.picks.has(id)?FL.picks.delete(id):FL.picks.add(id); $('#sheet-body').innerHTML=''; return flLibSheet(); }
+  if(a==='lib'){ FL.picks=new Set(); FL.libTab='co'; return flLibSheet(); }
+  if(a==='pick'){ const id=t.dataset.id; FL.picks.has(id)?FL.picks.delete(id):FL.picks.add(id); $('#sheet-body').innerHTML=''; return FL.sheet==='cli'?flCliDocs():flLibSheet(); }
+  if(a==='libtab'){ FL.libTab=t.dataset.k; $('#sheet-body').innerHTML=''; return flLibSheet(); }
+  if(a==='cli'){ return flCliSheet(); }
+  if(a==='cli-pick'){ FL.client=pratiche[+t.dataset.c][1]; FL.picks=new Set(); $('#sheet-body').innerHTML=''; flRender(); return flCliDocs(); }
+  if(a==='cli-add'){ FL.picks.forEach(id=>{ if(!FL.docs.some(d=>d.id===id)) FL.docs.push({id,ok:true,cli:FL.client,fresh:true}); }); closeSheet(); return flRender(); }
   if(a==='lib-add'){ FL.picks.forEach(id=>{ if(!FL.docs.some(d=>d.id===id)) FL.docs.push({id,ok:true,lib:true,fresh:true}); }); closeSheet(); return flRender(); }
   if(a==='voci') return flVociSheet();
   if(a==='voce'){ const v=VOCI.find(x=>x.id===t.dataset.id); v.sel=!v.sel; flVociSheet(); return flRender(); }
