@@ -631,13 +631,17 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .fl-offer .tag2,.fl-offer .tag2.eco{background:rgba(255,255,255,.1);color:#fff}
 .fl-btn,.fl-round{background:rgba(255,255,255,.06)}
 
-/* Confronta: superfici leggermente verdi */
-.flow{--paper:rgba(76,170,118,.11)}
-.flow .fl-add button,.flow .fl-opt,.flow .fl-recent,.flow .fl-doc,.flow .fl-ctx,.flow .fl-list,.flow .fl-offer,.flow .fl-rows,.flow .fl-pick,.flow .fl-badge,.flow .fl-btn,.flow .fl-round,.flow .fl-edit,.flow .fl-search,.flow .fl-chips button{background:rgba(76,170,118,.11);border-color:rgba(130,210,165,.16)}
-.flow .fl-add button:active{background:rgba(76,170,118,.18)}
-.flow .fl-recent .ic,.flow .fl-opt .ic,.flow .fl-kicker .k{background:rgba(130,210,165,.14)}
-.flow .fl-seg{background:rgba(76,170,118,.1)}
-.flow .fl-cell{background:rgba(76,170,118,.08)}
+
+/* Confronta: stesso vetro della home (card "Attività recenti" e cerchi azioni) */
+.flow{--paper:rgba(255,255,255,.06);background:#0A1A14}
+.phone:has(.flow.on) .statusbar{background:#0A1A14}
+.fl-foot{background:linear-gradient(to top,#0A1A14 70%,rgba(10,26,20,0))}
+.flow .fl-add button,.flow .fl-opt,.flow .fl-recent,.flow .fl-doc,.flow .fl-ctx,.flow .fl-list,.flow .fl-offer,.flow .fl-rows,.flow .fl-pick,.flow .fl-badge,.flow .fl-btn,.flow .fl-round,.flow .fl-edit,.flow .fl-search,.flow .fl-chips button{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:var(--glass);backdrop-filter:var(--glass)}
+.flow .fl-add button:active{background:rgba(255,255,255,.1)}
+.flow .fl-recent .ic,.flow .fl-opt .ic,.flow .fl-kicker .k{background:rgba(255,255,255,.13);color:#fff;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.12)}
 </style>
 </head>
 <body>
