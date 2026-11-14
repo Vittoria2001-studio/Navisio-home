@@ -705,6 +705,14 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act.t1 b{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .act.t1 .when{align-self:center;margin-top:0}
 #rail,#alist{padding:4px 18px}
+.cl-list{margin-top:14px;padding:2px 16px 6px}
+.cl-list .az{margin:14px 0 2px;font-size:12px;color:rgba(255,255,255,.6)}
+.cl-list .az:first-child{margin-top:10px}
+.act.cl{padding:8px 0;gap:12px}
+.act.cl+.act.cl{border-top:1px solid rgba(255,255,255,.07)}
+.act.cl .face{width:34px;height:34px}
+.act.cl .face svg.i{width:16px;height:16px}
+.act.cl b{font-weight:500;font-size:15px}
 </style>
 </head>
 <body>
@@ -918,9 +926,9 @@ function renderClienti(q){
   const list = CLIENTI.filter(n => !k || norm(n).split(/\s+/).some(w=>w.startsWith(k)) || norm(n).includes(k));
   const groups = {};
   list.forEach(n => (groups[n[0].toUpperCase()] ||= []).push(n));
-  $('#plist').innerHTML = list.length ? Object.keys(groups).map(L=>`
+  $('#plist').innerHTML = list.length ? `<div class="card cl-list">${Object.keys(groups).map(L=>`
     <div class="az">${L}</div>
-    <div class="card">${groups[L].map(n=>`<button class="act" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}</b></span></button>`).join('')}</div>`).join('')
+    ${groups[L].map(n=>`<button class="act cl" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}</b></span></button>`).join('')}`).join('')}</div>`
     : `<p class="empty">Nessun cliente trovato per “${esc(q.trim())}”</p>`;
 }
 function openCliente(name){
