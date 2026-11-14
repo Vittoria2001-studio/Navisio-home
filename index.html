@@ -946,6 +946,14 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
 .drv-chips::-webkit-scrollbar{display:none}
 .drv-chips button{flex:none}
 #v-drive .cli-tools{margin-right:0}
+.drv-tools{justify-content:flex-end;gap:8px}
+.drv-tools .drv-on{margin-right:auto;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 6px 0 13px;border-radius:99px;background:#fff;color:#0E241B;font-size:13px;font-weight:600}
+.drv-tools .drv-on[hidden]{display:none}
+.drv-on button{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(14,36,27,.1)}
+.drv-on button svg.i{width:12px;height:12px}
+.drv-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.drv-opts button{height:40px;padding:0 16px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14px;font-weight:500}
+.drv-opts button[aria-pressed="true"]{background:#fff;color:#0E241B;border-color:#fff;font-weight:600}
 </style>
 </head>
 <body>
@@ -982,6 +990,7 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
   <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l8.6-8.6a4 4 0 0 1 5.7 5.7l-8.6 8.6a2 2 0 0 1-2.8-2.8l8.5-8.5"/></symbol>
   <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c0-4 3.4-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -1056,6 +1065,10 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
     <section id="v-drive" hidden>
       <div class="page-h ph-row"><h1>I tuoi documenti</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nei documenti</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
+      <div class="cli-tools drv-tools">
+        <span class="drv-on" id="drv-on" hidden></span>
+        <button class="cli-sort" data-act="drvsheet" aria-pressed="false" id="drv-btn"><svg class="i"><use href="#i-filter"/></svg><span>Filtra</span></button>
+      </div>
       <div id="drive-list"></div>
     </section>
 
@@ -1685,7 +1698,16 @@ document.addEventListener('click',e=>{
     case 'clisort': premioSheet(); break;
     case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
-    case 'drv': DRV=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); renderDrive(); break;
+    case 'drvsheet': {
+      const T=['Preventivi','Polizze','Condizioni (CGA)','Sinistri',"Documenti dell'agenzia"];
+      openSheet(`<h2 id="sheet-title">Filtra per tipologia</h2>
+        <div class="drv-opts">${['all',...T].map(k=>`<button data-act="drv" data-k="${k}" aria-pressed="${DRV===k}">${k==='all'?'Tutti':k}</button>`).join('')}</div>`);
+      break; }
+    case 'drv': {
+      DRV=t.dataset.k; closeSheet(); renderDrive();
+      const on=DRV!=='all'; $('#drv-btn').setAttribute('aria-pressed',on);
+      $('#drv-on').hidden=!on; $('#drv-on').innerHTML = on ? `${DRV}<button data-act="drv" data-k="all" aria-label="Togli filtro">${ic('x')}</button>` : '';
+      break; }
     case 'libt': LIBT=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b===t)); $('#lib-hint').textContent = LIBT==='nv' ? 'I prodotti delle compagnie, aggiornati da Navisio.' : 'I documenti caricati da te e dal tuo team.'; renderLib(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': openNote(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
