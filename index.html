@@ -1291,7 +1291,6 @@ function recStop(){
   clearInterval(REC.timer);
   const secs = Math.max(1, Math.round((Date.now()-REC.t0)/1000)); REC=null;
   $('#ntools').classList.remove('rec');
-  NE.n.att.push({name:'Audio · 0:'+String(secs).padStart(2,'0'), audio:true});
   const ta=$('#n-text'); ta.value = (ta.value.trim()?ta.value.trim()+'\n':'') + 'Richiamare il cliente lunedì per confermare la copertura.';
   renderAtt();
 }
