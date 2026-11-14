@@ -799,22 +799,6 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <div class="list" id="plist"></div>
     </section>
 
-    <!-- CLIENTE (cartella) -->
-    <section id="v-cliente" hidden>
-      <div class="page-h"><h1 id="cl-name"></h1></div>
-      <div class="cl-acts">
-        <button class="cl-btn" id="cl-ask"><svg class="i"><use href="#i-chat"/></svg>Chiedi a Navisio</button>
-        <button class="cl-btn" id="cl-risk"><svg class="i"><use href="#i-shield"/></svg>Risk Analysis</button>
-      </div>
-      <div class="sec" style="margin-top:22px">
-        <div class="sec-h"><h2>Documenti</h2><button data-toast="Aggiungi un documento alla cartella del cliente">Aggiungi</button></div>
-        <div class="card" id="cl-docs"></div>
-      </div>
-      <div class="sec" id="cl-work-sec">
-        <div class="sec-h"><h2>Attività</h2></div>
-        <div class="card" id="cl-work"></div>
-      </div>
-    </section>
 
     <!-- ATTIVITÀ -->
     <section id="v-attivita" hidden>
@@ -930,7 +914,6 @@ const CDOCS = [
   [['Libretti della flotta','12 veicoli'],['Preventivo flotta Generali','2 sett fa'],['Preventivo flotta Reale Mutua','2 sett fa']],
   [['Polizza Vita in corso','Zurich'],['Questionario bisogni IDD','3 sett fa']]
 ];
-let curCli = 0;
 const CLIENTI = ['Agriturismo La Quercia','Alberto Conti','Alessandra Neri','Alimentari Fratelli Gatti','Andrea Pellegrini','Antica Trattoria del Borgo','Autofficina Martini Snc','Azienda Agricola Le Vigne','Bar Centrale Snc','Barbara Greco','Beatrice Fabbri','Birrificio Valle Stura','B&B Il Glicine','Bruno Mazza','Bottega del Pane Srl','Benedetta Riva','Carlo Rinaldi','Caseificio Monviso','Chiara Fontana','Cristina Sala','Carrozzeria Moderna Srl','Centro Estetico Aurora','Claudio Bernardi','Cantina Sociale Roero','Davide Marino','Daniela Pace','Distributore Q8 Moncalieri','Dario Monti','Dolce Forno Pasticceria','Edil Costruzioni Srl','Elena Russo','Emanuele Testa','Elettrauto Galli','Enoteca Vino & Co','Famiglia Bianchi','Farmacia San Marco','Federica Gallo','Francesco Esposito','Ferramenta Bianco','Fiorista Le Rose','Fabio Grasso','Gelateria Polo Nord','Giorgio Lombardi','Giulia Moretti','Gommista Express','Gianluca Ferri','Giada Orlando','Hotel Bellavista','Hair Studio Lucia','Idraulica Cerutti Snc','Irene Valenti','Immobiliare Corso Francia','Laura Ricci','Luca Bruno','Lavanderia Bolle Blu','Lorenzo Gentile','Libreria Il Segnalibro','Marco Ferri','Martina Colombo','Matteo Romano','Macelleria Gallo','Mobilificio Torinese Srl','Michela Sartori','Mario Vitale','Nicola De Luca','Noemi Bassi','Negozio Bici Ruota Libera','Ottica Gallo Srl','Officina Meccanica Rosso','Osteria La Lanterna','Ornella Cattaneo','Panificio Rossi','Paola Mancini','Pizzeria Da Gennaro','Pietro Silvestri','Palestra Fit Point','Profumeria Essenza','Roberto Costa','Ristorante Il Porto','Rosa Marchetti','Riccardo Leone','Sara Villa','Silvia Caruso','Studio Dentistico Leone','Studio Legale Ferraris','Simone Rizzo','Supermercato Conad Rivoli','Stefania Longo','Tabaccheria Corso Vittorio','Tommaso Ferrara','Trasporti Lanza','Tipografia Gialla','Teresa Morelli','Valentina Serra','Veterinaria Amici a 4 Zampe','Vittorio Parisi','Vivaio Il Giardino','Zeta Impianti Elettrici','Zoe Martinelli'].sort((a,b)=>a.localeCompare(b,'it'));
 const norm = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function renderClienti(q){
@@ -942,18 +925,6 @@ function renderClienti(q){
     <div class="az">${L}</div>
     <div class="card cl-card">${groups[L].map(n=>`<button class="act cl" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}</b></span></button>`).join('')}</div>`).join('')
     : `<p class="empty">Nessun cliente trovato per “${esc(q.trim())}”</p>`;
-}
-function openCliente(name){
-  const i = pratiche.findIndex(x=>x[1]===name);
-  curCli = i; const p = i>=0 ? pratiche[i] : ['', name];
-  $('#cl-name').textContent = p[1];
-  $('#cl-ask').dataset.ask = 'Riassumi la situazione di '+p[1];
-  $('#cl-risk').dataset.toast = 'Risk Analysis per '+p[1]+': nel prototipo si ferma qui';
-  $('#cl-docs').innerHTML = (CDOCS[i]||[['Polizza in corso','Aggiornata di recente'],['Documento di identità','Caricato dal team']]).map(d=>`<button class="act" data-ask="Riassumi: ${d[0]} di ${p[1]}"><span class="face">${ic('file')}</span><span class="tx"><b>${d[0]}</b><small>${d[1]}</small></span></button>`).join('');
-  const w = cases.filter(c=>c.who===p[1]);
-  $('#cl-work-sec').hidden = !w.length;
-  $('#cl-work').innerHTML = w.map(c=>`<button class="act" data-ask="${c.q}"><span class="face">${ic('clock')}</span><span class="tx"><b>${c.kind}</b><small>${c.st}</small></span><span class="when">${c.when}</span></button>`).join('');
-  show('cliente');
 }
 let notes = [
   {t:'Bianchi: chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', d:'Oggi, 9:12'},
@@ -1011,10 +982,10 @@ function renderHome(){
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','attivita','libreria','appunti','cliente'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria','appunti'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
-  const sub = v==='chat'||v==='attivita'||v==='cliente';
-  const nav = v==='cliente' ? 'pratiche' : sub ? 'home' : v;
+  const sub = v==='chat'||v==='attivita';
+  const nav = sub ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
   $('#back').hidden = !sub;
@@ -1231,7 +1202,7 @@ document.addEventListener('click',e=>{
     case 'scrivi': scriviSheet(); break;
     case 'risk': riskSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
-    case 'cartella': openCliente(t.dataset.n); break;
+    case 'cartella': toast('Non fa parte della demo'); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
@@ -1247,7 +1218,7 @@ document.addEventListener('click',e=>{
       break;
   }
 });
-$('#back').addEventListener('click',()=>show(view==='cliente'?'pratiche':'home'));
+$('#back').addEventListener('click',()=>show('home'));
 $('#scrim').addEventListener('click',closeSheet);
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape' && !$('#sheet').hidden) closeSheet();
