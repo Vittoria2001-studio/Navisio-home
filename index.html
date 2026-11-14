@@ -645,6 +645,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .fl-add{grid-template-columns:repeat(2,1fr)}
 .fl-add button{height:80px}
 .fl-row .lg svg.i{width:17px;height:17px}
+.doc-seg{margin-top:14px}
 </style>
 </head>
 <body>
@@ -737,15 +738,27 @@ body{background:var(--grad) fixed;background-color:#030E09}
 
     <!-- DRIVE -->
     <section id="v-libreria" hidden>
-      <div class="page-h"><h1>Drive</h1><p>I documenti della tua agenzia e i prodotti delle compagnie.</p></div>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nel Drive</span><input placeholder="Cerca prodotto, garanzia, compagnia…"></label>
-      <div class="sec" style="margin-top:22px">
-        <div class="sec-h"><h2>I tuoi mandati</h2><button data-toast="Qui gestisci le compagnie con cui lavori">Modifica</button></div>
-        <div class="cos" id="cos"></div>
+      <div class="page-h"><h1>Documenti</h1><p>I prodotti delle compagnie e i documenti della tua agenzia.</p></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nei documenti</span><input placeholder="Cerca prodotti o documenti…"></label>
+      <div class="fl-seg doc-seg" role="tablist" aria-label="Tipo di documenti">
+        <button role="tab" data-act="doctab" data-k="co" aria-pressed="true" aria-selected="true">Compagnie</button>
+        <button role="tab" data-act="doctab" data-k="ag" aria-pressed="false" aria-selected="false">Agenzia</button>
       </div>
-      <div class="sec">
-        <div class="sec-h"><h2>Aggiornati di recente</h2></div>
-        <div class="list" id="llist"></div>
+      <div id="doc-co">
+        <div class="sec" style="margin-top:22px">
+          <div class="sec-h"><h2>I tuoi mandati</h2><button data-toast="Qui gestisci le compagnie con cui lavori">Modifica</button></div>
+          <div class="cos" id="cos"></div>
+        </div>
+        <div class="sec">
+          <div class="sec-h"><h2>Aggiornati di recente</h2></div>
+          <div class="list" id="llist"></div>
+        </div>
+      </div>
+      <div id="doc-ag" hidden>
+        <div class="sec" style="margin-top:22px">
+          <div class="sec-h"><h2>Condivisi con il team</h2><button data-toast="Carica un documento per tutta l'agenzia">Carica</button></div>
+          <div class="list" id="alist2"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -764,7 +777,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <nav class="tabbar" aria-label="Sezioni">
       <button class="tab" data-view="home" aria-current="page"><svg class="i"><use href="#i-chat"/></svg><span>Chiedi</span></button>
       <button class="tab" data-view="pratiche"><svg class="i"><use href="#i-users"/></svg><span>Clienti</span></button>
-      <button class="tab" data-view="libreria"><svg class="i"><use href="#i-folder"/></svg><span>Drive</span></button>
+      <button class="tab" data-view="libreria"><svg class="i"><use href="#i-folder"/></svg><span>Documenti</span></button>
       <button class="tab" data-view="appunti"><svg class="i"><use href="#i-note"/></svg><span>Note</span></button>
     </nav>
   </div>
@@ -834,10 +847,16 @@ function notaSheet(i){
   setTimeout(()=>{ const a=$('#nt'); a && a.focus({preventScroll:true}); },320);
 }
 const compagnie = [['Generali','#B4231E',true],['Reale Mutua','#1F3E73',true],['Allianz','#123E7C',false],['AXA','#1B2C8A',false],['Unipol','#0F5AA8',false],['Zurich','#2167AE',false]];
+const agenzia = [
+  ['Convenzione dipendenti 2026','Aggiornata 1 sett fa'],
+  ['Circolare rinnovi RC Auto','Ufficio tecnico · 2 sett'],
+  ['Modello mail di rinnovo','Team commerciale · 1 mese'],
+  ['Procedura denuncia sinistri','Ufficio sinistri · 2 mesi']
+];
 const recenti = [
   ['Set informativo Casa','Generali · aggiornato 2 g fa'],
   ['DIP aggiuntivo RC Auto','Reale Mutua · 5 g fa'],
-  ['Convenzione dipendenti 2026','Libreria agenzia · 1 sett']
+  ['CGA Multirischio Impresa','Allianz · 1 sett fa']
 ];
 
 /* ---------- render ---------- */
@@ -856,6 +875,7 @@ function renderHome(){
     <button class="row" data-act="cliente" data-i="${i}"><span class="ini" style="background:${bg};color:${fg}">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${p[3]}</span></button>`}).join('');
   renderNotes();
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
+  $('#alist2').innerHTML = agenzia.map(r=>`<button class="row" data-ask="Riassumi: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('folder')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
   $('#llist').innerHTML = recenti.map(r=>`<button class="row" data-ask="Riassumi le novità: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
 }
 
@@ -901,7 +921,7 @@ function attachSheet(title='Dai un documento a Navisio', sub='Lo legge e ti dice
       <button class="opt" data-act="camera"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('camera')}</span><b>Fotografa</b><span>Il foglio che hai davanti</span></button>
       <button class="opt" data-act="upload"><span class="ic" style="background:var(--mint);color:var(--green)">${ic('upload')}</span><b>Carica file</b><span>PDF, foto, fascicoli</span></button>
       <button class="opt" data-pick="pratica"><span class="ic" style="background:var(--blue-t);color:var(--blue)">${ic('folder')}</span><b>Da un cliente</b><span>Documenti dei clienti</span></button>
-      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Dalla libreria</b><span>Prodotti delle compagnie</span></button>
+      <button class="opt" data-pick="libreria"><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('book')}</span><b>Dai documenti</b><span>Compagnie e agenzia</span></button>
     </div>`);
 }
 
@@ -1083,6 +1103,7 @@ document.addEventListener('click',e=>{
     case 'scrivi': scriviSheet(); break;
     case 'risk': riskSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
+    case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
       const v=$('#nt').value.trim(), i=+t.dataset.i;
@@ -1163,7 +1184,7 @@ function flRender(){
         <button data-fl="add">${ic('camera')}Fotografa</button>
         <button data-fl="add">${ic('upload')}Carica</button>
         <button data-fl="cli">${ic('users')}Clienti</button>
-        <button data-fl="lib">${ic('book')}Libreria</button>
+        <button data-fl="lib">${ic('folder')}Documenti</button>
       </div>
       ${FL.docs.length?'':`<button class="fl-demo" data-fl="demo">Usa 3 documenti di esempio</button>
       <div class="fl-label">Confronti recenti</div>
@@ -1244,12 +1265,12 @@ function flLibSheet(){
   FL.sheet='lib';
   const tabs=`<div class="fl-seg" style="margin-top:14px">${[['co','Compagnie'],['ag','Agenzia']].map(([k,t])=>`<button data-fl="libtab" data-k="${k}" aria-pressed="${FL.libTab===k}">${t}</button>`).join('')}</div>`;
   if(FL.libTab==='ag'){
-    openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
+    openSheet(`<h2 id="sheet-title">Aggiungi dai documenti</h2>
     <p class="sub">I documenti della tua agenzia, condivisi con il team.</p>${tabs}
-    <div class="fl-list" style="margin-top:12px">${recenti.map(r=>`<button class="fl-row" data-toast="Nel prototipo il confronto usa i preventivi di esempio"><span class="lg" style="background:rgba(255,255,255,.13)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span></button>`).join('')}</div>`);
+    <div class="fl-list" style="margin-top:12px">${agenzia.map(r=>`<button class="fl-row" data-toast="Nel prototipo il confronto usa i preventivi di esempio"><span class="lg" style="background:rgba(255,255,255,.13)">${ic('file')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span></button>`).join('')}</div>`);
     return;
   }
-  openSheet(`<h2 id="sheet-title">Aggiungi dalla libreria</h2>
+  openSheet(`<h2 id="sheet-title">Aggiungi dai documenti</h2>
     <p class="sub">Prodotti RC Auto delle tue compagnie, aggiornati.</p>${tabs}
     <div class="fl-list" style="margin-top:12px" role="group">${Object.keys(CO).map(id=>{const on=FL.picks.has(id), added=FL.docs.some(d=>d.id===id);
       return `<button class="fl-row" role="checkbox" aria-checked="${on||added}" ${added?'disabled':''} data-fl="pick" data-id="${id}">${lg(id)}<span class="tx"><b>${CO[id].name} · ${CO[id].prod}</b><span>${added?'Già aggiunto':(CO[id].mine?'Tuo mandato · ':'')+'aggiornato 3 g fa'}</span></span><span class="fl-check">${ic('check')}</span></button>`}).join('')}</div>
