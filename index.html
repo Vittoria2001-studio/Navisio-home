@@ -766,7 +766,7 @@ const sugg = [
   {tag:'confronto', icon:'scale', q:'Confronta documenti', act:'confronto'},
   {tag:'polizza', icon:'file', q:'Verifica una copertura', act:'copertura'},
   {tag:'sinistro', icon:'clip', q:'Analizza un sinistro', act:'sinistro'},
-  {tag:'libreria', icon:'mail', q:'Scrivi al cliente', act:'scrivi'}
+  {tag:'libreria', icon:'shield', q:'Risk Analysis', act:'risk'}
 ];
 const tagStyle = {confronto:['var(--violet-t)','var(--violet)'], sinistro:['var(--orange-t)','var(--orange)'], polizza:['var(--blue-t)','var(--blue)'], libreria:['var(--leaf-t)','var(--leaf)']};
 
@@ -880,6 +880,15 @@ function scriviSheet(){
       <button class="opt" ${no}><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('file')}</span><b>Documenti</b><span>Richiesta o sollecito</span></button>
       <button class="opt" ${no}><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('shield')}</span><b>Coperture</b><span>Riepilogo per il cliente</span></button>
       <button class="opt" ${no}><span class="ic" style="background:var(--leaf-t);color:var(--leaf)">${ic('clip')}</span><b>Sinistro</b><span>Aggiornamento sullo stato</span></button>
+    </div>`);
+}
+function riskSheet(){
+  openSheet(`
+    <h2 id="sheet-title">Per quale cliente?</h2>
+    <p class="sub">Risk Analysis: le domande sui rischi del cliente, conformi IDD.</p>
+    <div class="list">
+      ${pratiche.slice(0,4).map(p=>`<button class="row" data-toast="Risk Analysis per ${p[1]}: nel prototipo si ferma qui"><span class="ini" style="background:rgba(255,255,255,.12);color:#fff">${p[0]}</span><span class="tx"><b>${p[1]}</b><span>${p[2]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('')}
+      <button class="row" data-toast="Nuovo cliente: nel prototipo si ferma qui"><span class="ini" style="background:var(--lime);color:#0E241B">${ic('plus')}</span><span class="tx"><b>Nuovo cliente</b><span>Parti da zero</span></span></button>
     </div>`);
 }
 function clienteSheet(i){
@@ -1038,6 +1047,7 @@ document.addEventListener('click',e=>{
     case 'copertura': attachSheet('Quale polizza vuoi verificare?','Navisio la legge, poi fai la tua domanda.'); break;
     case 'sinistro': attachSheet('Cosa hai del sinistro?','Foto del danno, denuncia, polizza: Navisio ti indica i prossimi passi.'); break;
     case 'scrivi': scriviSheet(); break;
+    case 'risk': riskSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
