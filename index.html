@@ -669,6 +669,21 @@ body{background:var(--grad) fixed;background-color:#030E09}
 
 .dock::before{background:rgba(4,18,12,.86);
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);mask-image:linear-gradient(to bottom,transparent 0,#000 18px)}
+
+/* leggibilità stile Revolut: sopra la parte chiara elementi chiari, liste e card in vetro scuro */
+.page-h p{color:rgba(255,255,255,.86)}
+.search{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.28);color:#fff;box-shadow:none}
+.search input::placeholder{color:rgba(255,255,255,.82)}
+.filters button{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.24);color:#fff}
+.doc-seg{background:rgba(255,255,255,.16)}
+.doc-seg button{color:rgba(255,255,255,.9)}
+.doc-seg button[aria-pressed="true"]{background:#fff;color:#0E241B;box-shadow:none}
+.card,.row,.note,.co{background:linear-gradient(rgba(255,255,255,.05),rgba(255,255,255,.05)),rgba(6,22,15,.5);border:1px solid rgba(255,255,255,.08)}
+.row span,.note small,.act small{color:rgba(255,255,255,.72)}
+.row .cnt,.act .when{color:rgba(255,255,255,.7)}
+.row .ini{background:rgba(255,255,255,.12)!important;color:#fff!important}
+.sec-h h2{color:#fff}
+.row b,.act b,.note p{color:#fff}
 </style>
 </head>
 <body>
