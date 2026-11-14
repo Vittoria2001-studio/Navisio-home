@@ -692,6 +692,12 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .act+.act{border-top-color:rgba(255,255,255,.08)}
 .qa{margin-top:16px}
 .qa+.sec{margin-top:30px}
+.act.folder{padding:15px 0}
+.act.folder b{font-size:16px}
+.act .face svg.i,.act .go svg.i{width:19px;height:19px}
+.cl-acts{display:flex;gap:8px;flex-wrap:wrap}
+.cl-btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 15px;border-radius:99px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;font-weight:600;font-size:13.5px}
+.cl-btn svg.i{width:17px;height:17px}
 </style>
 </head>
 <body>
@@ -764,6 +770,23 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <div class="page-h"><h1>Clienti</h1></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca un cliente</span><input placeholder="Cerca cliente…"></label>
       <div class="list" id="plist"></div>
+    </section>
+
+    <!-- CLIENTE (cartella) -->
+    <section id="v-cliente" hidden>
+      <div class="page-h"><h1 id="cl-name"></h1></div>
+      <div class="cl-acts">
+        <button class="cl-btn" id="cl-ask"><svg class="i"><use href="#i-chat"/></svg>Chiedi a Navisio</button>
+        <button class="cl-btn" id="cl-risk"><svg class="i"><use href="#i-shield"/></svg>Risk Analysis</button>
+      </div>
+      <div class="sec" style="margin-top:22px">
+        <div class="sec-h"><h2>Documenti</h2><button data-toast="Aggiungi un documento alla cartella del cliente">Aggiungi</button></div>
+        <div class="card" id="cl-docs"></div>
+      </div>
+      <div class="sec" id="cl-work-sec">
+        <div class="sec-h"><h2>Attività</h2></div>
+        <div class="card" id="cl-work"></div>
+      </div>
     </section>
 
     <!-- ATTIVITÀ -->
@@ -872,6 +895,26 @@ const pratiche = [
   ['TL','Trasporti Lanza','Flotta auto · confronto','12 doc · 2 sett','confronto'],
   ['GM','Giulia Moretti','Vita · analisi bisogni IDD','4 doc · 3 sett','polizza']
 ];
+const CDOCS = [
+  [['Polizza Casa in corso','Generali · scade 03/2027'],['Preventivo Casa Reale Mutua','Ricevuto ieri'],['Preventivo Casa Allianz','Ricevuto ieri']],
+  [['Preventivo RC Auto Allianz','6 pagine'],['Preventivo RC Auto Generali','8 pagine'],['Preventivo RC Auto Reale Mutua','7 pagine'],['Denuncia sinistro (CID)','2 g fa'],['Foto del danno','2 g fa']],
+  [['Multirischio Impresa in corso','Allianz · scade 06/2027'],['Visura camerale','Lunedì'],['Questionario Risk Analysis','In corso']],
+  [['Polizza Infortuni in corso','Unipol · scade 12/2026'],['Preventivo di rinnovo','1 sett fa']],
+  [['Libretti della flotta','12 veicoli'],['Preventivo flotta Generali','2 sett fa'],['Preventivo flotta Reale Mutua','2 sett fa']],
+  [['Polizza Vita in corso','Zurich'],['Questionario bisogni IDD','3 sett fa']]
+];
+let curCli = 0;
+function openCliente(i){
+  curCli = i; const p = pratiche[i];
+  $('#cl-name').textContent = p[1];
+  $('#cl-ask').dataset.ask = 'Riassumi la situazione di '+p[1];
+  $('#cl-risk').dataset.toast = 'Risk Analysis per '+p[1]+': nel prototipo si ferma qui';
+  $('#cl-docs').innerHTML = (CDOCS[i]||[]).map(d=>`<button class="act" data-ask="Riassumi: ${d[0]} di ${p[1]}"><span class="face">${ic('file')}</span><span class="tx"><b>${d[0]}</b><small>${d[1]}</small></span><span class="go">${ic('right')}</span></button>`).join('');
+  const w = cases.filter(c=>c.who===p[1]);
+  $('#cl-work-sec').hidden = !w.length;
+  $('#cl-work').innerHTML = w.map(c=>`<button class="act" data-ask="${c.q}"><span class="face">${ic('clock')}</span><span class="tx"><b>${c.kind}</b><small>${c.st}</small></span><span class="when">${c.when}</span></button>`).join('');
+  show('cliente');
+}
 let notes = [
   {t:'Bianchi: chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', d:'Oggi, 9:12'},
   {t:'Ferri: manca il CID firmato e la foto del paraurti. Sollecitare entro venerdì.', c:'Marco Ferri', d:'Ieri'},
@@ -919,7 +962,7 @@ function renderHome(){
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = `<div class="card">${pratiche.map((p,i)=>`
-    <button class="act" data-act="cliente" data-i="${i}"><span class="face">${p[0]}</span><span class="tx"><b>${p[1]}</b><small>${p[2]}</small></span><span class="when">${p[3]}</span></button>`).join('')}</div>`;
+    <button class="act folder" data-act="cartella" data-i="${i}"><span class="face">${ic('folder')}</span><span class="tx"><b>${p[1]}</b></span><span class="go">${ic('right')}</span></button>`).join('')}</div>`;
   renderNotes();
   $('#cos').innerHTML = compagnie.map(c=>`<button class="co${c[2]?' mine':''}" data-ask="Quali prodotti ${c[0]} posso proporre per una PMI?"><span class="lg" style="background:${c[1]}">${c[0][0]}</span>${c[0]}</button>`).join('');
   $('#alist2').innerHTML = agenzia.map(r=>`<button class="row" data-ask="Riassumi: ${r[0]}"><span class="ini" style="background:var(--leaf-t);color:var(--leaf)">${ic('folder')}</span><span class="tx"><b>${r[0]}</b><span>${r[1]}</span></span><span class="cnt">${ic('right')}</span></button>`).join('');
@@ -930,10 +973,10 @@ function renderHome(){
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','attivita','libreria','appunti'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria','appunti','cliente'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
-  const sub = v==='chat'||v==='attivita';
-  const nav = sub ? 'home' : v;
+  const sub = v==='chat'||v==='attivita'||v==='cliente';
+  const nav = v==='cliente' ? 'pratiche' : sub ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
   $('#back').hidden = !sub;
@@ -1150,6 +1193,7 @@ document.addEventListener('click',e=>{
     case 'scrivi': scriviSheet(); break;
     case 'risk': riskSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
+    case 'cartella': openCliente(+t.dataset.i); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
@@ -1165,7 +1209,7 @@ document.addEventListener('click',e=>{
       break;
   }
 });
-$('#back').addEventListener('click',()=>show('home'));
+$('#back').addEventListener('click',()=>show(view==='cliente'?'pratiche':'home'));
 $('#scrim').addEventListener('click',closeSheet);
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape' && !$('#sheet').hidden) closeSheet();
