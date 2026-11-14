@@ -599,6 +599,8 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .cbtn{width:44px;height:44px}
 .cbtn.send:not(:disabled){background:var(--lime);color:#0E241B}
 .wave{right:104px}
+.act .go{color:var(--ink-3);display:grid}
+.act .go svg.i{width:18px;height:18px}
 </style>
 </head>
 <body>
@@ -656,7 +658,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <nav class="qa" id="sugg" aria-label="Azioni rapide"></nav>
 
       <div class="sec">
-        <div class="sec-h"><h2>Riprendi</h2><button data-view="attivita">Vedi tutte</button></div>
+        <div class="sec-h"><h2>Attività recenti</h2><button data-view="attivita">Vedi tutte</button></div>
         <div class="card" id="rail"></div>
       </div>
     </section>
@@ -797,14 +799,14 @@ const recenti = [
 
 /* ---------- render ---------- */
 function renderHome(){
-  const actRow = c=>`
+  const actRow = (c,home)=>`
     <button class="act" data-ask="${c.q}">
       <span class="face">${c.ini}</span>
       <span class="tx"><b>${c.who}</b><small>${c.kind}</small></span>
-      <span class="stt ${c.s}">${c.st}</span>
+      ${home ? `<span class="go">${ic('right')}</span>` : `<span class="stt ${c.s}">${c.st}</span>`}
     </button>`;
-  $('#rail').innerHTML = cases.slice(0,3).map(actRow).join('');
-  $('#alist').innerHTML = cases.map(actRow).join('');
+  $('#rail').innerHTML = cases.slice(0,3).map(c=>actRow(c,true)).join('');
+  $('#alist').innerHTML = cases.map(c=>actRow(c,false)).join('');
   $('#sugg').innerHTML = sugg.map(x=>{const [bg,fg]=tagStyle[x.tag];return `
     <button ${x.ask?`data-ask="${x.ask}"`:x.act?`data-act="${x.act}"`:x.toast?`data-toast="${x.toast}"`:`data-view="${x.view}"`}><span class="ic" style="background:${bg};color:${fg}">${ic(x.icon)}</span>${x.q}</button>`}).join('');
   $('#plist').innerHTML = pratiche.map((p,i)=>{const [bg,fg]=tagStyle[p[4]];return `
