@@ -757,6 +757,23 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .preset{font-weight:600;font-size:14px;color:rgba(255,255,255,.8);padding:0 6px}
 .pfoot .fl-cta{flex:1;background:#fff;color:#08140F}
 #psort button[aria-pressed="true"]{background:#fff;color:#0E241B}
+/* fogli più leggeri */
+.sheet .x{width:34px;height:34px;background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none;color:#fff;top:12px;right:10px}
+.sheet .x svg.i{width:20px;height:20px;stroke-width:1.8}
+/* foglio Premio */
+.sheet h2#sheet-title{font-size:20px;font-weight:600}
+#psort{padding:3px;border-radius:12px}
+#psort button{height:32px;font-size:13px;font-weight:500;border-radius:9px}
+#psort button[aria-pressed="true"]{font-weight:600}
+.rvals b{font-size:17px;font-weight:500}
+.rtrack{height:3px;top:12px}
+.range2{height:27px}
+.range2 input{height:27px}
+.range2 input::-webkit-slider-thumb{width:22px;height:22px}
+.range2 input::-moz-range-thumb{width:22px;height:22px}
+.pfoot{margin-top:22px}
+.pfoot .fl-cta{height:44px;font-size:14.5px;font-weight:600}
+.preset{font-size:13.5px;font-weight:500}
 </style>
 </head>
 <body>
@@ -1004,7 +1021,7 @@ function premioSheet(){
   openSheet(`<h2 id="sheet-title">Premio annuo</h2>
     <p class="sub">Scegli una fascia di premio e come ordinarli.</p>
     <div class="fl-label" style="margin-top:20px">Ordina</div>
-    <div class="fl-seg" id="psort">${[['az','Alfabetico'],['pr','Dal più alto'],['up','Dal più basso']].map(([k,t])=>`<button data-act="psort" data-k="${k}" aria-pressed="${CF.sort===k}">${t}</button>`).join('')}</div>
+    <div class="fl-seg" id="psort">${[['pr','Dal più alto'],['up','Dal più basso']].map(([k,t])=>`<button data-act="psort" data-k="${k}" aria-pressed="${CF.sort===k}">${t}</button>`).join('')}</div>
     <div class="fl-label" style="margin-top:22px">Fascia di premio</div>
     <div class="rvals"><span><small>Da</small><b id="rv-min"></b></span><span><small>A</small><b id="rv-max"></b></span></div>
     <div class="range2"><div class="rtrack"><i id="rfill"></i></div>
@@ -1292,7 +1309,7 @@ document.addEventListener('click',e=>{
     case 'cartella': toast('Non fa parte della demo'); break;
     case 'clif': CF.k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); renderClienti(); break;
     case 'clisort': premioSheet(); break;
-    case 'psort': CF.sort=t.dataset.k; premioSync(); break;
+    case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
