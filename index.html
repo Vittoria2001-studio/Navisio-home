@@ -608,6 +608,28 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .iconbtn svg.i{width:21px;height:21px;stroke-width:2}
 .iconbtn .dot{top:8px;right:9px;width:11px;height:11px;background:var(--lime);border:2px solid #3E9A6F}
 .iconbtn .dot{top:-4px;right:-4px;width:auto;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--lime);color:#0E241B;border:2px solid #3E9A6F;font:700 11px/16px var(--sans);text-align:center}
+
+/* ---------- Confronta documenti: minimal, verde scurissimo pieno ---------- */
+.flow{--cream:#08140F;--t:#FFFFFF;--t-t:rgba(255,255,255,.1);background:#08140F}
+.phone:has(.flow.on) .statusbar{background:#08140F}
+.fl-head{background:none}
+.fl-kicker .k{background:rgba(255,255,255,.1);color:#fff}
+.fl-title{font-size:26px}
+.fl-add{grid-template-columns:repeat(3,1fr);gap:10px}
+.fl-add button{height:88px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);box-shadow:none;font-weight:500;font-size:14px;color:#fff;transition:background .15s,transform .15s}
+.fl-add button:active{transform:scale(.97);background:rgba(255,255,255,.1)}
+.fl-add svg.i{width:22px;height:22px;stroke-width:1.6}
+.fl-demo{color:rgba(241,245,242,.7);font-weight:500;text-decoration-color:rgba(241,245,242,.35)}
+.fl-foot{background:linear-gradient(to top,#08140F 70%,rgba(8,20,15,0))}
+.fl-cta{background:#fff;color:#08140F}
+.fl-cta:disabled{background:rgba(255,255,255,.08);color:rgba(241,245,242,.4)}
+.fl-thumb i:first-child{background:#1D5A42}
+[aria-checked="true"] .fl-sw::after{background:#08140F}
+.fl-recent .ic,.fl-opt .ic{background:rgba(255,255,255,.08);color:#fff}
+.fl-cell.best{background:rgba(255,255,255,.1);color:#fff}
+.fl-quote mark{background:rgba(255,255,255,.16);color:#fff}
+.fl-offer .tag2,.fl-offer .tag2.eco{background:rgba(255,255,255,.1);color:#fff}
+.fl-btn,.fl-round{background:rgba(255,255,255,.06)}
 </style>
 </head>
 <body>
@@ -1123,7 +1145,7 @@ function flRender(){
     const ready = FL.docs.filter(d=>d.ok).length;
     h = flHead({title:'Cosa confrontiamo?', sub:'Preventivi, polizze o set informativi: Navisio li legge e trova le differenze.'}) + `<div class="fl-body">
       <div class="fl-add">
-        <button class="pri" data-fl="add">${ic('camera')}Fotografa</button>
+        <button data-fl="add">${ic('camera')}Fotografa</button>
         <button data-fl="add">${ic('upload')}Carica</button>
         <button data-fl="lib">${ic('book')}Libreria</button>
       </div>
