@@ -725,6 +725,18 @@ body{background:var(--grad) fixed;background-color:#030E09}
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E") center/16px no-repeat}
 .qa{margin-top:24px}
 .qa+.sec{margin-top:38px}
+.ph-row{display:flex;align-items:center;justify-content:space-between}
+.addbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.45);color:#fff}
+.addbtn svg.i{width:22px;height:22px;stroke-width:2}
+.cli-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
+.cli-chips{display:flex;gap:6px}
+.cli-chips button,.cli-sort{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 13px;border-radius:99px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);color:#fff;font-size:13px;font-weight:500}
+.cli-chips button[aria-pressed="true"]{background:#fff;color:#0E241B;border-color:#fff;font-weight:600}
+.cli-chips svg.i,.cli-sort svg.i{width:14px;height:14px}
+.cli-sort{background:none;border-color:transparent;padding:0 4px;font-weight:600}
+.act.cl .pz{flex:none;font-size:13px;color:rgba(255,255,255,.72);font-variant-numeric:tabular-nums}
+.act.cl b{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act.cl svg.star{width:13px;height:13px;color:var(--lime);fill:var(--lime);stroke:var(--lime);flex:none}
 </style>
 </head>
 <body>
@@ -755,6 +767,8 @@ body{background:var(--grad) fixed;background-color:#030E09}
   <symbol id="i-clip" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
   <symbol id="i-note" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M8 2.5v4"/><path d="M16 2.5v4"/><path d="M7.5 12h9"/><path d="M7.5 16h6"/></symbol>
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20.5c0-3.7 2.9-6.3 6.5-6.3s6.5 2.6 6.5 6.3"/><path d="M15.2 4.6a3.4 3.4 0 0 1 0 6.6"/><path d="M17.6 14.6c2.3.7 3.9 2.9 3.9 5.9"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.5 2.8a.6.6 0 0 1 1 0l2.6 5.3 5.8.8a.6.6 0 0 1 .3 1l-4.2 4.1 1 5.8a.6.6 0 0 1-.8.6L12 17.7l-5.2 2.7a.6.6 0 0 1-.8-.6l1-5.8-4.2-4.1a.6.6 0 0 1 .3-1l5.8-.8Z"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 4v16"/><path d="m3 8 4-4 4 4"/><path d="M17 20V4"/><path d="m21 16-4 4-4-4"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c0-4 3.4-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -794,8 +808,16 @@ body{background:var(--grad) fixed;background-color:#030E09}
 
     <!-- PRATICHE -->
     <section id="v-pratiche" hidden>
-      <div class="page-h"><h1>Clienti</h1></div>
+      <div class="page-h ph-row"><h1>Clienti</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Aggiungi cliente"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca un cliente</span><input id="cli-q" type="search" autocomplete="off" placeholder="Cerca cliente…"></label>
+      <div class="cli-tools">
+        <div class="cli-chips" role="group" aria-label="Filtra clienti">
+          <button data-act="clif" data-k="all" aria-pressed="true">Tutti</button>
+          <button data-act="clif" data-k="az" aria-pressed="false">Aziende</button>
+          <button data-act="clif" data-k="fav" aria-pressed="false"><svg class="i"><use href="#i-star"/></svg>Preferiti</button>
+        </div>
+        <button class="cli-sort" data-act="clisort" aria-label="Cambia ordinamento"><svg class="i"><use href="#i-sort"/></svg><span id="cli-sort-l">A–Z</span></button>
+      </div>
       <div class="list" id="plist"></div>
     </section>
 
@@ -916,15 +938,28 @@ const CDOCS = [
 ];
 const CLIENTI = ['Agriturismo La Quercia','Alberto Conti','Alessandra Neri','Alimentari Fratelli Gatti','Andrea Pellegrini','Antica Trattoria del Borgo','Autofficina Martini Snc','Azienda Agricola Le Vigne','Bar Centrale Snc','Barbara Greco','Beatrice Fabbri','Birrificio Valle Stura','B&B Il Glicine','Bruno Mazza','Bottega del Pane Srl','Benedetta Riva','Carlo Rinaldi','Caseificio Monviso','Chiara Fontana','Cristina Sala','Carrozzeria Moderna Srl','Centro Estetico Aurora','Claudio Bernardi','Cantina Sociale Roero','Davide Marino','Daniela Pace','Distributore Q8 Moncalieri','Dario Monti','Dolce Forno Pasticceria','Edil Costruzioni Srl','Elena Russo','Emanuele Testa','Elettrauto Galli','Enoteca Vino & Co','Famiglia Bianchi','Farmacia San Marco','Federica Gallo','Francesco Esposito','Ferramenta Bianco','Fiorista Le Rose','Fabio Grasso','Gelateria Polo Nord','Giorgio Lombardi','Giulia Moretti','Gommista Express','Gianluca Ferri','Giada Orlando','Hotel Bellavista','Hair Studio Lucia','Idraulica Cerutti Snc','Irene Valenti','Immobiliare Corso Francia','Laura Ricci','Luca Bruno','Lavanderia Bolle Blu','Lorenzo Gentile','Libreria Il Segnalibro','Marco Ferri','Martina Colombo','Matteo Romano','Macelleria Gallo','Mobilificio Torinese Srl','Michela Sartori','Mario Vitale','Nicola De Luca','Noemi Bassi','Negozio Bici Ruota Libera','Ottica Gallo Srl','Officina Meccanica Rosso','Osteria La Lanterna','Ornella Cattaneo','Panificio Rossi','Paola Mancini','Pizzeria Da Gennaro','Pietro Silvestri','Palestra Fit Point','Profumeria Essenza','Roberto Costa','Ristorante Il Porto','Rosa Marchetti','Riccardo Leone','Sara Villa','Silvia Caruso','Studio Dentistico Leone','Studio Legale Ferraris','Simone Rizzo','Supermercato Conad Rivoli','Stefania Longo','Tabaccheria Corso Vittorio','Tommaso Ferrara','Trasporti Lanza','Tipografia Gialla','Teresa Morelli','Valentina Serra','Veterinaria Amici a 4 Zampe','Vittorio Parisi','Vivaio Il Giardino','Zeta Impianti Elettrici','Zoe Martinelli'].sort((a,b)=>a.localeCompare(b,'it'));
 const norm = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const BIZ = /(Srl|Snc|Bar |Hotel|Agriturismo|Alimentari|Antica|Autofficina|Azienda|Birrificio|B&B|Bottega|Caseificio|Carrozzeria|Centro|Cantina|Distributore|Dolce|Edil|Elettrauto|Enoteca|Farmacia|Ferramenta|Fiorista|Gelateria|Gommista|Hair|Idraulica|Immobiliare|Lavanderia|Libreria|Macelleria|Mobilificio|Negozio|Ottica|Officina|Osteria|Panificio|Pizzeria|Palestra|Profumeria|Ristorante|Studio|Supermercato|Tabaccheria|Trasporti|Tipografia|Veterinaria|Vivaio|Zeta)/;
+const FAV = new Set(['Marco Ferri','Famiglia Bianchi','Ottica Gallo Srl','Trasporti Lanza','Hotel Bellavista','Giulia Moretti','Farmacia San Marco','Elena Russo','Ristorante Il Porto']);
+const hash = t => [...t].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
+const PREMIO = n => { const biz=BIZ.test(n), h=hash(n); return biz ? 1500+(h%165)*100 : 280+(h%23)*95; };
+const eur = v => String(v).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €';
+const CF = {k:'all', sort:'az'};
 function renderClienti(q){
+  if(q===undefined) q = ($('#cli-q')||{}).value||'';
   const k = norm(q.trim());
-  const list = CLIENTI.filter(n => !k || norm(n).split(/\s+/).some(w=>w.startsWith(k)) || norm(n).includes(k));
+  let list = CLIENTI.filter(n => !k || norm(n).split(/\s+/).some(w=>w.startsWith(k)) || norm(n).includes(k));
+  if(CF.k==='az') list = list.filter(n=>BIZ.test(n));
+  if(CF.k==='fav') list = list.filter(n=>FAV.has(n));
+  const row = n => `<button class="act cl" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}${FAV.has(n)?`<svg class="i star"><use href="#i-star"/></svg>`:''}</b></span><span class="pz">${eur(PREMIO(n))}</span></button>`;
+  if(!list.length){ $('#plist').innerHTML = `<p class="empty">Nessun cliente trovato${q.trim()?` per “${esc(q.trim())}”`:''}</p>`; return; }
+  if(CF.sort==='pr'){
+    list = [...list].sort((a,b)=>PREMIO(b)-PREMIO(a));
+    $('#plist').innerHTML = `<div class="az">Premio annuo, dal più alto</div><div class="card cl-card">${list.map(row).join('')}</div>`;
+    return;
+  }
   const groups = {};
   list.forEach(n => (groups[n[0].toUpperCase()] ||= []).push(n));
-  $('#plist').innerHTML = list.length ? Object.keys(groups).map(L=>`
-    <div class="az">${L}</div>
-    <div class="card cl-card">${groups[L].map(n=>`<button class="act cl" data-act="cartella" data-n="${n}"><span class="face">${ic('user')}</span><span class="tx"><b>${n}</b></span></button>`).join('')}</div>`).join('')
-    : `<p class="empty">Nessun cliente trovato per “${esc(q.trim())}”</p>`;
+  $('#plist').innerHTML = Object.keys(groups).map(L=>`<div class="az">${L}</div><div class="card cl-card">${groups[L].map(row).join('')}</div>`).join('');
 }
 let notes = [
   {t:'Bianchi: chiedere se il box auto è dentro la polizza casa. Richiamare giovedì.', c:'Famiglia Bianchi', d:'Oggi, 9:12'},
@@ -1203,6 +1238,8 @@ document.addEventListener('click',e=>{
     case 'risk': riskSheet(); break;
     case 'cliente': clienteSheet(+t.dataset.i); break;
     case 'cartella': toast('Non fa parte della demo'); break;
+    case 'clif': CF.k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t)); renderClienti(); break;
+    case 'clisort': CF.sort = CF.sort==='az'?'pr':'az'; $('#cli-sort-l').textContent = CF.sort==='az'?'A–Z':'Premio'; renderClienti(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
     case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-save': {
