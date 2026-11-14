@@ -1129,7 +1129,7 @@ function flGo(step){ FL.step=step; flRender(); $('#fl-scroll').scrollTop=0; }
 function flHead({back=false, kicker='Confronta documenti', title, sub, sm}){
   return `<div class="fl-head">
     <div class="fl-top">
-      <button class="fl-btn" data-fl="${back?'back':'close'}" aria-label="${back?'Indietro':'Chiudi'}">${ic(back?'left':'x')}</button>
+      <button class="fl-btn" data-fl="${back?'back':'close'}" aria-label="Indietro">${ic('left')}</button>
     </div>
     <span class="fl-kicker"><span class="k">${ic('scale')}</span>${kicker}</span>
     <h1 class="fl-title${sm?' sm':''}">${title}</h1>
