@@ -830,6 +830,14 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .ntools button.on{color:var(--lime)}
 .ntools button.on svg.i{animation:blink 1s ease-in-out infinite}
 @media (min-width:520px){ .ntools{position:absolute;padding-bottom:30px} }
+/* editor nota: stesso fondo e stessi bottoni del flusso Confronta */
+.phone:has(#v-nota:not([hidden])){background:#0A1A14}
+@media (max-width:519px){body:has(#v-nota:not([hidden])){background:#0A1A14}}
+.phone:has(#v-nota:not([hidden])) .statusbar{background:#0A1A14}
+.nback,.nshare{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.nback svg.i,.nshare svg.i{width:19px;height:19px}
+.ntools{background:rgba(10,26,20,.85)}
 </style>
 </head>
 <body>
@@ -937,7 +945,7 @@ body{background:var(--grad) fixed;background-color:#030E09}
     <!-- EDITOR NOTA -->
     <section id="v-nota" hidden>
       <div class="nhead">
-        <button class="nback" data-act="nota-back"><svg class="i"><use href="#i-left"/></svg>Note</button>
+        <button class="nback" data-act="nota-back" aria-label="Torna alle note"><svg class="i"><use href="#i-left"/></svg></button>
         <button class="nshare" data-act="nota-share" aria-label="Condividi la nota"><svg class="i"><use href="#i-share"/></svg></button>
       </div>
       <p class="ndate" id="n-date"></p>
