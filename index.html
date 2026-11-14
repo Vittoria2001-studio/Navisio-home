@@ -838,6 +838,27 @@ body{background:var(--grad) fixed;background-color:#030E09}
   background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
 .nback svg.i,.nshare svg.i{width:19px;height:19px}
 .ntools{background:rgba(10,26,20,.85)}
+/* barra nota stile WhatsApp */
+.ntools{align-items:center;justify-content:flex-start;gap:4px;padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.nt-btn{flex:none!important;width:44px;height:44px;display:grid!important;place-items:center;border-radius:50%;color:#fff}
+.nt-btn svg.i{width:23px;height:23px}
+.nt-hint{flex:1;text-align:right;font-size:12.5px;color:rgba(255,255,255,.5);padding-right:10px}
+.nt-mic{flex:none!important;width:58px!important;height:58px;border-radius:50%;display:grid!important;place-items:center;background:var(--lime);color:#0E241B;box-shadow:0 8px 22px -8px rgba(212,238,116,.6);transition:transform .15s;touch-action:none}
+.nt-mic svg.i{width:26px;height:26px;stroke-width:2}
+.rec-info{display:none;flex:1;align-items:center;gap:8px;color:#fff;font-size:15px;font-variant-numeric:tabular-nums}
+.rec-info i{width:10px;height:10px;border-radius:50%;background:#FF5A4E;animation:blink 1s ease-in-out infinite}
+.rec-info small{font-size:12px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ntools.rec .nt-btn,.ntools.rec .nt-hint{display:none!important}
+.ntools.rec .rec-info{display:flex}
+.ntools.rec .nt-mic{transform:scale(1.18);animation:pulse2 1.3s ease-out infinite}
+@keyframes pulse2{0%{box-shadow:0 0 0 0 rgba(212,238,116,.5)}100%{box-shadow:0 0 0 16px rgba(212,238,116,0)}}
+.att.audio{padding:8px 34px 8px 8px;gap:10px}
+.att.audio .play{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--lime);color:#0E241B}
+.wave2{display:flex;align-items:center;gap:2px;height:20px}
+.wave2 i{width:2px;border-radius:2px;background:rgba(255,255,255,.7)}
+.wave2 i:nth-child(3n){height:14px}.wave2 i:nth-child(3n+1){height:7px}.wave2 i:nth-child(3n+2){height:18px}
+.att.audio button{top:50%;transform:translateY(-50%)}
+@media (min-width:520px){ .ntools{padding-bottom:42px} }
 </style>
 </head>
 <body>
@@ -1001,10 +1022,11 @@ body{background:var(--grad) fixed;background-color:#030E09}
   </div>
 
 <div class="ntools" id="ntools" hidden>
-  <button data-act="n-mic"><svg class="i"><use href="#i-mic"/></svg><span>Detta</span></button>
-  <button data-act="n-cam"><svg class="i"><use href="#i-camera"/></svg><span>Foto</span></button>
-  <button data-act="n-img"><svg class="i"><use href="#i-image"/></svg><span>Immagine</span></button>
-  <button data-act="n-file"><svg class="i"><use href="#i-paperclip"/></svg><span>File</span></button>
+  <button class="nt-btn" data-act="n-attach" aria-label="Allega immagine o file"><svg class="i"><use href="#i-paperclip"/></svg></button>
+  <button class="nt-btn" data-act="n-cam" aria-label="Scatta una foto"><svg class="i"><use href="#i-camera"/></svg></button>
+  <div class="rec-info" aria-live="polite"><i></i><span id="rec-time">0:00</span><small>Registrazione… tocca di nuovo per fermare</small></div>
+  <span class="nt-hint">Tieni premuto per registrare</span>
+  <button class="nt-mic" id="nt-mic" aria-label="Registra un audio"><svg class="i"><use href="#i-mic"/></svg></button>
 </div>
 <section class="flow" id="flow" hidden aria-label="Confronta documenti"></section>
 <div class="scrim" id="scrim" hidden></div>
@@ -1176,15 +1198,18 @@ function openNote(i){
   $('#n-text').value = NE.n.t;
   renderAtt();
   show('nota');
-  if(i<0) setTimeout(()=>$('#n-text').focus({preventScroll:true}),250);
+  if(i<0) $('#n-text').focus({preventScroll:true});
 }
 function renderAtt(){
-  $('#n-att').innerHTML = NE.n.att.map((a,k)=> a.img
+  $('#n-att').innerHTML = NE.n.att.map((a,k)=> a.audio
+    ? `<span class="att audio"><span class="play">${ic('mic')}</span><span class="wave2">${'<i></i>'.repeat(18)}</span><span>${esc(a.name.replace('Audio · ',''))}</span><button data-act="n-rm" data-k="${k}" aria-label="Rimuovi">${ic('x')}</button></span>`
+    : a.img
     ? `<span class="att img"><img src="${a.url}" alt="${esc(a.name)}"><button data-act="n-rm" data-k="${k}" aria-label="Rimuovi">${ic('x')}</button></span>`
     : `<span class="att file">${ic('paperclip')}<span>${esc(a.name)}</span><button data-act="n-rm" data-k="${k}" aria-label="Rimuovi">${ic('x')}</button></span>`).join('');
 }
 function closeNote(){
   if(!NE) return show('appunti');
+  if(REC) recStop();
   NE.n.t = $('#n-text').value.trim();
   const empty = !NE.n.t && !NE.n.att.length;
   if(NE.i<0){ if(!empty) notes.unshift(NE.n); }
@@ -1195,6 +1220,29 @@ function closeNote(){
 function noteAddFiles(files){
   [...files].forEach(f=>NE.n.att.push({name:f.name||'Foto', img:/^image\//.test(f.type), url:URL.createObjectURL(f)}));
   renderAtt();
+}
+/* registrazione stile WhatsApp: tocca per avviare/fermare, oppure tieni premuto */
+let REC = null;
+function recStart(){
+  if(REC) return;
+  REC = {t0:Date.now(), timer:setInterval(()=>{ const s=Math.floor((Date.now()-REC.t0)/1000); $('#rec-time').textContent = Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); },250)};
+  $('#ntools').classList.add('rec'); $('#rec-time').textContent='0:00';
+}
+function recStop(){
+  if(!REC) return;
+  clearInterval(REC.timer);
+  const secs = Math.max(1, Math.round((Date.now()-REC.t0)/1000)); REC=null;
+  $('#ntools').classList.remove('rec');
+  NE.n.att.push({name:'Audio · 0:'+String(secs).padStart(2,'0'), audio:true});
+  const ta=$('#n-text'); ta.value = (ta.value.trim()?ta.value.trim()+' ':'') + 'Richiamare il cliente lunedì per confermare la copertura.';
+  renderAtt();
+}
+function attachSheet2(){
+  openSheet(`<h2 id="sheet-title">Allega</h2>
+    <div class="fl-list" style="margin-top:14px">
+      <button class="fl-row" data-act="n-img"><span class="lg" style="background:rgba(255,255,255,.13)">${ic('image')}</span><span class="tx"><b>Immagine</b><span>Dalla galleria</span></span></button>
+      <button class="fl-row" data-act="n-file"><span class="lg" style="background:rgba(255,255,255,.13)">${ic('file')}</span><span class="tx"><b>File</b><span>PDF, documenti</span></span></button>
+    </div>`);
 }
 function noteMic(){
   const b=document.querySelector('[data-act="n-mic"]'), ta=$('#n-text');
@@ -1474,10 +1522,10 @@ document.addEventListener('click',e=>{
     case 'nota': openNote(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
     case 'nota-back': closeNote(); break;
     case 'nota-share': noteShare(); break;
-    case 'n-mic': noteMic(); break;
+    case 'n-attach': attachSheet2(); break;
     case 'n-cam': $('#nf-cam').click(); break;
-    case 'n-img': $('#nf-img').click(); break;
-    case 'n-file': $('#nf-file').click(); break;
+    case 'n-img': closeSheetIfOpen(); $('#nf-img').click(); break;
+    case 'n-file': closeSheetIfOpen(); $('#nf-file').click(); break;
     case 'n-rm': NE.n.att.splice(+t.dataset.k,1); renderAtt(); break;
     case 'nota-save': {
       const v=$('#nt').value.trim(), i=+t.dataset.i;
@@ -1500,6 +1548,11 @@ document.addEventListener('keydown',e=>{
 ['f-cam','f-doc'].forEach(id=>$('#'+id).addEventListener('change',e=>{ const f=e.target.files; if(f && f.length){ scan(f.length>1 ? f.length+' documenti' : f[0].name); e.target.value=''; } }));
 
 ['nf-cam','nf-img','nf-file'].forEach(id=>$('#'+id).addEventListener('change',e=>{ if(e.target.files.length && NE){ noteAddFiles(e.target.files); e.target.value=''; } }));
+(()=>{ const m=$('#nt-mic'); let down=0, wasRec=false;
+  m.addEventListener('pointerdown',e=>{ e.preventDefault(); down=Date.now(); wasRec=!!REC; if(!REC) recStart(); });
+  m.addEventListener('pointerup',()=>{ const held=Date.now()-down; if(wasRec) recStop(); else if(held>450) recStop(); });
+  m.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); REC?recStop():recStart(); } });
+})();
 document.addEventListener('input',e=>{
   if(e.target.id==='cli-q') renderClienti(e.target.value);
   if(e.target.id==='note-q') renderNotes(e.target.value);
