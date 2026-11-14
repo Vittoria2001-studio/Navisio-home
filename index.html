@@ -701,9 +701,10 @@ body{background:var(--grad) fixed;background-color:#030E09}
 #plist .az:first-child{margin-top:14px}
 .empty{margin-top:24px;text-align:center;color:rgba(255,255,255,.75);font-size:14px}
 .search input::-webkit-search-cancel-button{filter:invert(1);opacity:.7}
-.act.t1{padding:15px 0;gap:12px}
+.act.t1{padding:20px 2px;gap:18px}
 .act.t1 b{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .act.t1 .when{align-self:center;margin-top:0}
+#rail,#alist{padding:4px 18px}
 </style>
 </head>
 <body>
@@ -878,7 +879,7 @@ const ic = (n, cls='i') => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 
 /* ---------- dati di esempio ---------- */
 const cases = [
-  {tag:'confronto', ini:'FB', title:'Confronto polizze casa Bianchi', who:'Famiglia Bianchi', kind:'Confronto · Casa', when:'Oggi, 11:40', st:'Pronto', s:'fin', q:'Confronta i preventivi casa della famiglia Bianchi'},
+  {tag:'confronto', ini:'FB', title:'Polizze casa Bianchi', who:'Famiglia Bianchi', kind:'Confronto · Casa', when:'Oggi, 11:40', st:'Pronto', s:'fin', q:'Confronta i preventivi casa della famiglia Bianchi'},
   {tag:'sinistro', ini:'MF', title:'Sinistro RC Auto Ferri', who:'Marco Ferri', kind:'Sinistro · RC Auto', when:'Oggi, 9:12', st:'Da completare', s:'todo', q:'A che punto è il sinistro RC auto di Marco Ferri?'},
   {tag:'risk', ini:'OG', title:'Rischi Ottica Gallo', who:'Ottica Gallo Srl', kind:'Risk Analysis', when:'Ieri, 17:05', st:'In elaborazione', s:'run', q:'Cosa copre la multirischio di Ottica Gallo?'},
   {tag:'confronto', ini:'ER', title:'Preventivi infortuni Russo', who:'Elena Russo', kind:'Confronto · Infortuni', when:'Ieri, 10:22', st:'Pronto', s:'fin', q:'Confronta i preventivi infortuni di Elena Russo'},
