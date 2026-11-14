@@ -804,6 +804,32 @@ body{background:var(--grad) fixed;background-color:#030E09}
 .nrow small{display:block;margin-top:3px;font-size:12.5px;color:rgba(255,255,255,.62)}
 .nrow .when{flex:none;font-size:12.5px;color:rgba(255,255,255,.55);margin-top:2px;font-variant-numeric:tabular-nums}
 #plist .az,#nlist .az{color:var(--lime);font-weight:600}
+/* editor nota */
+.nhead{display:flex;align-items:center;justify-content:space-between;padding:10px 0 6px}
+.nback{display:flex;align-items:center;gap:4px;font-weight:600;font-size:16px;color:var(--lime);padding:8px 8px 8px 0}
+.nback svg.i{width:22px;height:22px}
+.nshare{width:40px;height:40px;display:grid;place-items:center;color:var(--lime)}
+.nshare svg.i{width:22px;height:22px}
+.ndate{text-align:center;font-size:12.5px;color:rgba(255,255,255,.6);margin:4px 0 14px}
+.ntext{width:100%;min-height:46vh;background:none;border:0;outline:none;resize:none;color:#fff;font-size:17px;line-height:1.5}
+.ntext::placeholder{color:rgba(255,255,255,.45)}
+.natt{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.att{position:relative;display:flex;align-items:center;gap:8px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px}
+.att.img{width:84px;height:84px;overflow:hidden;padding:0}
+.att.img img{width:100%;height:100%;object-fit:cover}
+.att.file{padding:10px 34px 10px 12px;max-width:100%}
+.att.file span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.att svg.i{width:16px;height:16px;flex:none}
+.att button{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff}
+.att.file button{top:50%;transform:translateY(-50%)}
+.att button svg.i{width:12px;height:12px}
+.ntools{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-around;padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(4,18,12,.58);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5)}
+.ntools button{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;color:#fff;font-size:11.5px;font-weight:500}
+.ntools svg.i{width:23px;height:23px}
+.ntools button.on{color:var(--lime)}
+.ntools button.on svg.i{animation:blink 1s ease-in-out infinite}
+@media (min-width:520px){ .ntools{position:absolute;padding-bottom:30px} }
 </style>
 </head>
 <body>
@@ -836,6 +862,8 @@ body{background:var(--grad) fixed;background-color:#030E09}
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20.5c0-3.7 2.9-6.3 6.5-6.3s6.5 2.6 6.5 6.3"/><path d="M15.2 4.6a3.4 3.4 0 0 1 0 6.6"/><path d="M17.6 14.6c2.3.7 3.9 2.9 3.9 5.9"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.5 2.8a.6.6 0 0 1 1 0l2.6 5.3 5.8.8a.6.6 0 0 1 .3 1l-4.2 4.1 1 5.8a.6.6 0 0 1-.8.6L12 17.7l-5.2 2.7a.6.6 0 0 1-.8-.6l1-5.8-4.2-4.1a.6.6 0 0 1 .3-1l5.8-.8Z"/></symbol>
   <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 4v16"/><path d="m3 8 4-4 4 4"/><path d="M17 20V4"/><path d="m21 16-4 4-4-4"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+  <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l8.6-8.6a4 4 0 0 1 5.7 5.7l-8.6 8.6a2 2 0 0 1-2.8-2.8l8.5-8.5"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c0-4 3.4-6.7 7.5-6.7s7.5 2.7 7.5 6.7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -906,6 +934,18 @@ body{background:var(--grad) fixed;background-color:#030E09}
       <div id="nlist"></div>
     </section>
 
+    <!-- EDITOR NOTA -->
+    <section id="v-nota" hidden>
+      <div class="nhead">
+        <button class="nback" data-act="nota-back"><svg class="i"><use href="#i-left"/></svg>Note</button>
+        <button class="nshare" data-act="nota-share" aria-label="Condividi la nota"><svg class="i"><use href="#i-share"/></svg></button>
+      </div>
+      <p class="ndate" id="n-date"></p>
+      <label class="sr" for="n-text">Testo della nota</label>
+      <textarea id="n-text" class="ntext" placeholder="Scrivi una nota…"></textarea>
+      <div class="natt" id="n-att"></div>
+    </section>
+
     <!-- DRIVE -->
     <section id="v-libreria" hidden>
       <div class="page-h"><h1>Documenti</h1></div>
@@ -952,6 +992,12 @@ body{background:var(--grad) fixed;background-color:#030E09}
     </nav>
   </div>
 
+<div class="ntools" id="ntools" hidden>
+  <button data-act="n-mic"><svg class="i"><use href="#i-mic"/></svg><span>Detta</span></button>
+  <button data-act="n-cam"><svg class="i"><use href="#i-camera"/></svg><span>Foto</span></button>
+  <button data-act="n-img"><svg class="i"><use href="#i-image"/></svg><span>Immagine</span></button>
+  <button data-act="n-file"><svg class="i"><use href="#i-paperclip"/></svg><span>File</span></button>
+</div>
 <section class="flow" id="flow" hidden aria-label="Confronta documenti"></section>
 <div class="scrim" id="scrim" hidden></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
@@ -964,6 +1010,9 @@ body{background:var(--grad) fixed;background-color:#030E09}
 </div>
 
 <input type="file" id="f-cam" accept="image/*" capture="environment" hidden>
+<input type="file" id="nf-cam" accept="image/*" capture="environment" hidden>
+<input type="file" id="nf-img" accept="image/*" multiple hidden>
+<input type="file" id="nf-file" multiple hidden>
 <input type="file" id="f-doc" accept=".pdf,image/*,.doc,.docx" multiple hidden>
 
 
@@ -1109,6 +1158,47 @@ function notaSheet(i){
     <button class="nsave" data-act="nota-save" data-i="${n?i:-1}">Salva</button>`);
   setTimeout(()=>{ const a=$('#nt'); a && a.focus({preventScroll:true}); },320);
 }
+/* ---------- editor nota ---------- */
+let NE = null; // {i, n}
+function noteDate(iso){ const d=new Date(iso); return d.getDate()+' '+MESI[d.getMonth()]+' '+d.getFullYear()+' · '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0'); }
+function openNote(i){
+  const base = i>=0 ? notes[i] : {t:'', c:'', at:new Date('2026-11-14T'+new Date().toTimeString().slice(0,5)).toISOString(), att:[]};
+  NE = {i, n:{...base, att:[...(base.att||[])]}};
+  $('#n-date').textContent = noteDate(NE.n.at) + (NE.n.c ? ' · '+NE.n.c : '');
+  $('#n-text').value = NE.n.t;
+  renderAtt();
+  show('nota');
+  if(i<0) setTimeout(()=>$('#n-text').focus({preventScroll:true}),250);
+}
+function renderAtt(){
+  $('#n-att').innerHTML = NE.n.att.map((a,k)=> a.img
+    ? `<span class="att img"><img src="${a.url}" alt="${esc(a.name)}"><button data-act="n-rm" data-k="${k}" aria-label="Rimuovi">${ic('x')}</button></span>`
+    : `<span class="att file">${ic('paperclip')}<span>${esc(a.name)}</span><button data-act="n-rm" data-k="${k}" aria-label="Rimuovi">${ic('x')}</button></span>`).join('');
+}
+function closeNote(){
+  if(!NE) return show('appunti');
+  NE.n.t = $('#n-text').value.trim();
+  const empty = !NE.n.t && !NE.n.att.length;
+  if(NE.i<0){ if(!empty) notes.unshift(NE.n); }
+  else if(empty) notes.splice(NE.i,1);
+  else notes[NE.i] = NE.n;
+  saveNotes(); renderNotes(); NE=null; show('appunti');
+}
+function noteAddFiles(files){
+  [...files].forEach(f=>NE.n.att.push({name:f.name||'Foto', img:/^image\//.test(f.type), url:URL.createObjectURL(f)}));
+  renderAtt();
+}
+function noteMic(){
+  const b=document.querySelector('[data-act="n-mic"]'), ta=$('#n-text');
+  if(b.classList.contains('on')) return;
+  b.classList.add('on'); b.querySelector('span').textContent='Ti ascolto…';
+  setTimeout(()=>{ ta.value = (ta.value.trim()?ta.value.trim()+' ':'') + 'Richiamare il cliente lunedì per confermare la copertura.'; b.classList.remove('on'); b.querySelector('span').textContent='Detta'; },1800);
+}
+function noteShare(){
+  const text = $('#n-text').value.trim() || 'Nota vuota';
+  if(navigator.share){ navigator.share({title:'Nota', text}).catch(()=>{}); }
+  else { try{ navigator.clipboard.writeText(text); }catch(e){} toast('Condivisione disponibile su iPhone · testo copiato'); }
+}
 const compagnie = [['Generali','#B4231E',true],['Reale Mutua','#1F3E73',true],['Allianz','#123E7C',false],['AXA','#1B2C8A',false],['Unipol','#0F5AA8',false],['Zurich','#2167AE',false]];
 const agenzia = [
   ['Convenzione dipendenti 2026','Aggiornata 1 sett fa'],
@@ -1144,12 +1234,15 @@ function renderHome(){
 let view = 'home';
 function show(v){
   view = v;
-  ['home','chat','pratiche','attivita','libreria','appunti'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
+  ['home','chat','pratiche','attivita','libreria','appunti','nota'].forEach(n=>{ $('#v-'+n).hidden = n!==v; });
   $('#v-'+v).classList.remove('fade-in'); void $('#v-'+v).offsetWidth; $('#v-'+v).classList.add('fade-in');
   const sub = v==='chat'||v==='attivita';
   const nav = sub ? 'home' : v;
   document.querySelectorAll('[data-view]').forEach(b=>{ if(b.closest('.tabbar')) b.toggleAttribute('aria-current', b.dataset.view===nav), b.dataset.view===nav && b.setAttribute('aria-current','page'); });
   $('#composer').hidden = !(v==='home'||v==='chat');
+  document.querySelector('.topbar').hidden = v==='nota';
+  document.querySelector('.dock').hidden = v==='nota';
+  $('#ntools').hidden = v!=='nota';
   $('#back').hidden = !sub;
   document.querySelector('.topbar .avatar').hidden = sub;
   window.scrollTo({top:0,behavior:'instant'}); $('#scroller').scrollTop = 0;
@@ -1370,7 +1463,14 @@ document.addEventListener('click',e=>{
     case 'psort': CF.sort = CF.sort===t.dataset.k ? 'az' : t.dataset.k; premioSync(); break;
     case 'preset': CF.sort='az'; CF.min=0; CF.max=PMAX; $('#rmin').value=0; $('#rmax').value=PMAX; premioSync(); break;
     case 'doctab': { const k=t.dataset.k; t.parentElement.querySelectorAll('button').forEach(b=>{const on=b===t; b.setAttribute('aria-pressed',on); b.setAttribute('aria-selected',on);}); $('#doc-co').hidden=k!=='co'; $('#doc-ag').hidden=k!=='ag'; break; }
-    case 'nota': notaSheet(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
+    case 'nota': openNote(t.dataset.i!==undefined ? +t.dataset.i : -1); break;
+    case 'nota-back': closeNote(); break;
+    case 'nota-share': noteShare(); break;
+    case 'n-mic': noteMic(); break;
+    case 'n-cam': $('#nf-cam').click(); break;
+    case 'n-img': $('#nf-img').click(); break;
+    case 'n-file': $('#nf-file').click(); break;
+    case 'n-rm': NE.n.att.splice(+t.dataset.k,1); renderAtt(); break;
     case 'nota-save': {
       const v=$('#nt').value.trim(), i=+t.dataset.i;
       if(v){ if(i>=0) notes[i].t=v; else notes.unshift({t:v,c:'',at:new Date('2026-11-14T'+new Date().toTimeString().slice(0,5)).toISOString()}); saveNotes(); renderNotes(); toast('Nota salvata'); }
@@ -1391,6 +1491,7 @@ document.addEventListener('keydown',e=>{
 });
 ['f-cam','f-doc'].forEach(id=>$('#'+id).addEventListener('change',e=>{ const f=e.target.files; if(f && f.length){ scan(f.length>1 ? f.length+' documenti' : f[0].name); e.target.value=''; } }));
 
+['nf-cam','nf-img','nf-file'].forEach(id=>$('#'+id).addEventListener('change',e=>{ if(e.target.files.length && NE){ noteAddFiles(e.target.files); e.target.value=''; } }));
 document.addEventListener('input',e=>{
   if(e.target.id==='cli-q') renderClienti(e.target.value);
   if(e.target.id==='note-q') renderNotes(e.target.value);
