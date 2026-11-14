@@ -1056,16 +1056,6 @@ main:has(#v-nota:not([hidden])){padding-bottom:170px}
     <section id="v-drive" hidden>
       <div class="page-h ph-row"><h1>I tuoi documenti</h1><button class="addbtn" data-toast="Non fa parte della demo" aria-label="Carica o crea cartella"><svg class="i"><use href="#i-plus"/></svg></button></div>
       <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">Cerca nei documenti</span><input id="drive-q" type="search" autocomplete="off" placeholder="Cerca…"></label>
-      <div class="cli-tools">
-        <div class="cli-chips drv-chips" role="group" aria-label="Tipologia di documento">
-          <button data-act="drv" data-k="all" aria-pressed="true">Tutti</button>
-          <button data-act="drv" data-k="Preventivi" aria-pressed="false">Preventivi</button>
-          <button data-act="drv" data-k="Polizze" aria-pressed="false">Polizze</button>
-          <button data-act="drv" data-k="Condizioni (CGA)" aria-pressed="false">CGA</button>
-          <button data-act="drv" data-k="Sinistri" aria-pressed="false">Sinistri</button>
-          <button data-act="drv" data-k="Interni" aria-pressed="false">Interni</button>
-        </div>
-      </div>
       <div id="drive-list"></div>
     </section>
 
@@ -1408,15 +1398,15 @@ const DOCS = [
   {n:'Denuncia sinistro (CID)', t:'Sinistri', c:'Marco Ferri', co:'Allianz', d:'2 g'},
   {n:'Foto del danno', t:'Sinistri', c:'Marco Ferri', d:'2 g'},
   {n:'Fattura idraulico', t:'Sinistri', c:'Ristorante Il Porto', co:'Generali', d:'1 mese'},
-  {n:'Convenzione dipendenti 2026', t:'Interni', d:'1 sett'},
-  {n:'Convenzione commercialisti', t:'Interni', d:'3 mesi'},
-  {n:'Circolare rinnovi RC Auto', t:'Interni', d:'2 sett'},
-  {n:'Circolare IVASS 2026', t:'Interni', d:'1 mese'},
-  {n:'Modello mail di rinnovo', t:'Interni', d:'1 mese'},
-  {n:'Lettera di benvenuto', t:'Interni', d:'2 mesi'},
-  {n:'Questionario IDD', t:'Interni', d:'3 mesi'},
-  {n:'Procedura denuncia sinistri', t:'Interni', d:'2 mesi'},
-  {n:'Checklist nuovo cliente', t:'Interni', d:'4 mesi'}
+  {n:'Convenzione dipendenti 2026', t:"Documenti dell'agenzia", d:'1 sett'},
+  {n:'Convenzione commercialisti', t:"Documenti dell'agenzia", d:'3 mesi'},
+  {n:'Circolare rinnovi RC Auto', t:"Documenti dell'agenzia", d:'2 sett'},
+  {n:'Circolare IVASS 2026', t:"Documenti dell'agenzia", d:'1 mese'},
+  {n:'Modello mail di rinnovo', t:"Documenti dell'agenzia", d:'1 mese'},
+  {n:'Lettera di benvenuto', t:"Documenti dell'agenzia", d:'2 mesi'},
+  {n:'Questionario IDD', t:"Documenti dell'agenzia", d:'3 mesi'},
+  {n:'Procedura denuncia sinistri', t:"Documenti dell'agenzia", d:'2 mesi'},
+  {n:'Checklist nuovo cliente', t:"Documenti dell'agenzia", d:'4 mesi'}
 ];
 let DRV = 'all';
 function renderDrive(q){
